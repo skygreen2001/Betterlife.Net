@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BetterlifeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="BetterlifeModelStoreContainer">
+          </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Comment' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Comment">
+        <Property Name="ID" Type="int" />
+        <Property Name="User_ID" Type="int" />
+        <Property Name="Comment" Type="nvarchar(max)" />
+        <Property Name="Blog_ID" Type="int" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Department' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Department">
+        <Property Name="ID" Type="int" />
+        <Property Name="Department_Name" Type="nvarchar" MaxLength="150" />
+        <Property Name="Manager" Type="nvarchar(max)" />
+        <Property Name="Budget" Type="int" />
+        <Property Name="Actualexpenses" Type="int" />
+        <Property Name="Estsalary" Type="int" />
+        <Property Name="Actualsalary" Type="int" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Functions' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Functions">
+        <Property Name="ID" Type="int" />
+        <Property Name="Url" Type="nvarchar(max)" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Logsystem' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Logsystem">
+        <Property Name="ID" Type="int" />
+        <Property Name="Logtime" Type="datetime" />
+        <Property Name="Ident" Type="nvarchar" MaxLength="3" />
+        <Property Name="Priority" Type="nvarchar" MaxLength="3" />
+        <Property Name="Message" Type="nvarchar(max)" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Loguser' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Loguser">
+        <Property Name="ID" Type="int" />
+        <Property Name="User_ID" Type="int" />
+        <Property Name="UserType" Type="nvarchar" MaxLength="3" />
+        <Property Name="Log_Content" Type="nvarchar(max)" />
+        <Property Name="CommitTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Msg' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Msg">
+        <Property Name="ID" Type="int" />
+        <Property Name="SenderId" Type="int" />
+        <Property Name="ReceiverId" Type="int" />
+        <Property Name="SenderName" Type="nvarchar(max)" />
+        <Property Name="ReceiverName" Type="nvarchar(max)" />
+        <Property Name="Content" Type="nvarchar(max)" />
+        <Property Name="Status" Type="nvarchar" MaxLength="3" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Notice' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Notice">
+        <Property Name="ID" Type="int" />
+        <Property Name="NoticeType" Type="nvarchar(max)" />
+        <Property Name="Title" Type="nvarchar(max)" />
+        <Property Name="Notice_Content" Type="nvarchar(max)" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Region' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Region">
+        <Property Name="ID" Type="int" />
+        <Property Name="Parent_ID" Type="int" />
+        <Property Name="Region_Name" Type="nvarchar(max)" />
+        <Property Name="Region_Type" Type="nvarchar" MaxLength="3" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Role' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Role">
+        <Property Name="ID" Type="int" />
+        <Property Name="Role_Name" Type="nvarchar(max)" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Rolefunctions' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Rolefunctions">
+        <Property Name="ID" Type="int" />
+        <Property Name="Role_ID" Type="int" />
+        <Property Name="Functions_ID" Type="int" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.User' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="User">
+        <Property Name="ID" Type="int" />
+        <Property Name="Department_ID" Type="int" />
+        <Property Name="Username" Type="nvarchar(max)" />
+        <Property Name="Password" Type="nvarchar(max)" />
+        <Property Name="Email" Type="nvarchar(max)" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Userdetail' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Userdetail">
+        <Property Name="ID" Type="int" />
+        <Property Name="User_ID" Type="int" />
+        <Property Name="Email" Type="nvarchar(max)" />
+        <Property Name="Cellphone" Type="nvarchar(max)" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Usernotice' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Usernotice">
+        <Property Name="ID" Type="int" />
+        <Property Name="User_ID" Type="int" />
+        <Property Name="Notice_ID" Type="int" />
+        <Property Name="CommitTime" Type="datetime" />
+        <Property Name="UpdateTime" Type="datetime" />
+      </EntityType>
+      Errors Found During Generation:
+      warning 6013: The table/view 'BetterlifeNet.dbo.Userrole' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="Userrole">
+        <Property Name="ID" Type="int" />
+        <Property Name="User_ID" Type="int" />
+        <Property Name="Role_ID" Type="int" />
+      </EntityType>-->
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BetterlifeModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="BetterlifeEntities" annotation:LazyLoadingEnabled="true" >
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BetterlifeModelStoreContainer" CdmEntityContainer="BetterlifeEntities" >
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
