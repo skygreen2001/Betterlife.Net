@@ -26,8 +26,12 @@ namespace Tools.Util.Db
                                         "password=;"+
                                         "persist security info=True;"+
                                         "database={0};";
-        public static string Database_Name = "JJShop";
+        public static string Database_Name = "BetterlifeNet";
         #region SQL定义
+        /// <summary>
+        /// 查看所有数据库
+        /// </summary>
+        private static string Sql_Databases = "SHOW DATABASES";
         /// <summary>
         /// 查看数据库所有的数据表
         /// </summary>
@@ -51,10 +55,10 @@ namespace Tools.Util.Db
         /// <summary>
         /// 连接数据库
         /// </summary>
-        private static void connect()
+        private static void Connect()
         {
-            ConnStr = string.Format(ConnStr, Database_Name);
-            myConnection = new MySqlConnection(ConnStr);
+            string connString = string.Format(ConnStr, Database_Name);
+            myConnection = new MySqlConnection(connString);
         }
 
         /// <summary>
@@ -62,10 +66,10 @@ namespace Tools.Util.Db
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static DataTable sqlExecute(string sql)
+        public static DataTable SqlExecute(string sql)
         {
             DataTable result = new DataTable();
-            if (myConnection == null)connect();
+            if (myConnection == null)Connect();
             try
             {
                 using (MySqlCommand myCommand = myConnection.CreateCommand())
@@ -86,7 +90,7 @@ namespace Tools.Util.Db
             }
             finally
             {
-                close();
+                Close();
             }
             return result;
         }
@@ -94,7 +98,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 数据库关闭
         /// </summary>
-        private static void close()
+        private static void Close()
         {
             if (myConnection.State == ConnectionState.Open)
             {
@@ -104,6 +108,34 @@ namespace Tools.Util.Db
         #endregion
 
         #region 查询数据库表信息
+
+        /// <summary>
+        /// 设置指定数据库
+        /// </summary>
+        /// <param name="databaseName"></param>
+        public static void SetDatabase(string databaseName)
+        {
+            Database_Name = databaseName;
+            Connect();
+        }
+
+        /// <summary>
+        /// 返回所有的数据库列表
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> AllDatabaseNames()
+        {
+            List<string> result = new List<string>();
+            DataTable tables = UtilMysql.SqlExecute(Sql_Databases);
+            string database_name;
+            foreach (DataRow item in tables.Rows)
+            {
+                database_name = (string)item.ItemArray[0];
+                result.Add(database_name);
+            }
+            return result;
+        }
+
         /// <summary>
         /// 查询所有表名
         /// </summary>
@@ -111,7 +143,7 @@ namespace Tools.Util.Db
         public static Dictionary<string, string> TableList()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            DataTable tables = UtilMysql.sqlExecute(Sql_Tables);
+            DataTable tables = UtilMysql.SqlExecute(Sql_Tables);
             string tablename, key;
             foreach (DataRow item in tables.Rows)
             {
@@ -129,7 +161,7 @@ namespace Tools.Util.Db
         public static Dictionary<string, Dictionary<string, string>> TableinfoList()
         {
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
-            DataTable tables = UtilMysql.sqlExecute(Sql_Tables_Info);
+            DataTable tables = UtilMysql.SqlExecute(Sql_Tables_Info);
             string tablename, key;
             foreach (DataRow item in tables.Rows)
             {
@@ -153,7 +185,7 @@ namespace Tools.Util.Db
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
 
             string sql = string.Format(Sql_Table_Columns, table_name);
-            DataTable columns = UtilMysql.sqlExecute(sql);
+            DataTable columns = UtilMysql.SqlExecute(sql);
             string column_name;
             foreach (DataRow item in columns.Rows)
             {

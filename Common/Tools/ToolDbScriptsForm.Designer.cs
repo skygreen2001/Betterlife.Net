@@ -38,11 +38,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnMigrantScript = new System.Windows.Forms.Button();
             this.listResult = new System.Windows.Forms.RichTextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbDatabases = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnViewDbInfo
             // 
-            this.btnViewDbInfo.Location = new System.Drawing.Point(37, 43);
+            this.btnViewDbInfo.Location = new System.Drawing.Point(37, 97);
             this.btnViewDbInfo.Name = "btnViewDbInfo";
             this.btnViewDbInfo.Size = new System.Drawing.Size(116, 42);
             this.btnViewDbInfo.TabIndex = 0;
@@ -53,9 +55,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 91);
+            this.label1.Font = new System.Drawing.Font("SimSun", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(36, 148);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.Size = new System.Drawing.Size(76, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "结果显示";
             // 
@@ -66,10 +69,12 @@
             this.cbDbType.Items.AddRange(new object[] {
             "SQL Server",
             "Mysql"});
-            this.cbDbType.Location = new System.Drawing.Point(105, 20);
+            this.cbDbType.Location = new System.Drawing.Point(107, 20);
             this.cbDbType.Name = "cbDbType";
-            this.cbDbType.Size = new System.Drawing.Size(99, 20);
+            this.cbDbType.Size = new System.Drawing.Size(108, 20);
             this.cbDbType.TabIndex = 3;
+            this.cbDbType.SelectedIndexChanged += new System.EventHandler(this.cbDbType_SelectedIndexChanged);
+            this.cbDbType.SelectionChangeCommitted += new System.EventHandler(this.cbDbType_SelectionChangeCommitted);
             // 
             // label2
             // 
@@ -82,7 +87,7 @@
             // 
             // btnTableComment
             // 
-            this.btnTableComment.Location = new System.Drawing.Point(159, 43);
+            this.btnTableComment.Location = new System.Drawing.Point(159, 97);
             this.btnTableComment.Name = "btnTableComment";
             this.btnTableComment.Size = new System.Drawing.Size(103, 42);
             this.btnTableComment.TabIndex = 5;
@@ -92,7 +97,7 @@
             // 
             // btnColumns
             // 
-            this.btnColumns.Location = new System.Drawing.Point(268, 43);
+            this.btnColumns.Location = new System.Drawing.Point(268, 97);
             this.btnColumns.Name = "btnColumns";
             this.btnColumns.Size = new System.Drawing.Size(117, 42);
             this.btnColumns.TabIndex = 6;
@@ -103,16 +108,16 @@
             // cbTables
             // 
             this.cbTables.FormattingEnabled = true;
-            this.cbTables.Location = new System.Drawing.Point(256, 20);
+            this.cbTables.Location = new System.Drawing.Point(266, 58);
             this.cbTables.Name = "cbTables";
-            this.cbTables.Size = new System.Drawing.Size(129, 20);
+            this.cbTables.Size = new System.Drawing.Size(117, 20);
             this.cbTables.TabIndex = 7;
             this.cbTables.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cbTables_MouseClick);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(209, 25);
+            this.label3.Location = new System.Drawing.Point(221, 62);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 8;
@@ -120,9 +125,9 @@
             // 
             // btnMigrantScript
             // 
-            this.btnMigrantScript.Location = new System.Drawing.Point(412, 18);
+            this.btnMigrantScript.Location = new System.Drawing.Point(394, 12);
             this.btnMigrantScript.Name = "btnMigrantScript";
-            this.btnMigrantScript.Size = new System.Drawing.Size(132, 67);
+            this.btnMigrantScript.Size = new System.Drawing.Size(125, 56);
             this.btnMigrantScript.TabIndex = 9;
             this.btnMigrantScript.Text = "移植数据库脚本[Mysql->SQLServer]";
             this.btnMigrantScript.UseVisualStyleBackColor = true;
@@ -130,17 +135,39 @@
             // 
             // listResult
             // 
-            this.listResult.Location = new System.Drawing.Point(38, 109);
+            this.listResult.Location = new System.Drawing.Point(38, 170);
             this.listResult.Name = "listResult";
-            this.listResult.Size = new System.Drawing.Size(813, 431);
+            this.listResult.Size = new System.Drawing.Size(958, 466);
             this.listResult.TabIndex = 10;
             this.listResult.Text = "";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(37, 64);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "数据库名称";
+            // 
+            // cbDatabases
+            // 
+            this.cbDatabases.FormattingEnabled = true;
+            this.cbDatabases.Location = new System.Drawing.Point(107, 58);
+            this.cbDatabases.Name = "cbDatabases";
+            this.cbDatabases.Size = new System.Drawing.Size(108, 20);
+            this.cbDatabases.TabIndex = 12;
+            this.cbDatabases.SelectionChangeCommitted += new System.EventHandler(this.cbDatabases_SelectionChangeCommitted);
+            this.cbDatabases.TextChanged += new System.EventHandler(this.cbDatabases_TextChanged);
+            this.cbDatabases.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cbDatabases_MouseClick);
             // 
             // ToolDbScriptsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 552);
+            this.ClientSize = new System.Drawing.Size(1008, 649);
+            this.Controls.Add(this.cbDatabases);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.listResult);
             this.Controls.Add(this.btnMigrantScript);
             this.Controls.Add(this.label3);
@@ -172,5 +199,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnMigrantScript;
         private System.Windows.Forms.RichTextBox listResult;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbDatabases;
     }
 }

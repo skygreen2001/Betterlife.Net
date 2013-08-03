@@ -13,10 +13,20 @@ namespace Tools
 {
     public partial class ToolDbScriptsForm : Form
     {
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        enum DbType { Mysql = 1, SqlServer = 0 }; 
         public ToolDbScriptsForm()
         {
             InitializeComponent();
+
             cbDbType.SelectedIndex = 0;
+            cbDatabases.Items.Clear();
+            cbDatabases.Items.Add(UtilSqlserver.Database_Name);
+            cbDatabases.SelectedIndex = 0;
+            btnColumns.Enabled = false;
+
         }
 
         /// <summary>
@@ -119,16 +129,40 @@ namespace Tools
         /// <param name="e"></param>
         private void cbTables_MouseClick(object sender, MouseEventArgs e)
         {
-            if (cbTables.Items.Count <= 0)
-            {
+            //if (cbTables.Items.Count <= 0)
+            //{
+                cbTables.Items.Clear();
                 Dictionary<string, string> tables;
                 tables = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.TableList() : UtilMysql.TableList();
                 foreach (string cur_tablename in tables.Values)
                 {
                     this.cbTables.Items.Add(cur_tablename);
                 }
-                this.cbTables.SelectedIndex = 0;
-            }
+                //this.cbTables.SelectedIndex = 0;
+
+                btnColumns.Enabled = true;
+            //}
+        }
+
+        /// <summary>
+        /// 点选数据库列表框默认从数据库读一次所有数据库
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbDatabases_MouseClick(object sender, MouseEventArgs e)
+        {
+            //if (cbDatabases.Items.Count <= 0)
+            //{
+                cbDatabases.Items.Clear();
+                List<string> databases;
+                databases = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.AllDatabaseNames() : UtilMysql.AllDatabaseNames();
+                foreach (string database in databases)
+                {
+                    this.cbDatabases.Items.Add(database);
+                }
+                //this.cbDatabases.SelectedIndex = 0;
+            //}
+
         }
 
         /// <summary>
@@ -155,6 +189,56 @@ namespace Tools
         {
             Default.mainWindow.Show();
         }
+        private bool isDbChanged = false;
+        private void cbDatabases_TextChanged(object sender, EventArgs e)
+        {
+            isDbChanged = true;
+        }
 
+        private void cbDatabases_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (isDbChanged)
+            {
+
+                if (cbDbType.SelectedIndex == (int)DbType.SqlServer)
+                {
+                    UtilSqlserver.SetDatabase(cbDatabases.SelectedItem.ToString());
+                }
+                else
+                {
+                    UtilMysql.SetDatabase(cbDatabases.SelectedItem.ToString());
+                }
+                isDbChanged = false;
+                listResult.Clear();
+                cbTables.Items.Clear();
+                cbTables.Text = "";
+                btnColumns.Enabled = false;
+            }
+
+        }
+        
+        bool isDbTypeChanged = false;
+        private void cbDbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            isDbChanged = true;
+        }
+
+        private void cbDbType_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (isDbChanged)
+            {
+                cbDatabases.Text = (cbDbType.SelectedIndex==(int)DbType.SqlServer)?UtilSqlserver.Database_Name:UtilMysql.Database_Name;
+                if (cbDbType.SelectedIndex == (int)DbType.SqlServer)
+                {
+                    UtilSqlserver.SetDatabase(UtilSqlserver.Database_Name);
+                }
+                else
+                {
+                    UtilMysql.SetDatabase(UtilMysql.Database_Name);
+                }
+                isDbChanged = false;
+                listResult.Clear();
+            }
+        }
     }
 }

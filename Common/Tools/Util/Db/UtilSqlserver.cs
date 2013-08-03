@@ -20,10 +20,15 @@ namespace Tools.Util.Db
         private static string ConnStr = "server=(local);" + 
                                         "user id=sa;" +
                                         "password=123.com;" +
-                                        "database=BetterlifeNet; " +
+                                        "database={0}; " +
                                         "Trusted_Connection=yes;" +
                                         "connection timeout=30";//默认超时时间是30秒
+        public static string Database_Name = "BetterlifeNet";
         #region T-SQL定义
+        /// <summary>
+        /// 查看所有数据库
+        /// </summary>
+        private static string Sql_Databases = "Select Name FROM Master.dbo.SysDatabases";
         /// <summary>
         /// 查看数据库所有的数据表
         /// </summary>
@@ -31,7 +36,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 查看所有表注释
         /// </summary>
-        private static string Sql_Table_Comment = "SELECT objname as name, cast(value as varchar) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', null, null, null)";
+        private static string Sql_Table_Comment = "SELECT objname as name, cast(value as varchar) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', null, null, null) order by objname asc";
         /// <summary>
         /// 查看指定表所有的列
         /// </summary>
@@ -83,9 +88,10 @@ namespace Tools.Util.Db
         /// <summary>
         /// 连接数据库
         /// </summary>
-        private static void connect()
+        private static void Connect()
         {
-            myConnection = new SqlConnection(ConnStr);
+            string connString = string.Format(ConnStr,Database_Name);
+            myConnection = new SqlConnection(connString);
         }
 
         /// <summary>
@@ -96,7 +102,7 @@ namespace Tools.Util.Db
         public static DataTable SqlExecute(string sql)
         {
             DataTable result = new DataTable();
-            if (myConnection == null)connect();
+            if (myConnection == null)Connect();
             try
             {
                 myConnection.Open();
@@ -113,7 +119,7 @@ namespace Tools.Util.Db
             }
             finally
             {
-                if (myConnection != null) close();
+                if (myConnection != null) Close();
             }
             return result;
         }
@@ -121,7 +127,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 数据库关闭
         /// </summary>
-        private static void close()
+        private static void Close()
         {
             try
             {
@@ -135,6 +141,33 @@ namespace Tools.Util.Db
         #endregion
 
         #region 查询数据库表信息
+        /// <summary>
+        /// 设置指定数据库
+        /// </summary>
+        /// <param name="databaseName"></param>
+        public static void SetDatabase(string databaseName)
+        {
+            Database_Name = databaseName;
+            Connect();
+        }
+
+        /// <summary>
+        /// 返回所有的数据库列表
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> AllDatabaseNames()
+        {
+            List<string> result = new List<string>();
+            DataTable databases = UtilSqlserver.SqlExecute(Sql_Databases);
+            string database_name;
+            foreach (DataRow item in databases.Rows)
+            {
+                database_name = (string)item.ItemArray[0];
+                result.Add(database_name);
+            }
+            return result;
+        }
+
         /// <summary>
         /// 查询所有表名
         /// </summary>
