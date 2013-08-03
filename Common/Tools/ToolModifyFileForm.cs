@@ -31,5 +31,10 @@ namespace Tools
             ToolModifyFile.reset();
             this.btnReset.Enabled = true;
         }
+
+        private void ToolModifyFileForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Default.mainWindow.Show();
+        }
     }
 }

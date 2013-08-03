@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Admin] (
-    [ID]         INT            IDENTITY (1, 1) NOT NULL,
+    [ID]         UNIQUEIDENTIFIER            IDENTITY (1, 1) NOT NULL,
     [Username]   NVARCHAR (MAX) NULL,
     [Realname]   NVARCHAR (MAX) NULL,
     [Password]   NVARCHAR (135) NULL,

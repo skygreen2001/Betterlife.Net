@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Tools
 {
     static class Default
     {
+        public static ToolsList mainWindow;
 
         /// <summary>
         /// The main entry point for the application.
@@ -17,6 +15,8 @@ namespace Tools
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            mainWindow=new ToolsList();
+            //Application.Run(mainWindow);
             //Application.Run(new ToolModifyFileForm());
             Application.Run(new ToolDbScriptsForm());
         }

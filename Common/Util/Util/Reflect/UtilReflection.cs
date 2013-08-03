@@ -28,7 +28,7 @@ namespace Util.Reflection
         /// </summary>
         /// <param name="classFullName"></param>
         /// <returns></returns>
-        public static Type getTypeByClassFullName(string classFullName){
+        public static Type GetTypeByClassFullName(string classFullName){
             //获取当前运行的程序集
             Assembly assembly = Assembly.GetExecutingAssembly();
             return assembly.GetType(classFullName);
@@ -39,7 +39,7 @@ namespace Util.Reflection
         /// </summary>
         /// <param name="classType"></param>
         /// <returns></returns>
-        public static List<string> getAllStaticFieldsByPrefix(Type classType,string prefix)
+        public static List<string> GetAllStaticFieldsByPrefix(Type classType,string prefix)
         {
             List<string> result = null;
             FieldInfo[] fields = classType.GetFields(BindingFlags.Public | BindingFlags.Static);
@@ -62,7 +62,7 @@ namespace Util.Reflection
         /// </summary>
         /// <param name="classType"></param>
         /// <returns></returns>
-        public static List<string> getAllStaticPropertiesByPrefix(Type classType, string prefix)
+        public static List<string> GetAllStaticPropertiesByPrefix(Type classType, string prefix)
         {
             List<string> result = null;
             PropertyInfo[] properties = classType.GetProperties(BindingFlags.Public | BindingFlags.Static);
@@ -86,7 +86,7 @@ namespace Util.Reflection
         /// <param name="classType"></param>
         /// <param name="propertyname"></param>
         /// <returns></returns>
-        public static object getPublicStaticFieldValue(Type classType, string fieldname)
+        public static object GetPublicStaticFieldValue(Type classType, string fieldname)
         {
             FieldInfo fieldInfo = classType.GetField(fieldname, BindingFlags.Public | BindingFlags.Static);
             if (fieldInfo != null)
@@ -104,10 +104,10 @@ namespace Util.Reflection
         /// <param name="oldPrefix"></param>
         /// <param name="newPrefix"></param>
         /// <returns></returns>
-        public static object getPublicStaticFieldValue(Type type, string fieldName,string oldPrefix,string newPrefix)
+        public static object GetPublicStaticFieldValue(Type type, string fieldName,string oldPrefix,string newPrefix)
         {
                 string viewfield_name = fieldName.Replace(oldPrefix, "");
-                string result = (string) UtilReflection.getPublicStaticFieldValue(type, newPrefix + viewfield_name);
+                string result = (string) UtilReflection.GetPublicStaticFieldValue(type, newPrefix + viewfield_name);
                 return result;
         }
         
@@ -117,7 +117,7 @@ namespace Util.Reflection
         /// <param name="classType"></param>
         /// <param name="propertyname"></param>
         /// <returns></returns>
-        public static object getPublicStaticPropertyValue(Type classType, string propertyname)
+        public static object GetPublicStaticPropertyValue(Type classType, string propertyname)
         {
             PropertyInfo propertyInfo = classType.GetProperty(propertyname, BindingFlags.Public | BindingFlags.Static);
             if (propertyInfo != null)
@@ -136,18 +136,18 @@ namespace Util.Reflection
         /// <param name="oldPrefix"></param>
         /// <param name="newPrefix"></param>
         /// <returns></returns>
-        public static string getPublicStaticFieldValueByValue(Type type, string assignValue, string oldPrefix, string newPrefix)
+        public static string GetPublicStaticFieldValueByValue(Type type, string assignValue, string oldPrefix, string newPrefix)
         {  
-            List<string> fields = UtilReflection.getAllStaticFieldsByPrefix(type, oldPrefix);
+            List<string> fields = UtilReflection.GetAllStaticFieldsByPrefix(type, oldPrefix);
             if (fields != null && fields.Count > 0)
             {
                 string currentTypeNameValue = "";
                 foreach (string fieldname in fields)
                 {
-                    currentTypeNameValue = UtilReflection.getPublicStaticFieldValue(type, fieldname).ToString();
+                    currentTypeNameValue = UtilReflection.GetPublicStaticFieldValue(type, fieldname).ToString();
                     if (currentTypeNameValue == assignValue)
                     {
-                        string result = (string)UtilReflection.getPublicStaticFieldValue(type, fieldname, oldPrefix, newPrefix);
+                        string result = (string)UtilReflection.GetPublicStaticFieldValue(type, fieldname, oldPrefix, newPrefix);
                         if (result == null) result = "";
                         return result;
                     }
@@ -161,7 +161,7 @@ namespace Util.Reflection
         /// </summary>
         /// <param name="classFullName">类的完整名称如：callcenter.GlobalConfig</param>
         /// <param name="data">指定Key-Value值</param>
-        public static void setPublicStaticProperties(Type classType, Hashtable data){            
+        public static void SetPublicStaticProperties(Type classType, Hashtable data){            
             PropertyInfo propertyInfo;
 
             foreach (DictionaryEntry property in data)
@@ -176,7 +176,7 @@ namespace Util.Reflection
                     }
                     else if (propertyInfo.PropertyType.Equals(typeof(Int32)))
                     {
-                        if (UtilNumber.isDigit(property.Value.ToString()))
+                        if (UtilNumber.IsDigit(property.Value.ToString()))
                         {
                             int value = int.Parse(property.Value.ToString());
                             propertyInfo.SetValue(property.Key, value, null);
@@ -197,7 +197,7 @@ namespace Util.Reflection
         /// <param name="dest">目标对象</param>
         /// <param name="fieldName">属性名字</param>
         /// <param name="value">属性里要设置的值</param>
-        public static void setField(ref object dest, string fieldName, object value)
+        public static void SetField(ref object dest, string fieldName, object value)
         {
             if (null == dest || null == fieldName || null == value)
             {
@@ -317,7 +317,7 @@ namespace Util.Reflection
         /// 反射打印出对象有的方法以及调用参数
         /// </summary>
         /// <param name="obj">传入的对象</param>
-        public static void printMethod(object obj)
+        public static void PrintMethod(object obj)
         {
             Type t = obj.GetType();
             MethodInfo[] mif = t.GetMethods(BindingFlags.Public | BindingFlags.Instance);

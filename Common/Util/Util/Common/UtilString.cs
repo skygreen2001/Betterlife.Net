@@ -12,7 +12,7 @@ namespace Util.Common
         /// </summary>
         /// <param name="urlString"></param>
         /// <returns></returns>
-        public static bool isUrl(string urlString)
+        public static bool IsUrl(string urlString)
         {
             const string websitereg = @"http://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?";
             
@@ -32,9 +32,9 @@ namespace Util.Common
         /// </summary>
         /// <param name="phoneNum"></param>
         /// <returns></returns>
-        public static bool isCallPhone(string phoneNum)
+        public static bool IsCallPhone(string phoneNum)
         {
-            if (!UtilNumber.isDigit(phoneNum))
+            if (!UtilNumber.IsDigit(phoneNum))
             {
                 return false;
             }
@@ -48,9 +48,9 @@ namespace Util.Common
         /// <see cref="http://udnz.com/Works/uolib/Default.aspx"/>
         /// <param name="phoneNum"></param>
         /// <returns></returns>
-        public static bool isMobilePhone(string phoneNum)
+        public static bool IsMobilePhone(string phoneNum)
         {
-            if (!UtilNumber.isDigit(phoneNum))
+            if (!UtilNumber.IsDigit(phoneNum))
             {
                 return false;
             }
@@ -79,6 +79,29 @@ namespace Util.Common
             }
             string password = s.ToString();
             return password;
+        }
+
+        /// <summary>
+        /// 字符串头字母大写
+        /// </summary>
+        /// <param name="content">字符串内容</param>
+        public static string UcFirst(string content)
+        {
+            content = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(content);
+            return content;
+        }
+
+        /// <summary>
+        /// 是否包含指定若干字符串中的一个
+        /// </summary>
+        /// <returns></returns>
+        public static bool Contains(string subject,params string[] args)
+        {
+            string pattern;
+            pattern = string.Join("|",args);
+            Regex r = new Regex(pattern);
+            return r.IsMatch(subject);
+
         }
 	}
 }

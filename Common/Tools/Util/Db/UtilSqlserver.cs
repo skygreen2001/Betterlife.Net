@@ -17,7 +17,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 连接数据库字符串
         /// </summary>
-        private static string connStr = "server=(local);" + 
+        private static string ConnStr = "server=(local);" + 
                                         "user id=sa;" +
                                         "password=123.com;" +
                                         "database=BetterlifeNet; " +
@@ -43,19 +43,19 @@ namespace Tools.Util.Db
         /// <summary>
         /// 查看数据库表的个数
         /// </summary>
-        private static string Sql_Table_Count="select COUNT(id) from sysobjects where xtype='u'";
+        //private static string Sql_Table_Count="select COUNT(id) from sysobjects where xtype='u'";
         /// <summary>
         /// 查看数据库所有的列数
         /// </summary>
-        private static string Sql_Table_Columns_Count = "select COUNT(TABLE_NAME) from information_schema.columns";
+        //private static string Sql_Table_Columns_Count = "select COUNT(TABLE_NAME) from information_schema.columns";
         /// <summary>
         /// 查看数据库所有的视图
         /// </summary>
-        private static string Sql_Db_View = "select * from information_schema.views order by TABLE_NAME asc";
+        //private static string Sql_Db_View = "select * from information_schema.views order by TABLE_NAME asc";
         /// <summary>
         /// 查看数据库的视图个数
         /// </summary>
-        private static string Sql_Db_View_Count = "select COUNT(TABLE_CATALOG) from information_schema.views";
+        //private static string Sql_Db_View_Count = "select COUNT(TABLE_CATALOG) from information_schema.views";
         /// <summary>
         /// --查看所有的表、视图
         /// </summary>
@@ -85,7 +85,7 @@ namespace Tools.Util.Db
         /// </summary>
         private static void connect()
         {
-            myConnection = new SqlConnection(connStr);
+            myConnection = new SqlConnection(ConnStr);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Tools.Util.Db
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public static DataTable sqlExecute(string sql)
+        public static DataTable SqlExecute(string sql)
         {
             DataTable result = new DataTable();
             if (myConnection == null)connect();
@@ -139,10 +139,10 @@ namespace Tools.Util.Db
         /// 查询所有表名
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, string> tableList()
+        public static Dictionary<string, string> TableList()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            DataTable tables = UtilSqlserver.sqlExecute(Sql_Tables);
+            DataTable tables = UtilSqlserver.SqlExecute(Sql_Tables);
             string tablename, key;
             foreach (DataRow item in tables.Rows)
             {
@@ -157,10 +157,10 @@ namespace Tools.Util.Db
         /// 获取所有的表信息包括表注释信息
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, Dictionary<string,string>> tableinfoList()
+        public static Dictionary<string, Dictionary<string,string>> TableinfoList()
         {
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
-            DataTable tables = UtilSqlserver.sqlExecute(Sql_Table_Comment);
+            DataTable tables = UtilSqlserver.SqlExecute(Sql_Table_Comment);
             string tablename,key;
             foreach (DataRow item in tables.Rows)
             {
@@ -179,12 +179,12 @@ namespace Tools.Util.Db
         /// </summary>
         /// <param name="table_name"></param>
         /// <returns></returns>
-        public static Dictionary<string, Dictionary<string, string>> fieldInfoList(string table_name)
+        public static Dictionary<string, Dictionary<string, string>> FieldInfoList(string table_name)
         {
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
 
             string sql = string.Format(Sql_Table_Columns,table_name);
-            DataTable columns = UtilSqlserver.sqlExecute(sql);
+            DataTable columns = UtilSqlserver.SqlExecute(sql);
             string column_name;
             foreach (DataRow item in columns.Rows)
             {
@@ -194,7 +194,7 @@ namespace Tools.Util.Db
                 columnInfo["Type"] = (string)item.ItemArray[7];
                 columnInfo["Null"] = (string)item.ItemArray[6];
                 sql = string.Format(Sql_Table_Columns_Comment,  table_name, column_name);
-                DataTable column_comment = UtilSqlserver.sqlExecute(sql);
+                DataTable column_comment = UtilSqlserver.SqlExecute(sql);
                 foreach (DataRow item_c in column_comment.Rows)
                 {
                     columnInfo["Comment"] = (string)item_c.ItemArray[1];

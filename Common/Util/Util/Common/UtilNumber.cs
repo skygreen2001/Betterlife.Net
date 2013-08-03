@@ -12,7 +12,7 @@ namespace Util.Common
         /// <param name="_string"></param>
         /// <returns></returns>
         /// <see cref="http://www.cnblogs.com/sohighthesky/archive/2010/01/31/how-to-test-isnumberic.html"/>
-        public static bool isDigit(this string _string)
+        public static bool IsDigit(this string _string)
         {
             if (string.IsNullOrEmpty(_string))
                 return false;
@@ -30,9 +30,9 @@ namespace Util.Common
         /// <param name="numberString"></param>
         /// <param name="defaultValue">无解析结果，结果为指定默认值</param>
         /// <returns></returns>
-        public static int parse(string numberString,int defaultValue=100)
+        public static int Parse(string numberString,int defaultValue=100)
         {
-            int result = parse(numberString);
+            int result = Parse(numberString);
             if (result == 0)
             {
                 result = defaultValue;
@@ -45,7 +45,7 @@ namespace Util.Common
         /// </summary>
         /// <param name="numberString"></param>
         /// <returns></returns>
-        public static int parse(string numberString)
+        public static int Parse(string numberString)
         {
             int result=0;
             int.TryParse(numberString,out result);

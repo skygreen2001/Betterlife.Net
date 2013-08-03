@@ -16,7 +16,7 @@ namespace Util.Common
         /// </summary>
         /// <param name="value">时间</param>
         /// <returns></returns>
-        public static String getDateTimeValue(DateTime value, string format)
+        public static String GetDateTimeValue(DateTime value, string format)
         {
             return value.ToString(format);
         }
@@ -25,27 +25,27 @@ namespace Util.Common
         /// 按时间格式：FORMAT_YYYYMMDDHHMMSS显示
         /// </summary>
         /// <returns></returns>
-        public static string nowS()
+        public static string NowS()
         {
-            return UtilDateTime.getDateTimeValue(DateTime.Now, UtilDateTime.FORMAT_YYYYMMDDHHMMSS);
+            return UtilDateTime.GetDateTimeValue(DateTime.Now, UtilDateTime.FORMAT_YYYYMMDDHHMMSS);
         }
 
         /// <summary>
         /// 按时间格式：FORMAT_YYYY_MM_DD_HH_MM_SS显示
         /// </summary>
         /// <returns></returns>
-        public static string now_underline()
+        public static string Now_Underline()
         {
-            return UtilDateTime.getDateTimeValue(DateTime.Now, UtilDateTime.FORMAT_YYYY_MM_DD_HH_MM_SS);
+            return UtilDateTime.GetDateTimeValue(DateTime.Now, UtilDateTime.FORMAT_YYYY_MM_DD_HH_MM_SS);
         }
 
         /// <summary>
         /// 按时间格式：FORMAT_NORMAL:yyyy-MM-dd HH:mm:ss显示
         /// </summary>
         /// <returns></returns>
-        public static string now()
+        public static string Now()
         {
-            return UtilDateTime.getDateTimeValue(DateTime.Now, UtilDateTime.FORMAT_NORMAL);
+            return UtilDateTime.GetDateTimeValue(DateTime.Now, UtilDateTime.FORMAT_NORMAL);
         }
         
         /// <summary>
@@ -53,7 +53,7 @@ namespace Util.Common
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public static DateTime convertTimestampToDateTimeValue(string timestamp)
+        public static DateTime ConvertTimestampToDateTimeValue(string timestamp)
         {
             if (!string.IsNullOrEmpty(timestamp))
             {

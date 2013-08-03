@@ -21,11 +21,12 @@ namespace Tools.Util.Db
         /// <summary>
         /// 连接数据库字符串
         /// </summary>
-        private static string connStr = "server=localhost;"+
+        private static string ConnStr = "server=localhost;"+
                                         "user id=root;"+
                                         "password=;"+
                                         "persist security info=True;"+
-                                        "database=BetterlifeNet;";
+                                        "database={0};";
+        public static string Database_Name = "JJShop";
         #region SQL定义
         /// <summary>
         /// 查看数据库所有的数据表
@@ -52,7 +53,8 @@ namespace Tools.Util.Db
         /// </summary>
         private static void connect()
         {
-            myConnection = new MySqlConnection(connStr);
+            ConnStr = string.Format(ConnStr, Database_Name);
+            myConnection = new MySqlConnection(ConnStr);
         }
 
         /// <summary>
@@ -106,7 +108,7 @@ namespace Tools.Util.Db
         /// 查询所有表名
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, string> tableList()
+        public static Dictionary<string, string> TableList()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             DataTable tables = UtilMysql.sqlExecute(Sql_Tables);
@@ -124,7 +126,7 @@ namespace Tools.Util.Db
         /// 获取所有的表信息包括表注释信息
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, Dictionary<string, string>> tableinfoList()
+        public static Dictionary<string, Dictionary<string, string>> TableinfoList()
         {
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
             DataTable tables = UtilMysql.sqlExecute(Sql_Tables_Info);
@@ -146,7 +148,7 @@ namespace Tools.Util.Db
         /// </summary>
         /// <param name="table_name"></param>
         /// <returns></returns>
-        public static Dictionary<string, Dictionary<string, string>> fieldInfoList(string table_name)
+        public static Dictionary<string, Dictionary<string, string>> FieldInfoList(string table_name)
         {
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
 
@@ -160,6 +162,8 @@ namespace Tools.Util.Db
                 columnInfo["Field"] = column_name;
                 columnInfo["Type"] = (string)item.ItemArray[1];
                 columnInfo["Null"] = (string)item.ItemArray[3];
+
+                columnInfo["Default"] =(string.IsNullOrEmpty(item.ItemArray[5].ToString()))? null : (string)item.ItemArray[5];
                 columnInfo["Comment"] = (string)item.ItemArray[item.ItemArray.Count()-1];
                 result[column_name] = columnInfo;
             }

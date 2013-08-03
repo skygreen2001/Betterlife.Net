@@ -60,7 +60,7 @@ namespace Util.Common
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public static string md5(string content)
+        public static string MD5(string content)
         {
             if (string.IsNullOrEmpty(content))
             {
