@@ -30,18 +30,124 @@ namespace Tools.DbScripts
             //生成数据库注释部分
             result += CreateDbComment();
 
-            //修改数据库主键部分
-            result += ModfiyDbKeyDefine();
+            //创建数据库的外键部分
+            result += CreateDbKeyDefine();
 
+            return result;
+        }
+
+        /// <summary>
+        /// 生成删除数据库所有表的脚本
+        /// </summary>
+        /// <returns></returns>
+        public static string DropAllTables()
+        {
+
+            tableInfos = UtilSqlserver.TableinfoList();
+            string result = "/****** 删除数据库所有表的脚本    Script Date:" + DateTime.Now + " ******/\r\n";
+            string tablename, refer_tablename;
+            string sql_template, sql_refer_tempalte, sql_df_template;
+            Dictionary<string, Dictionary<string, string>> columnInfos;
+            sql_template = @"
+/****** Object:  Table [dbo].[{0}]    Script Date: 08/03/2013 21:46:21 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[{0}]') AND type in (N'U'))
+DROP TABLE [dbo].[{0}]
+GO
+";
+            sql_refer_tempalte = @"
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[{0}]') AND parent_object_id = OBJECT_ID(N'[dbo].[{1}]'))
+ALTER TABLE [dbo].[{1}] DROP CONSTRAINT [{0}]
+GO
+";
+            sql_df_template = @"
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_{0}_{1}]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[{0}] DROP CONSTRAINT [DF_{0}_{1}]
+END
+
+GO
+";
+
+            Dictionary<string, Dictionary<string, string>>  table_fk=UtilSqlserver.Table_Foreign_Key();
+            string fkname, ftablename, fkcol, rtable;
+            foreach (Dictionary<string, string> table_fkInfo in table_fk.Values)
+            {
+                fkname = table_fkInfo["fkname"];
+                ftablename = table_fkInfo["ftablename"];
+                //fkcol = table_fkInfo["fkcol"];
+                //rtable = table_fkInfo["rtable"];
+
+                result += string.Format(sql_refer_tempalte, fkname, ftablename);
+            }
+
+            foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
+            {
+                //获取表名
+                tablename = tableInfo["Name"];
+                tablename = UtilString.UcFirst(tablename);
+                columnInfos = UtilMysql.FieldInfoList(tablename);
+
+                string column_name;
+
+                //获取主键名称
+                foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
+                {
+                    column_name = columnInfo["Field"];
+                    column_name = UtilString.UcFirst(column_name);
+                    if ((column_name.ToUpper().Equals("COMMITTIME")) || (column_name.ToUpper().Equals("UPDATETIME")))
+                    {
+                        result += string.Format(sql_df_template, tablename,column_name);
+                    }
+                }
+                result += string.Format(sql_template, tablename);
+            }
             return result;
         }
 
         /// <summary>
         /// 修改数据库主键部分
         /// </summary>
-        private static string ModfiyDbKeyDefine()
+        private static string CreateDbKeyDefine()
         {
-            return "";
+            string result = "/****** 创建数据库的外键部分    Script Date:" + DateTime.Now + " ******/\r\n";
+            string tablename,refer_tablename;
+            string column_name, sql_template;
+            foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
+            {
+                //获取表名
+                tablename = tableInfo["Name"];
+                tablename = UtilString.UcFirst(tablename);
+                Dictionary<string, Dictionary<string, string>> columnInfos;
+                columnInfos = UtilMysql.FieldInfoList(tablename);
+                //获取主键名称
+                foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
+                {
+                    column_name = columnInfo["Field"];
+                    column_name = UtilString.UcFirst(column_name);
+                    if (column_name.ToUpper().Contains("_ID"))
+                    {
+                        
+                        refer_tablename=column_name.Replace("_ID","");
+                        refer_tablename = refer_tablename.Replace("_id", "");
+                        if (refer_tablename.ToUpper().Equals("PARENT"))
+                        {
+                            refer_tablename = tablename;
+                        }
+                        sql_template= @"
+ALTER TABLE [dbo].[{0}]  WITH CHECK ADD CONSTRAINT [FK_{0}_{1}] FOREIGN KEY([{2}])
+REFERENCES [dbo].[{1}] ([ID])
+GO
+
+ALTER TABLE [dbo].[{0}] CHECK CONSTRAINT [FK_{0}_{1}]
+GO
+";
+                        result += string.Format(sql_template, tablename,refer_tablename,column_name);
+
+                    }
+                }
+
+            }
+            return result;
         }
 
         /// <summary>
@@ -59,7 +165,7 @@ namespace Tools.DbScripts
                 tablename = tableInfo["Name"];
                 tablename = UtilString.UcFirst(tablename);
                 tableComment = tableInfo["Comment"];
-                result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}'\r\nGO\r\n",tableComment,tablename);
+                result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}'\r\nGO\r\n\r\n",tableComment,tablename);
 
                 Dictionary<string, Dictionary<string, string>> columnInfos;
                 columnInfos = UtilMysql.FieldInfoList(tablename);
@@ -69,7 +175,7 @@ namespace Tools.DbScripts
                     column_name = columnInfo["Field"];
                     column_name = UtilString.UcFirst(column_name);
                     column_comment = columnInfo["Comment"];
-                    result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}', @level2type=N'COLUMN',@level2name=N'{2}'\r\nGO\r\n",column_comment,tablename,column_name);
+                    result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}', @level2type=N'COLUMN',@level2name=N'{2}'\r\nGO\r\n\r\n",column_comment,tablename,column_name);
                 }
             }
             return result;
@@ -85,13 +191,13 @@ namespace Tools.DbScripts
             string tablename, tableComment, columnDefine;
             string sqlTemplate, column_name, column_type, column_null,column_default;
             string defaultValue;
+            Dictionary<string, Dictionary<string, string>> columnInfos;
             foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
             {
                 //获取表名
                 tablename = tableInfo["Name"];
                 tablename = UtilString.UcFirst(tablename);
                 tableComment = tableInfo["Comment"];
-                Dictionary<string, Dictionary<string, string>> columnInfos;
                 columnInfos = UtilMysql.FieldInfoList(tablename);
                 columnDefine = "";
                 defaultValue = "";

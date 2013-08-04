@@ -46,6 +46,25 @@ namespace Tools.Util.Db
         /// </summary>
         private static string Sql_Table_Columns_Comment = "SELECT objname as column_name, cast(value as varchar) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', '{0}', 'column', '{1}')";
         /// <summary>
+        /// 查询数据库所有的外键
+        /// 参考：http://chenjianjx.iteye.com/blog/222267
+        /// 从左到右分别是： 外键约束名，子表名，外键列名，父表名 
+        /// </summary>
+        private static string Sql_Table_Foreign_Key = @"
+                                    select fk.name fkname , ftable.name ftablename, cn.name fkcol, rtable.name rtable from sysforeignkeys 
+                                      join sysobjects fk 
+                                        on sysforeignkeys.constid = fk.id 
+                                      join sysobjects ftable 
+                                        on sysforeignkeys.fkeyid = ftable.id 
+                                      join sysobjects rtable 
+                                        on sysforeignkeys.rkeyid = rtable.id 
+                                      join syscolumns cn 
+                                        on sysforeignkeys.fkeyid = cn.id and sysforeignkeys.fkey = cn.colid";
+        /// <summary>
+        /// 获取表的主外键
+        /// </summary>
+        private static string Sql_PK_DK_FK = @"exec sp_helpconstraint '{0}'";
+        /// <summary>
         /// 查看数据库表的个数
         /// </summary>
         //private static string Sql_Table_Count="select COUNT(id) from sysobjects where xtype='u'";
@@ -235,6 +254,56 @@ namespace Tools.Util.Db
                 result[column_name] = columnInfo;
             }
             return result;
+        }
+
+        /// <summary>
+        /// 查询数据库所有的外键
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, Dictionary<string, string>> Table_Foreign_Key()
+        {
+            Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
+            DataTable tables = UtilSqlserver.SqlExecute(Sql_Table_Foreign_Key);
+            string tablename;
+            Dictionary<string, string> foreignKeyInfo;
+            foreach (DataRow item in tables.Rows)
+            {
+                tablename = (string)item.ItemArray[1];
+                foreignKeyInfo=new Dictionary<string,string>();
+                ///外键约束名，子表名，外键列名，父表名
+                foreignKeyInfo["fkname"] = (string)item.ItemArray[0];
+                foreignKeyInfo["ftablename"] = (string)item.ItemArray[1];
+                foreignKeyInfo["fkcol"] = (string)item.ItemArray[2];
+                foreignKeyInfo["rtable"] = (string)item.ItemArray[3];
+
+                result[tablename] = foreignKeyInfo;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取数据库所有的主键外键默认值
+        /// </summary>
+        /// <param name="table_name"></param>
+        /// <returns></returns>
+        public static Dictionary<string, Dictionary<string, string>> Table_FK_PK_DK(string table_name)
+        {
+            Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
+            string sql_fkpkdk = string.Format(Sql_PK_DK_FK,table_name);
+            DataTable tables = UtilSqlserver.SqlExecute(sql_fkpkdk);
+            Dictionary<string, string> fkpkdkInfo;
+            foreach (DataRow item in tables.Rows)
+            {
+                fkpkdkInfo = new Dictionary<string, string>();
+                ///外键约束名，子表名，外键列名，父表名
+                fkpkdkInfo["constrant_type"] = (string)item.ItemArray[0];
+                fkpkdkInfo["constrant_name"] = (string)item.ItemArray[1];
+                fkpkdkInfo["constrant_keys"] = (string)item.ItemArray[6];
+
+                result[table_name] = fkpkdkInfo;
+            }
+            return result;
+
         }
         #endregion
 

@@ -40,6 +40,7 @@
             this.listResult = new System.Windows.Forms.RichTextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbDatabases = new System.Windows.Forms.ComboBox();
+            this.btnDropAllTables = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnViewDbInfo
@@ -161,11 +162,22 @@
             this.cbDatabases.TextChanged += new System.EventHandler(this.cbDatabases_TextChanged);
             this.cbDatabases.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cbDatabases_MouseClick);
             // 
+            // btnDropAllTables
+            // 
+            this.btnDropAllTables.Location = new System.Drawing.Point(525, 14);
+            this.btnDropAllTables.Name = "btnDropAllTables";
+            this.btnDropAllTables.Size = new System.Drawing.Size(112, 54);
+            this.btnDropAllTables.TabIndex = 13;
+            this.btnDropAllTables.Text = "删除所有表";
+            this.btnDropAllTables.UseVisualStyleBackColor = true;
+            this.btnDropAllTables.Click += new System.EventHandler(this.btnDropAllTables_Click);
+            // 
             // ToolDbScriptsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 649);
+            this.Controls.Add(this.btnDropAllTables);
             this.Controls.Add(this.cbDatabases);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listResult);
@@ -201,5 +213,6 @@
         private System.Windows.Forms.RichTextBox listResult;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbDatabases;
+        private System.Windows.Forms.Button btnDropAllTables;
     }
 }

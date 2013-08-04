@@ -220,12 +220,12 @@ namespace Tools
         bool isDbTypeChanged = false;
         private void cbDbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isDbChanged = true;
+            isDbTypeChanged = true;
         }
 
         private void cbDbType_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (isDbChanged)
+            if (isDbTypeChanged)
             {
                 cbDatabases.Text = (cbDbType.SelectedIndex==(int)DbType.SqlServer)?UtilSqlserver.Database_Name:UtilMysql.Database_Name;
                 if (cbDbType.SelectedIndex == (int)DbType.SqlServer)
@@ -236,9 +236,20 @@ namespace Tools
                 {
                     UtilMysql.SetDatabase(UtilMysql.Database_Name);
                 }
-                isDbChanged = false;
+                isDbTypeChanged = false;
                 listResult.Clear();
             }
+        }
+
+        private void btnDropAllTables_Click(object sender, EventArgs e)
+        {
+            this.btnDropAllTables.Enabled = false;
+            string sql = ToolDbScripts.DropAllTables();
+            this.listResult.Clear();
+            this.listResult.AppendText(sql);
+            this.btnDropAllTables.Enabled = true;
+            Console.WriteLine(this.listResult);
+
         }
     }
 }
