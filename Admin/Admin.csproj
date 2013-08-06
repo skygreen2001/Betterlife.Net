@@ -196,6 +196,16 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Util\Util.csproj">
+      <Project>{a52e0ee4-d761-4a0b-9ae7-7c4751aaa416}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Business\Core.csproj">
+      <Project>{112a9a1a-7de7-4b74-b3ee-6b1468154539}</Project>
+      <Name>Core %28Core\Core%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

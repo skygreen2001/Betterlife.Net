@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "Common\Util\Util.csproj", "{A52E0EE4-D761-4A0B-9AE7-7C4751AAA416}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C293CE71-503F-4B7E-A69A-D45989461E82}"
+	ProjectSection(SolutionItems) = preProject
+		AssemblyDependencies.dgml = AssemblyDependencies.dgml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Business\Core.csproj", "{112A9A1A-7DE7-4B74-B3EE-6B1468154539}"
 EndProject
@@ -22,6 +25,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{25AC6FBD-8FC7-465D-892B-70472FF2BDD4}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SyncDatabase", "SyncDatabase\SyncDatabase.sqlproj", "{A2F7E140-873A-4379-BD97-AD9BEFDD677D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{858801AC-AC6E-450D-A7B7-2665432AECDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +68,10 @@ Global
 		{A2F7E140-873A-4379-BD97-AD9BEFDD677D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2F7E140-873A-4379-BD97-AD9BEFDD677D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2F7E140-873A-4379-BD97-AD9BEFDD677D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{858801AC-AC6E-450D-A7B7-2665432AECDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{858801AC-AC6E-450D-A7B7-2665432AECDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{858801AC-AC6E-450D-A7B7-2665432AECDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{858801AC-AC6E-450D-A7B7-2665432AECDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +82,6 @@ Global
 		{112A9A1A-7DE7-4B74-B3EE-6B1468154539} = {C293CE71-503F-4B7E-A69A-D45989461E82}
 		{C6800930-91C3-4E0E-82DF-0B3C2AF117BB} = {C293CE71-503F-4B7E-A69A-D45989461E82}
 		{A2F7E140-873A-4379-BD97-AD9BEFDD677D} = {25AC6FBD-8FC7-465D-892B-70472FF2BDD4}
+		{858801AC-AC6E-450D-A7B7-2665432AECDB} = {25AC6FBD-8FC7-465D-892B-70472FF2BDD4}
 	EndGlobalSection
 EndGlobal

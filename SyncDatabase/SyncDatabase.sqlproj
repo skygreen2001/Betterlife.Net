@@ -60,6 +60,11 @@
     <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Admin.sql" />
+    <Build Include="dbo\Tables\Blog.sql" />
     <Build Include="dbo\Tables\Comment.sql" />
     <Build Include="dbo\Tables\Department.sql" />
     <Build Include="dbo\Tables\Functions.sql" />
@@ -74,10 +79,5 @@
     <Build Include="dbo\Tables\Userdetail.sql" />
     <Build Include="dbo\Tables\Usernotice.sql" />
     <Build Include="dbo\Tables\Userrole.sql" />
-    <Build Include="dbo\Tables\Admin.sql" />
-    <Build Include="dbo\Tables\Blog.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="readme.txt" />
   </ItemGroup>
 </Project>

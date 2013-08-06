@@ -46,46 +46,100 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetterlifeEntities.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BetterlifeEntities.Context.tt</DependentUpon>
+    <Compile Include="Admin.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="BetterlifeEntities.cs">
+    <Compile Include="BetterlifeNetEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BetterlifeEntities.tt</DependentUpon>
+      <DependentUpon>BetterlifeNetEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="BetterlifeEntities.Designer.cs">
+    <Compile Include="BetterlifeNetEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BetterlifeEntities.edmx</DependentUpon>
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BetterlifeNetEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BetterlifeNetEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Blog.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comment.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Department.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Functions.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Logsystem.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Loguser.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Msg.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Notice.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Region.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Rolefunctions.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Userdetail.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Usernotice.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Userrole.cs">
+      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <EntityDeploy Include="BetterlifeEntities.edmx">
+    <EntityDeploy Include="BetterlifeNetEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>BetterlifeEntities.Designer.cs</LastGenOutput>
+      <LastGenOutput>BetterlifeNetEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="BetterlifeEntities.Context.tt">
+    <None Include="BetterlifeNetEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BetterlifeEntities.edmx</DependentUpon>
-      <LastGenOutput>BetterlifeEntities.Context.cs</LastGenOutput>
+      <DependentUpon>BetterlifeNetEntities.edmx</DependentUpon>
+      <LastGenOutput>BetterlifeNetEntities.Context.cs</LastGenOutput>
     </None>
-    <None Include="BetterlifeEntities.edmx.diagram">
-      <DependentUpon>BetterlifeEntities.edmx</DependentUpon>
+    <None Include="BetterlifeNetEntities.edmx.diagram">
+      <DependentUpon>BetterlifeNetEntities.edmx</DependentUpon>
     </None>
-    <None Include="BetterlifeEntities.tt">
+    <None Include="BetterlifeNetEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BetterlifeEntities.edmx</DependentUpon>
-      <LastGenOutput>BetterlifeEntities.cs</LastGenOutput>
+      <DependentUpon>BetterlifeNetEntities.edmx</DependentUpon>
+      <LastGenOutput>BetterlifeNetEntities.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
