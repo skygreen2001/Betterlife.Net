@@ -1,0 +1,1137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BetterlifeNetModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="BetterlifeNetModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="BetterlifeNetModel.Store.Admin" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Blog" EntityType="BetterlifeNetModel.Store.Blog" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Comment" EntityType="BetterlifeNetModel.Store.Comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Department" EntityType="BetterlifeNetModel.Store.Department" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Functions" EntityType="BetterlifeNetModel.Store.Functions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Logsystem" EntityType="BetterlifeNetModel.Store.Logsystem" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Loguser" EntityType="BetterlifeNetModel.Store.Loguser" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Msg" EntityType="BetterlifeNetModel.Store.Msg" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Notice" EntityType="BetterlifeNetModel.Store.Notice" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Region" EntityType="BetterlifeNetModel.Store.Region" store:Type="Tables" store:Schema="dbo" store:Name="Region">
+            <DefiningQuery>SELECT 
+      [Region].[ID] AS [ID], 
+      [Region].[Parent_ID] AS [Parent_ID], 
+      [Region].[Region_Name] AS [Region_Name], 
+      [Region].[Region_Type] AS [Region_Type], 
+      [Region].[CommitTime] AS [CommitTime], 
+      [Region].[UpdateTime] AS [UpdateTime]
+      FROM [dbo].[Region] AS [Region]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Role" EntityType="BetterlifeNetModel.Store.Role" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Rolefunctions" EntityType="BetterlifeNetModel.Store.Rolefunctions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="BetterlifeNetModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="BetterlifeNetModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Userdetail" EntityType="BetterlifeNetModel.Store.Userdetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Usernotice" EntityType="BetterlifeNetModel.Store.Usernotice" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Userrole" EntityType="BetterlifeNetModel.Store.Userrole" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Blog_User" Association="BetterlifeNetModel.Store.FK_Blog_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Blog" EntitySet="Blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Blog" Association="BetterlifeNetModel.Store.FK_Comment_Blog">
+            <End Role="Blog" EntitySet="Blog" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="BetterlifeNetModel.Store.FK_Comment_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loguser_User" Association="BetterlifeNetModel.Store.FK_Loguser_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Loguser" EntitySet="Loguser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Msg_Receiver" Association="BetterlifeNetModel.Store.FK_Msg_Receiver">
+            <End Role="User" EntitySet="User" />
+            <End Role="Msg" EntitySet="Msg" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Msg_Sender" Association="BetterlifeNetModel.Store.FK_Msg_Sender">
+            <End Role="User" EntitySet="User" />
+            <End Role="Msg" EntitySet="Msg" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rolefunctions_Functions" Association="BetterlifeNetModel.Store.FK_Rolefunctions_Functions">
+            <End Role="Functions" EntitySet="Functions" />
+            <End Role="Rolefunctions" EntitySet="Rolefunctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rolefunctions_Role" Association="BetterlifeNetModel.Store.FK_Rolefunctions_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Rolefunctions" EntitySet="Rolefunctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Department" Association="BetterlifeNetModel.Store.FK_User_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Userdetail_User" Association="BetterlifeNetModel.Store.FK_Userdetail_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Userdetail" EntitySet="Userdetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usernotice_Notice" Association="BetterlifeNetModel.Store.FK_Usernotice_Notice">
+            <End Role="Notice" EntitySet="Notice" />
+            <End Role="Usernotice" EntitySet="Usernotice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usernotice_User" Association="BetterlifeNetModel.Store.FK_Usernotice_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Usernotice" EntitySet="Usernotice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Userrole_Role" Association="BetterlifeNetModel.Store.FK_Userrole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Userrole" EntitySet="Userrole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Userrole_User" Association="BetterlifeNetModel.Store.FK_Userrole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Userrole" EntitySet="Userrole" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="200" />
+          <Property Name="Realname" Type="nvarchar" MaxLength="200" />
+          <Property Name="Password" Type="nvarchar" MaxLength="45" />
+          <Property Name="Roletype" Type="smallint" />
+          <Property Name="Seescope" Type="smallint" />
+          <Property Name="LoginTimes" Type="int" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Blog_Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Blog_Content" Type="nvarchar" MaxLength="500" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Comment" Type="text" />
+          <Property Name="Blog_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Department_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Manager" Type="nvarchar" MaxLength="100" />
+          <Property Name="Budget" Type="int" />
+          <Property Name="Actualexpenses" Type="int" />
+          <Property Name="Estsalary" Type="int" />
+          <Property Name="Actualsalary" Type="int" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Functions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Logsystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Logtime" Type="datetime" />
+          <Property Name="Ident" Type="char" MaxLength="1" />
+          <Property Name="Priority" Type="smallint" />
+          <Property Name="Message" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Loguser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Usertype" Type="smallint" />
+          <Property Name="Log_Content" Type="nvarchar" MaxLength="200" />
+          <Property Name="Committime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Msg">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Sender_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Receiver_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Sendername" Type="nvarchar" MaxLength="200" />
+          <Property Name="Receivername" Type="nvarchar" MaxLength="200" />
+          <Property Name="Content" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Notice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Noticetype" Type="nvarchar" MaxLength="200" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="Notice_Content" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'BetterlifeNet.dbo.Region' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Region_Name" />
+            <PropertyRef Name="Region_Type" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Parent_ID" Type="uniqueidentifier" />
+          <Property Name="Region_Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Region_Type" Type="smallint" Nullable="false" />
+          <Property Name="CommitTime" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Role_Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Rolefunctions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Role_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Functions_ID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Department_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="200" />
+          <Property Name="Password" Type="nvarchar" MaxLength="200" />
+          <Property Name="Email" Type="nvarchar" MaxLength="450" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Userdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="Cellphone" Type="nvarchar" MaxLength="500" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Usernotice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Notice_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Committime" Type="datetime" />
+          <Property Name="Updatetime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Userrole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Role_ID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Blog_User">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Blog" Type="BetterlifeNetModel.Store.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Blog">
+          <End Role="Blog" Type="BetterlifeNetModel.Store.Blog" Multiplicity="1" />
+          <End Role="Comment" Type="BetterlifeNetModel.Store.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Blog_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Comment" Type="BetterlifeNetModel.Store.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loguser_User">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Loguser" Type="BetterlifeNetModel.Store.Loguser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Loguser">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Msg_Receiver">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Msg" Type="BetterlifeNetModel.Store.Msg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Msg">
+              <PropertyRef Name="Receiver_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Msg_Sender">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Msg" Type="BetterlifeNetModel.Store.Msg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Msg">
+              <PropertyRef Name="Sender_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rolefunctions_Functions">
+          <End Role="Functions" Type="BetterlifeNetModel.Store.Functions" Multiplicity="1" />
+          <End Role="Rolefunctions" Type="BetterlifeNetModel.Store.Rolefunctions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Functions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Rolefunctions">
+              <PropertyRef Name="Functions_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rolefunctions_Role">
+          <End Role="Role" Type="BetterlifeNetModel.Store.Role" Multiplicity="1" />
+          <End Role="Rolefunctions" Type="BetterlifeNetModel.Store.Rolefunctions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Rolefunctions">
+              <PropertyRef Name="Role_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Department">
+          <End Role="Department" Type="BetterlifeNetModel.Store.Department" Multiplicity="1" />
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Department_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Userdetail_User">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Userdetail" Type="BetterlifeNetModel.Store.Userdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Userdetail">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usernotice_Notice">
+          <End Role="Notice" Type="BetterlifeNetModel.Store.Notice" Multiplicity="1" />
+          <End Role="Usernotice" Type="BetterlifeNetModel.Store.Usernotice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Notice">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Usernotice">
+              <PropertyRef Name="Notice_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usernotice_User">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Usernotice" Type="BetterlifeNetModel.Store.Usernotice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Usernotice">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Userrole_Role">
+          <End Role="Role" Type="BetterlifeNetModel.Store.Role" Multiplicity="1" />
+          <End Role="Userrole" Type="BetterlifeNetModel.Store.Userrole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Userrole">
+              <PropertyRef Name="Role_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Userrole_User">
+          <End Role="User" Type="BetterlifeNetModel.Store.User" Multiplicity="1" />
+          <End Role="Userrole" Type="BetterlifeNetModel.Store.Userrole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Userrole">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BetterlifeNetModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BetterlifeNetEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="BetterlifeNetModel.Admin" />
+          <EntitySet Name="Blogs" EntityType="BetterlifeNetModel.Blog" />
+          <EntitySet Name="Comments" EntityType="BetterlifeNetModel.Comment" />
+          <EntitySet Name="Departments" EntityType="BetterlifeNetModel.Department" />
+          <EntitySet Name="Functions" EntityType="BetterlifeNetModel.Function" />
+          <EntitySet Name="Logsystems" EntityType="BetterlifeNetModel.Logsystem" />
+          <EntitySet Name="Logusers" EntityType="BetterlifeNetModel.Loguser" />
+          <EntitySet Name="Msgs" EntityType="BetterlifeNetModel.Msg" />
+          <EntitySet Name="Notices" EntityType="BetterlifeNetModel.Notice" />
+          <EntitySet Name="Regions" EntityType="BetterlifeNetModel.Region" />
+          <EntitySet Name="Roles" EntityType="BetterlifeNetModel.Role" />
+          <EntitySet Name="Rolefunctions" EntityType="BetterlifeNetModel.Rolefunction" />
+          <EntitySet Name="sysdiagrams" EntityType="BetterlifeNetModel.sysdiagram" />
+          <EntitySet Name="Users" EntityType="BetterlifeNetModel.User" />
+          <EntitySet Name="Userdetails" EntityType="BetterlifeNetModel.Userdetail" />
+          <EntitySet Name="Usernotices" EntityType="BetterlifeNetModel.Usernotice" />
+          <EntitySet Name="Userroles" EntityType="BetterlifeNetModel.Userrole" />
+          <AssociationSet Name="FK_Blog_User" Association="BetterlifeNetModel.FK_Blog_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Blog" EntitySet="Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Blog" Association="BetterlifeNetModel.FK_Comment_Blog">
+            <End Role="Blog" EntitySet="Blogs" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="BetterlifeNetModel.FK_Comment_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Department" Association="BetterlifeNetModel.FK_User_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rolefunctions_Functions" Association="BetterlifeNetModel.FK_Rolefunctions_Functions">
+            <End Role="Functions" EntitySet="Functions" />
+            <End Role="Rolefunctions" EntitySet="Rolefunctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loguser_User" Association="BetterlifeNetModel.FK_Loguser_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Loguser" EntitySet="Logusers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Msg_Receiver" Association="BetterlifeNetModel.FK_Msg_Receiver">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Msg" EntitySet="Msgs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Msg_Sender" Association="BetterlifeNetModel.FK_Msg_Sender">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Msg" EntitySet="Msgs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usernotice_Notice" Association="BetterlifeNetModel.FK_Usernotice_Notice">
+            <End Role="Notice" EntitySet="Notices" />
+            <End Role="Usernotice" EntitySet="Usernotices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rolefunctions_Role" Association="BetterlifeNetModel.FK_Rolefunctions_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Rolefunctions" EntitySet="Rolefunctions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Userrole_Role" Association="BetterlifeNetModel.FK_Userrole_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Userrole" EntitySet="Userroles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Userdetail_User" Association="BetterlifeNetModel.FK_Userdetail_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Userdetail" EntitySet="Userdetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usernotice_User" Association="BetterlifeNetModel.FK_Usernotice_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Usernotice" EntitySet="Usernotices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Userrole_User" Association="BetterlifeNetModel.FK_Userrole_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Userrole" EntitySet="Userroles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Realname" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" MaxLength="45" Unicode="true" FixedLength="false" />
+          <Property Name="Roletype" Type="Int16" />
+          <Property Name="Seescope" Type="Int16" />
+          <Property Name="LoginTimes" Type="Int32" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="User_ID" Type="Guid" Nullable="false" />
+          <Property Name="Blog_Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Blog_Content" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Blog_User" FromRole="Blog" ToRole="User" />
+          <NavigationProperty Name="Comments" Relationship="BetterlifeNetModel.FK_Comment_Blog" FromRole="Blog" ToRole="Comment" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="User_ID" Type="Guid" Nullable="false" />
+          <Property Name="Comment1" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Blog_ID" Type="Guid" Nullable="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Blog" Relationship="BetterlifeNetModel.FK_Comment_Blog" FromRole="Comment" ToRole="Blog" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Comment_User" FromRole="Comment" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Department_Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Manager" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Budget" Type="Int32" />
+          <Property Name="Actualexpenses" Type="Int32" />
+          <Property Name="Estsalary" Type="Int32" />
+          <Property Name="Actualsalary" Type="Int32" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="BetterlifeNetModel.FK_User_Department" FromRole="Department" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Function">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Url" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Rolefunctions" Relationship="BetterlifeNetModel.FK_Rolefunctions_Functions" FromRole="Functions" ToRole="Rolefunctions" />
+        </EntityType>
+        <EntityType Name="Logsystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Logtime" Type="DateTime" Precision="3" />
+          <Property Name="Ident" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="Priority" Type="Int16" />
+          <Property Name="Message" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Loguser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="User_ID" Type="Guid" Nullable="false" />
+          <Property Name="Usertype" Type="Int16" />
+          <Property Name="Log_Content" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="Loguser" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Msg">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Sender_ID" Type="Guid" Nullable="false" />
+          <Property Name="Receiver_ID" Type="Guid" Nullable="false" />
+          <Property Name="Sendername" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Receivername" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Content" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Msg_Receiver" FromRole="Msg" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="BetterlifeNetModel.FK_Msg_Sender" FromRole="Msg" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Notice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Noticetype" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Notice_Content" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Usernotices" Relationship="BetterlifeNetModel.FK_Usernotice_Notice" FromRole="Notice" ToRole="Usernotice" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Region_Name" />
+            <PropertyRef Name="Region_Type" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Parent_ID" Type="Guid" />
+          <Property Name="Region_Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Region_Type" Type="Int16" Nullable="false" />
+          <Property Name="CommitTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Role_Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Rolefunctions" Relationship="BetterlifeNetModel.FK_Rolefunctions_Role" FromRole="Role" ToRole="Rolefunctions" />
+          <NavigationProperty Name="Userroles" Relationship="BetterlifeNetModel.FK_Userrole_Role" FromRole="Role" ToRole="Userrole" />
+        </EntityType>
+        <EntityType Name="Rolefunction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Role_ID" Type="Guid" Nullable="false" />
+          <Property Name="Functions_ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Function" Relationship="BetterlifeNetModel.FK_Rolefunctions_Functions" FromRole="Rolefunctions" ToRole="Functions" />
+          <NavigationProperty Name="Role" Relationship="BetterlifeNetModel.FK_Rolefunctions_Role" FromRole="Rolefunctions" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Department_ID" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="450" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Blogs" Relationship="BetterlifeNetModel.FK_Blog_User" FromRole="User" ToRole="Blog" />
+          <NavigationProperty Name="Comments" Relationship="BetterlifeNetModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Department" Relationship="BetterlifeNetModel.FK_User_Department" FromRole="User" ToRole="Department" />
+          <NavigationProperty Name="Logusers" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="User" ToRole="Loguser" />
+          <NavigationProperty Name="Msgs" Relationship="BetterlifeNetModel.FK_Msg_Receiver" FromRole="User" ToRole="Msg" />
+          <NavigationProperty Name="Msgs1" Relationship="BetterlifeNetModel.FK_Msg_Sender" FromRole="User" ToRole="Msg" />
+          <NavigationProperty Name="Userdetails" Relationship="BetterlifeNetModel.FK_Userdetail_User" FromRole="User" ToRole="Userdetail" />
+          <NavigationProperty Name="Usernotices" Relationship="BetterlifeNetModel.FK_Usernotice_User" FromRole="User" ToRole="Usernotice" />
+          <NavigationProperty Name="Userroles" Relationship="BetterlifeNetModel.FK_Userrole_User" FromRole="User" ToRole="Userrole" />
+        </EntityType>
+        <EntityType Name="Userdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="User_ID" Type="Guid" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Cellphone" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Userdetail_User" FromRole="Userdetail" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Usernotice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="User_ID" Type="Guid" Nullable="false" />
+          <Property Name="Notice_ID" Type="Guid" Nullable="false" />
+          <Property Name="Committime" Type="DateTime" Precision="3" />
+          <Property Name="Updatetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Notice" Relationship="BetterlifeNetModel.FK_Usernotice_Notice" FromRole="Usernotice" ToRole="Notice" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Usernotice_User" FromRole="Usernotice" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Userrole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="User_ID" Type="Guid" Nullable="false" />
+          <Property Name="Role_ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="BetterlifeNetModel.FK_Userrole_Role" FromRole="Userrole" ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Userrole_User" FromRole="Userrole" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Blog_User">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Blog" Type="BetterlifeNetModel.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Blog">
+          <End Role="Blog" Type="BetterlifeNetModel.Blog" Multiplicity="1" />
+          <End Role="Comment" Type="BetterlifeNetModel.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Blog_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Comment" Type="BetterlifeNetModel.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Department">
+          <End Role="Department" Type="BetterlifeNetModel.Department" Multiplicity="1" />
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Department_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rolefunctions_Functions">
+          <End Role="Functions" Type="BetterlifeNetModel.Function" Multiplicity="1" />
+          <End Role="Rolefunctions" Type="BetterlifeNetModel.Rolefunction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Functions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Rolefunctions">
+              <PropertyRef Name="Functions_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loguser_User">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Loguser" Type="BetterlifeNetModel.Loguser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Loguser">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Msg_Receiver">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Msg" Type="BetterlifeNetModel.Msg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Msg">
+              <PropertyRef Name="Receiver_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Msg_Sender">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Msg" Type="BetterlifeNetModel.Msg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Msg">
+              <PropertyRef Name="Sender_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usernotice_Notice">
+          <End Role="Notice" Type="BetterlifeNetModel.Notice" Multiplicity="1" />
+          <End Role="Usernotice" Type="BetterlifeNetModel.Usernotice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Notice">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Usernotice">
+              <PropertyRef Name="Notice_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rolefunctions_Role">
+          <End Role="Role" Type="BetterlifeNetModel.Role" Multiplicity="1" />
+          <End Role="Rolefunctions" Type="BetterlifeNetModel.Rolefunction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Rolefunctions">
+              <PropertyRef Name="Role_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Userrole_Role">
+          <End Role="Role" Type="BetterlifeNetModel.Role" Multiplicity="1" />
+          <End Role="Userrole" Type="BetterlifeNetModel.Userrole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Userrole">
+              <PropertyRef Name="Role_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Userdetail_User">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Userdetail" Type="BetterlifeNetModel.Userdetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Userdetail">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usernotice_User">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Usernotice" Type="BetterlifeNetModel.Usernotice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Usernotice">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Userrole_User">
+          <End Role="User" Type="BetterlifeNetModel.User" Multiplicity="1" />
+          <End Role="Userrole" Type="BetterlifeNetModel.Userrole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Userrole">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BetterlifeNetModelStoreContainer" CdmEntityContainer="BetterlifeNetEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Realname" ColumnName="Realname" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Roletype" ColumnName="Roletype" />
+                <ScalarProperty Name="Seescope" ColumnName="Seescope" />
+                <ScalarProperty Name="LoginTimes" ColumnName="LoginTimes" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Blogs">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Blog">
+              <MappingFragment StoreEntitySet="Blog">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Blog_Name" ColumnName="Blog_Name" />
+                <ScalarProperty Name="Blog_Content" ColumnName="Blog_Content" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Comment1" ColumnName="Comment" />
+                <ScalarProperty Name="Blog_ID" ColumnName="Blog_ID" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Department_Name" ColumnName="Department_Name" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="Actualexpenses" ColumnName="Actualexpenses" />
+                <ScalarProperty Name="Estsalary" ColumnName="Estsalary" />
+                <ScalarProperty Name="Actualsalary" ColumnName="Actualsalary" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Functions">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Function">
+              <MappingFragment StoreEntitySet="Functions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logsystems">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Logsystem">
+              <MappingFragment StoreEntitySet="Logsystem">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Logtime" ColumnName="Logtime" />
+                <ScalarProperty Name="Ident" ColumnName="Ident" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logusers">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Loguser">
+              <MappingFragment StoreEntitySet="Loguser">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Usertype" ColumnName="Usertype" />
+                <ScalarProperty Name="Log_Content" ColumnName="Log_Content" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Msgs">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Msg">
+              <MappingFragment StoreEntitySet="Msg">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Sender_ID" ColumnName="Sender_ID" />
+                <ScalarProperty Name="Receiver_ID" ColumnName="Receiver_ID" />
+                <ScalarProperty Name="Sendername" ColumnName="Sendername" />
+                <ScalarProperty Name="Receivername" ColumnName="Receivername" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notices">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Notice">
+              <MappingFragment StoreEntitySet="Notice">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Noticetype" ColumnName="Noticetype" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Notice_Content" ColumnName="Notice_Content" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Region">
+              <MappingFragment StoreEntitySet="Region">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Parent_ID" ColumnName="Parent_ID" />
+                <ScalarProperty Name="Region_Name" ColumnName="Region_Name" />
+                <ScalarProperty Name="Region_Type" ColumnName="Region_Type" />
+                <ScalarProperty Name="CommitTime" ColumnName="CommitTime" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Role_Name" ColumnName="Role_Name" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rolefunctions">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Rolefunction">
+              <MappingFragment StoreEntitySet="Rolefunctions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+                <ScalarProperty Name="Functions_ID" ColumnName="Functions_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Department_ID" ColumnName="Department_ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Userdetails">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Userdetail">
+              <MappingFragment StoreEntitySet="Userdetail">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usernotices">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Usernotice">
+              <MappingFragment StoreEntitySet="Usernotice">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Notice_ID" ColumnName="Notice_ID" />
+                <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Userroles">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Userrole">
+              <MappingFragment StoreEntitySet="Userrole">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
