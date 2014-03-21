@@ -1,4 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿#define IS_USE_MYSQL 
+#undef IS_USE_MYSQL
+#if IS_USE_MYSQL
+using MySql.Data.MySqlClient;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,7 +31,7 @@ namespace Tools.Util.Db
                                         "persist security info=True;"+
                                         "database={0};";
         public static string Database_Name = "BetterlifeNet";
-        #region SQL定义
+#region SQL定义
         /// <summary>
         /// 查看所有数据库
         /// </summary>
@@ -46,19 +50,22 @@ namespace Tools.Util.Db
         private static string Sql_Table_Columns = "SHOW FULL FIELDS IN {0}";
 
         #endregion
+#if IS_USE_MYSQL
         /// <summary>
         /// 数据库连接
         /// </summary>
         private static MySqlConnection myConnection;
-        
-        #region 基本操作
+#endif        
+#region 基本操作
         /// <summary>
         /// 连接数据库
         /// </summary>
         private static void Connect()
         {
             string connString = string.Format(ConnStr, Database_Name);
+#if IS_USE_MYSQL
             myConnection = new MySqlConnection(connString);
+#endif
         }
 
         /// <summary>
@@ -69,6 +76,7 @@ namespace Tools.Util.Db
         public static DataTable SqlExecute(string sql)
         {
             DataTable result = new DataTable();
+#if IS_USE_MYSQL
             if (myConnection == null)Connect();
             try
             {
@@ -92,6 +100,7 @@ namespace Tools.Util.Db
             {
                 Close();
             }
+#endif
             return result;
         }
         
@@ -100,14 +109,16 @@ namespace Tools.Util.Db
         /// </summary>
         private static void Close()
         {
+#if IS_USE_MYSQL
             if (myConnection.State == ConnectionState.Open)
             {
                 myConnection.Close();
             }
+#endif
         }
         #endregion
 
-        #region 查询数据库表信息
+#region 查询数据库表信息
 
         /// <summary>
         /// 设置指定数据库
@@ -204,4 +215,3 @@ namespace Tools.Util.Db
         #endregion
     }
 }
-

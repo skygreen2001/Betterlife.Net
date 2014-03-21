@@ -12,8 +12,6 @@ namespace Test
         private const string PersonOriginal = "John Doe";
         private const string PersonNameUpdated = "Updated Name";
 
-        private const string PersonNameUpdated = "Updated Name";
-
         private static BetterlifeNetEntities db = new BetterlifeNetEntities();
 
         /// <summary>
