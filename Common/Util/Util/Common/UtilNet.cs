@@ -8,7 +8,7 @@ namespace Util.Common
     /// <summary>
     /// 网络工具类
     /// </summary>
-    class UtilNet
+    public static class UtilNet
     {
         /// <summary>
         /// 检测URL是否存在
