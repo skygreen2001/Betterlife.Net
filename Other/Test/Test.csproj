@@ -73,6 +73,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Util\Util.csproj">
+      <Project>{a52e0ee4-d761-4a0b-9ae7-7c4751aaa416}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Database\Database.csproj">
       <Project>{e7ca231a-c788-4dc1-b3af-ec4fbb9cc4d6}</Project>
       <Name>Database</Name>

@@ -48,6 +48,7 @@
     <Compile Include="Util\Common\UtilRegex.cs" />
     <Compile Include="Util\Common\UtilRegistry.cs" />
     <Compile Include="Util\Common\UtilString.cs" />
+    <Compile Include="Util\Common\UtilObjectDump.cs" />
     <Compile Include="Util\Reflect\UtilBeans.cs" />
     <Compile Include="Util\Reflect\UtilReflection.cs" />
     <Compile Include="Util\Xml\NamespaceIgnorantXmlTextReader.cs" />

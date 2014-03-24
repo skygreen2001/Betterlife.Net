@@ -2,15 +2,16 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Database;
 using System.Linq;
+using Util.Util.Common;
 
 namespace Test
 {
     [TestClass]
     public class BetterlifeNetUnitTest
     {
-        private const string PersonNew = "New Person";
         private const string PersonOriginal = "John Doe";
         private const string PersonNameUpdated = "Updated Name";
+        private const string PersonID = "EF4C7F17-86A1-475E-8A6D-05A7E4B5881C";
 
         private static BetterlifeNetEntities db = new BetterlifeNetEntities();
 
@@ -20,8 +21,6 @@ namespace Test
         [TestInitialize]
         public void init()
         {
-
-
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace Test
         public void saveAdmin()
         {
             Admin admin = new Admin();
-            admin.Username = PersonNew;
+            admin.Username = PersonOriginal;
             admin.Password = "4008001666";
             admin.ID = Guid.NewGuid();
             db.Admins.Add(admin);
@@ -39,11 +38,11 @@ namespace Test
 
             // Test 1
             var personCount = (db.Admins.Select(p => p)).Count();
-            Assert.AreEqual(22, personCount);
+            Assert.AreEqual(3, personCount);
 
             //Test 2
             var newPersonFound = db.Admins.FirstOrDefault(
-                person => person.Username == PersonNew);
+                person => person.Username == PersonOriginal);
             Assert.IsNotNull(newPersonFound);
         }
 
@@ -91,9 +90,12 @@ namespace Test
         /// <summary>
         /// 根据编号获取管理员
         /// </summary>
+        [TestMethod]
         public void get_by_id()
         {
-
+            Admin admin=db.Admins.Single(e => e.ID.Equals (new Guid(PersonID)));
+            UtilObjectDump.WriteLine(admin);
+            Assert.AreEqual("admin",admin.Username);
         }
 
         /// <summary>
@@ -103,6 +105,7 @@ namespace Test
         public void countAdmin()
         {
             var count = (db.Admins.Select(p => p)).Count();
+            Console.WriteLine(count);
             Assert.IsTrue(count > 0);
         }
 
