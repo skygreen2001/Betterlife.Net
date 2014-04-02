@@ -38,7 +38,7 @@ namespace Test
 
             // Test 1
             var personCount = (db.Admins.Select(p => p)).Count();
-            Assert.AreEqual(3, personCount);
+            Assert.AreEqual(31, personCount);
 
             //Test 2
             var newPersonFound = db.Admins.FirstOrDefault(

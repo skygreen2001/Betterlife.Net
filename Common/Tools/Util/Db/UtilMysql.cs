@@ -1,4 +1,6 @@
-﻿#define IS_USE_MYSQL 
+﻿//使用Mysql调用数据库
+#define IS_USE_MYSQL 
+//不使用Mysql调用数据库
 #undef IS_USE_MYSQL
 #if IS_USE_MYSQL
 using MySql.Data.MySqlClient;
@@ -25,7 +27,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 连接数据库字符串
         /// </summary>
-        private static string ConnStr = "server=localhost;"+
+        private static string ConnStr = "server=127.0.0.1;"+
                                         "user id=root;"+
                                         "password=;"+
                                         "persist security info=True;"+
