@@ -33,7 +33,7 @@ namespace Tools.Util.Db
                                         "password=;"+
                                         "persist security info=True;"+
                                         "database={0};";
-        public static string Database_Name = "BetterlifeNet";
+        public static string Database_Name = "aaa";
 #region SQL定义
         /// <summary>
         /// 查看所有数据库
