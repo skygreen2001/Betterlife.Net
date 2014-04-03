@@ -1,7 +1,7 @@
 ﻿//使用Mysql调用数据库
 #define IS_USE_MYSQL 
 //不使用Mysql调用数据库
-#undef IS_USE_MYSQL
+//#undef IS_USE_MYSQL
 #if IS_USE_MYSQL
 using MySql.Data.MySqlClient;
 #endif
@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Tools.Util.Db
 {
@@ -95,6 +96,11 @@ namespace Tools.Util.Db
             }
             catch (Exception e)
             {
+                String errorInfo = e.ToString();
+                if (errorInfo.Contains("Unknown database"))
+                {
+                    MessageBox.Show("默认数据库不存在，请先在Mysql数据库中安装文件夹[Init_Db\\Mysql\\BetterlifeNet.sql]下的数据库");
+                }
                 //throw (e);
                 Console.WriteLine(e.ToString());
             }
