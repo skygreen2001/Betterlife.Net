@@ -17,9 +17,10 @@ namespace Tools.Util.Db
         /// <summary>
         /// 连接数据库字符串
         /// </summary>
-        private static string ConnStr = "server=(local);" + 
+        private static string ConnStr = 
+                                        "server=(local);" + 
                                         "user id=sa;" +
-                                        "password=123.com;" +
+                                        "pwd=123.com;" +
                                         "database={0}; " +
                                         "Trusted_Connection=yes;" +
                                         "connection timeout=30";//默认超时时间是30秒
