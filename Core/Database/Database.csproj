@@ -78,7 +78,7 @@
     <Compile Include="Department.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Function.cs">
+    <Compile Include="Functions.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Logsystem.cs">
@@ -100,10 +100,7 @@
     <Compile Include="Role.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Rolefunction.cs">
-      <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
+    <Compile Include="Rolefunctions.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
@@ -129,7 +126,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="BetterlifeNetEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BetterlifeNetEntities.edmx</DependentUpon>

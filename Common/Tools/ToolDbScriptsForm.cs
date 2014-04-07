@@ -27,6 +27,9 @@ namespace Tools
             cbDatabases.SelectedIndex = 0;
             btnColumns.Enabled = false;
 
+            btnMigrantScript.Enabled = false;
+            btnDropAllTables.Enabled = true;
+
         }
 
         /// <summary>
@@ -231,16 +234,26 @@ namespace Tools
                 if (cbDbType.SelectedIndex == (int)DbType.SqlServer)
                 {
                     UtilSqlserver.SetDatabase(UtilSqlserver.Database_Name);
+                    btnMigrantScript.Enabled = false;
+                    btnDropAllTables.Enabled = true;
                 }
                 else
                 {
                     UtilMysql.SetDatabase(UtilMysql.Database_Name);
+                    btnMigrantScript.Enabled = true;
+                    btnDropAllTables.Enabled = false;
                 }
+                cbDatabases.Text = "";
                 isDbTypeChanged = false;
                 listResult.Clear();
             }
         }
 
+        /// <summary>
+        /// 点击生成删除数据库所有表的脚本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDropAllTables_Click(object sender, EventArgs e)
         {
             this.btnDropAllTables.Enabled = false;

@@ -11,7 +11,7 @@ namespace Test
     {
         private const string PersonOriginal = "John Doe";
         private const string PersonNameUpdated = "Updated Name";
-        private const string PersonID = "EF4C7F17-86A1-475E-8A6D-05A7E4B5881C";
+        private const string PersonID = "2";
 
         private static BetterlifeNetEntities db = new BetterlifeNetEntities();
 
@@ -32,16 +32,16 @@ namespace Test
             Admin admin = new Admin();
             admin.Username = PersonOriginal;
             admin.Password = "4008001666";
-            admin.ID = Guid.NewGuid();
-            db.Admins.Add(admin);
+            //admin.ID = Guid.NewGuid();
+            db.Admin.Add(admin);
             db.SaveChanges();
 
             // Test 1
-            var personCount = (db.Admins.Select(p => p)).Count();
+            var personCount = (db.Admin.Select(p => p)).Count();
             Assert.AreEqual(31, personCount);
 
             //Test 2
-            var newPersonFound = db.Admins.FirstOrDefault(
+            var newPersonFound = db.Admin.FirstOrDefault(
                 person => person.Username == PersonOriginal);
             Assert.IsNotNull(newPersonFound);
         }
@@ -53,19 +53,19 @@ namespace Test
         public void updateAdmin()
         {
             // Setup test
-            var personToUpdate = db.Admins.FirstOrDefault(
+            var personToUpdate = db.Admin.FirstOrDefault(
                 person => person.Username == PersonOriginal);
 
             if (personToUpdate != null) personToUpdate.Username = PersonNameUpdated;
             db.SaveChanges();
 
             // Test
-            var updatedPerson = db.Admins.FirstOrDefault(
+            var updatedPerson = db.Admin.FirstOrDefault(
                 person => person.Username == PersonNameUpdated);
             Assert.IsNotNull(updatedPerson);
 
             // Tear down test
-            var personToRevert = db.Admins.FirstOrDefault(
+            var personToRevert = db.Admin.FirstOrDefault(
                 person => person.Username == PersonNameUpdated);
 
             if (personToRevert != null) personToRevert.Username = PersonOriginal;
@@ -78,11 +78,11 @@ namespace Test
         [TestMethod]
         public void deleteAdmin()
         {
-            var toDeletes = db.Admins.Where(admin => admin.Username == PersonOriginal);
+            var toDeletes = db.Admin.Where(admin => admin.Username == PersonOriginal);
             foreach (var toDelete in toDeletes)
             {
                 Console.WriteLine(toDelete.ID + toDelete.Username + ":" + toDelete.Updatetime);
-                db.Admins.Remove(toDelete);
+                db.Admin.Remove(toDelete);
             }
             db.SaveChanges();
         }
@@ -93,7 +93,7 @@ namespace Test
         [TestMethod]
         public void get_by_id()
         {
-            Admin admin=db.Admins.Single(e => e.ID.Equals (new Guid(PersonID)));
+            Admin admin=db.Admin.Single(e => e.ID.Equals (new Guid(PersonID)));
             UtilObjectDump.WriteLine(admin);
             Assert.AreEqual("admin",admin.Username);
         }
@@ -104,7 +104,7 @@ namespace Test
         [TestMethod]
         public void countAdmin()
         {
-            var count = (db.Admins.Select(p => p)).Count();
+            var count = (db.Admin.Select(p => p)).Count();
             Console.WriteLine(count);
             Assert.IsTrue(count > 0);
         }

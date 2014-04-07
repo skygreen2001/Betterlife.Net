@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -79,14 +80,15 @@ GO
 
                 result += string.Format(sql_refer_tempalte, fkname, ftablename);
             }
-
+            
+            ArrayList allTbNames = new ArrayList(tableInfos.Keys.Count());
             foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
             {
                 //获取表名
                 tablename = tableInfo["Name"];
                 tablename = UtilString.UcFirst(tablename);
                 columnInfos = UtilMysql.FieldInfoList(tablename);
-
+                allTbNames.Add(tablename);
                 string column_name;
 
                 //获取主键名称
@@ -99,7 +101,13 @@ GO
                         result += string.Format(sql_df_template, tablename,column_name);
                     }
                 }
-                result += string.Format(sql_template, tablename);
+                //result += string.Format(sql_template, tablename);
+            }
+            allTbNames.Sort();
+            allTbNames.Reverse();
+            foreach (var tbname in allTbNames)
+            {
+                result += string.Format(sql_template, tbname);
             }
             return result;
         }
@@ -187,9 +195,9 @@ GO
         private static string CreateDbDefine()
         {
             string result = "/****** 创建数据库所有表    Script Date:" + DateTime.Now + " ******/\r\n";
-            result += "USE " + UtilMysql.Database_Name + "\r\n";
+            result += "USE " + UtilString.UcFirst(UtilMysql.Database_Name) + "\r\n";
             string tablename, tableComment, columnDefine;
-            string sqlTemplate, column_name, column_type, column_null,column_default;
+            string sqlTemplate, column_name, column_type, column_null,column_default,resetSeed;
             string defaultValue;
             Dictionary<string, Dictionary<string, string>> columnInfos;
             foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
@@ -201,6 +209,7 @@ GO
                 columnInfos = UtilMysql.FieldInfoList(tablename);
                 columnDefine = "";
                 defaultValue = "";
+                resetSeed = "";
                 //获取主键名称
                 foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
                 {
@@ -208,8 +217,9 @@ GO
                     column_name = UtilString.UcFirst(column_name);
                     if (column_name.ToUpper().Equals("ID"))
                     {
-                        columnDefine += "[ID] [uniqueidentifier] NOT NULL,";
-                        defaultValue += string.Format("ALTER TABLE [dbo].[{0}] ADD  CONSTRAINT [DF_{0}_ID]  DEFAULT (newid()) FOR [ID]\r\nGO\r\n",tablename);
+                        columnDefine += "[ID][numeric](10, 0) IDENTITY(1,1) NOT NULL,";
+                        resetSeed += "DBCC CHECKIDENT ('" + tablename + "', RESEED, 1)\r\n";
+                        //defaultValue += string.Format("ALTER TABLE [dbo].[{0}] ADD  CONSTRAINT [DF_{0}_ID]  DEFAULT (newid()) FOR [ID]\r\nGO\r\n",tablename);
                     }
                     else
                     {
@@ -221,12 +231,19 @@ GO
                         column_default = columnInfo["Default"];
                         if (column_name.ToUpper().Contains("_ID"))
                         {
-                            column_type = "[uniqueidentifier]";
+                            column_type = "[numeric](10, 0)";
                             column_null = "NOT NULL";
                         }
                         if (UtilString.Contains(column_name.ToUpper(),"TIME","DATE"))
                         {
-                            column_type = "[datetime]";
+                            if (UtilString.Contains(column_name.ToUpper(), "TIMES"))
+                            {
+                                column_type = "[int]";
+                            }
+                            else
+                            {
+                                column_type = "[datetime]";
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(column_default) && (!column_name.ToUpper().Equals("UPDATETIME")))
@@ -267,6 +284,8 @@ GO
 
                 //生成列默认值
                 result += defaultValue;
+                //自增长重置为0
+                result += resetSeed;
             }
             return result;
         }

@@ -12,16 +12,13 @@ namespace Database
     using System;
     using System.Collections.Generic;
     
-    public partial class Comment
+    public partial class Rolefunctions
     {
         public decimal ID { get; set; }
-        public decimal User_ID { get; set; }
-        public string Comment1 { get; set; }
-        public decimal Blog_ID { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public decimal Role_ID { get; set; }
+        public decimal Functions_ID { get; set; }
     
-        public virtual Blog Blog { get; set; }
-        public virtual User User { get; set; }
+        public virtual Functions Functions { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

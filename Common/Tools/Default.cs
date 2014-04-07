@@ -16,9 +16,9 @@ namespace Tools
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             mainWindow=new ToolsList();
-            //Application.Run(mainWindow);
+            Application.Run(mainWindow);
             //Application.Run(new ToolModifyFileForm());
-            Application.Run(new ToolDbScriptsForm());
+            //Application.Run(new ToolDbScriptsForm());
         }
     }
 }
