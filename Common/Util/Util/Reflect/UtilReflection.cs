@@ -293,26 +293,6 @@ namespace Util.Reflection
             return IsType(type.BaseType, typeName);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //// <summary>
         /// 反射打印出对象有的方法以及调用参数
         /// </summary>
@@ -410,6 +390,18 @@ namespace Util.Reflection
             }
             return methodInfo.Invoke(target, parameters);
         }
-    
+
+        public static String print_r(Object obj)
+        {
+            String result = "";
+            result = obj.GetType().FullName+":\r\n";
+            PropertyInfo[] ps = obj.GetType().GetProperties();
+            foreach (PropertyInfo property in ps)
+            {
+                result+=property.Name + ":" + property.GetValue(obj)+"\r\n";
+            }
+            Console.WriteLine(result);
+            return result;
+        }
     }
 }

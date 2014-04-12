@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Database;
 using System.Linq;
 using Util.Util.Common;
+using System.Reflection;
+using Util.Reflection;
 
 namespace Test
 {
@@ -11,7 +13,7 @@ namespace Test
     {
         private const string PersonOriginal = "John Doe";
         private const string PersonNameUpdated = "Updated Name";
-        private const string PersonID = "2";
+        private const int PersonID = 1;
 
         private static BetterlifeNetEntities db = new BetterlifeNetEntities();
 
@@ -31,6 +33,7 @@ namespace Test
         {
             Admin admin = new Admin();
             admin.Username = PersonOriginal;
+            admin.Department_ID = 1;
             admin.Password = "4008001666";
             //admin.ID = Guid.NewGuid();
             db.Admin.Add(admin);
@@ -38,7 +41,7 @@ namespace Test
 
             // Test 1
             var personCount = (db.Admin.Select(p => p)).Count();
-            Assert.AreEqual(31, personCount);
+            Assert.AreEqual(4, personCount);
 
             //Test 2
             var newPersonFound = db.Admin.FirstOrDefault(
@@ -93,8 +96,8 @@ namespace Test
         [TestMethod]
         public void get_by_id()
         {
-            Admin admin=db.Admin.Single(e => e.ID.Equals (new Guid(PersonID)));
-            UtilObjectDump.WriteLine(admin);
+            Admin admin = db.Admin.Single(e => e.ID.Equals(PersonID));//new Guid(PersonID)
+            UtilReflection.print_r(admin);
             Assert.AreEqual("admin",admin.Username);
         }
 

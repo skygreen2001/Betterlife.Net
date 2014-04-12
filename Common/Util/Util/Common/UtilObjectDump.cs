@@ -33,6 +33,7 @@ namespace Util.Util.Common
 
         public static void WriteLine(object element)
         {
+            if (element.GetType().FullName.Contains("DynamicProxies")) return;
             Console.WriteLine(Dump(element, 2));
         }
 
