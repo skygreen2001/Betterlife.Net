@@ -4,9 +4,9 @@
 }
 
 @section HeadInclude{
-    <script type="text/javascript" src="@Url.Content("~/Scripts/index.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/layout.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/navigation.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/index/index.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/index/layout.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/index/navigation.js")"></script>
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/index.css")" />
 }
 
@@ -25,7 +25,7 @@
 <div id='systemNav' class="x-hide-display">
     <div class="en">
         <p>@Html.ActionLink("系统管理人员", "Admin", "Home",new { id = "admin",title = "系统管理人员",@class="menuIcon"})</p>
-        <p><a id="logout" href="http://127.0.0.1/betterlife/index.php?go=admin.index.logout" title="退出" class="menuIcon">退出</a></p>
+        <p>@Html.ActionLink("退出", "Logout", "Index",new { id = "logout",title = "退出",@class="menuIcon"})</p>
     </div>
 </div>
 

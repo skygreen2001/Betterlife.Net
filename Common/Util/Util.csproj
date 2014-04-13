@@ -35,7 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Common\UtilDateTime.cs" />
+    <Compile Include="Util\Common\UtilImage.cs" />
+    <Compile Include="Util\Excel\ExcelBE.cs" />
+    <Compile Include="Util\Excel\UtilExcel.cs" />
     <Compile Include="Util\Common\UtilFile.cs" />
     <Compile Include="Util\Common\UtilNet.cs" />
     <Compile Include="Util\Common\UtilNumber.cs" />
@@ -52,11 +58,51 @@
     <Compile Include="Util\Common\UtilRegistry.cs" />
     <Compile Include="Util\Common\UtilString.cs" />
     <Compile Include="Util\Common\UtilObjectDump.cs" />
+    <Compile Include="Util\Common\UtilSystem.cs" />
+    <Compile Include="Util\Log\ConfigurationSectionHandler.cs" />
+    <Compile Include="Util\Log\Helper.cs" />
+    <Compile Include="Util\Log\IWriter.cs" />
+    <Compile Include="Util\Log\LogConfigSetting.cs" />
+    <Compile Include="Util\Log\Logger.cs" />
+    <Compile Include="Util\Log\LogHelper.cs" />
+    <Compile Include="Util\Log\LogLevel.cs" />
+    <Compile Include="Util\Log\LogManager.cs" />
+    <Compile Include="Util\Log\Writer\TextWriter.cs" />
+    <Compile Include="Util\Log\Writer\WinEventWriter.cs" />
     <Compile Include="Util\Reflect\UtilBeans.cs" />
     <Compile Include="Util\Reflect\UtilReflection.cs" />
     <Compile Include="Util\Xml\NamespaceIgnorantXmlTextReader.cs" />
     <Compile Include="Util\Xml\UtilXmlConvertor.cs" />
     <Compile Include="Util\Xml\XTWFND.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

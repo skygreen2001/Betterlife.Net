@@ -100,7 +100,7 @@ Bn.Navigation = {
 			title=linkTarget.text;
 		}
 		if (linkTarget.id == "logout") {
-		    window.location.href = "index.php?go=admin.index.logout";
+		    window.location.href = "/Index/Logout";
 		} else {
 		    Bn.Navigation.AddTabbyUrl(Bn.Viewport.center, title, linkTarget.href, linkTarget.id);
 		}

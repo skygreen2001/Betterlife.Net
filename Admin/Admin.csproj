@@ -39,6 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKEditor.NET">
+      <HintPath>..\Library\CKEditor.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder">
+      <HintPath>..\Library\CKFinder.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -76,9 +82,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.3.0.20105.1\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Providers">
-      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.1\lib\net40\System.Web.Providers.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Razor.1.0.20105.408\lib\net40\System.Web.Razor.dll</HintPath>
@@ -97,11 +100,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HttpData\SwfUpload.ashx.cs">
+      <DependentUpon>SwfUpload.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="HttpData\ValidateCode.ashx.cs">
+      <DependentUpon>ValidateCode.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdminModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -536,6 +547,8 @@
     <Content Include="Content\common\js\ajax\jquery\jquery-1.7.1.min.js" />
     <Content Include="Content\common\js\ajax\jquery\jquery.js" />
     <Content Include="Content\common\js\ajax\jquery\jquery.min.js" />
+    <Content Include="Content\common\js\ajax\jquery\plugin\jquery.validate.min.js" />
+    <Content Include="Content\common\js\ajax\jquery\plugin\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\common\js\ajax\jquery\readme.txt" />
     <Content Include="Content\common\js\onlineditor\ckeditor\adapters\jquery.js" />
     <Content Include="Content\common\js\onlineditor\ckeditor\ckeditor.js" />
@@ -2041,14 +2054,29 @@
     <Content Include="Content\css\index.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\public.css" />
+    <Content Include="Content\images\ico\cms.png" />
+    <Content Include="Content\images\ico\cog_edit.png" />
+    <Content Include="Content\images\ico\dev.gif" />
+    <Content Include="Content\images\ico\folder_go.png" />
+    <Content Include="Content\images\ico\folder_wrench.png" />
+    <Content Include="Content\images\ico\loading.gif" />
+    <Content Include="Content\images\ico\log.gif" />
+    <Content Include="Content\images\ico\logo.ico" />
+    <Content Include="Content\images\ico\logo.png" />
+    <Content Include="Content\images\ico\school.gif" />
+    <Content Include="Content\images\ico\show.gif" />
+    <Content Include="Content\images\ico\system.png" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\components\ComboBoxTree.js" />
     <Content Include="Scripts\components\FileUploadField.js" />
     <Content Include="Scripts\core\admin.js" />
-    <Content Include="Scripts\index.js" />
-    <Content Include="Scripts\layout.js" />
-    <Content Include="Scripts\navigation.js" />
+    <Content Include="Scripts\index\index.js" />
+    <Content Include="Scripts\index\layout.js" />
+    <Content Include="Scripts\index\navigation.js" />
+    <Content Include="Scripts\login.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2062,9 +2090,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Content\images\" />
-    <Folder Include="Models\" />
+    <Folder Include="Services\" />
     <Folder Include="Upload\Attachment\" />
     <Folder Include="Upload\Images\" />
     <Folder Include="Views\Home\" />
@@ -2104,6 +2130,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Index\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\font\molot\molot-webfont.eot" />
+    <Content Include="Content\font\molot\molot-webfont.ttf" />
+    <Content Include="Content\font\molot\molot-webfont.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Login\_LoginLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HttpData\ValidateCode.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HttpData\SwfUpload.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -4,7 +4,7 @@ Bn.Config = {
     /**
      *是否显示Tab头
      */
-    IsTabHeaderShow: false,
+    IsTabHeaderShow: true,
 	/**
 	 * 访问历史记录的组件标识分割符
 	 */

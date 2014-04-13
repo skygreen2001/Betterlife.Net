@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -78,6 +79,18 @@
     <Compile Include="Department.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\Enums\Error\CommonError.cs" />
+    <Compile Include="Domain\Enums\Error\MessageError.cs" />
+    <Compile Include="Domain\Enums\System\CopyDataStruct.cs" />
+    <Compile Include="Domain\Enums\System\EnvironmentVarible.cs" />
+    <Compile Include="Domain\Enums\System\LogType.cs" />
+    <Compile Include="Domain\Enums\System\SectionPath.cs" />
+    <Compile Include="Domain\System\AppConfig.cs" />
+    <Compile Include="Domain\System\Config\ViewColumnsSection.cs" />
+    <Compile Include="Domain\System\Config\ViewColumnsSectionHandler.cs" />
+    <Compile Include="Domain\System\Config\Visibility.cs" />
+    <Compile Include="Domain\System\Log\Log.cs" />
+    <Compile Include="Domain\System\Log\SystemLog.cs" />
     <Compile Include="Functions.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
@@ -146,6 +159,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Util\Util.csproj">
+      <Project>{a52e0ee4-d761-4a0b-9ae7-7c4751aaa416}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\Core\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

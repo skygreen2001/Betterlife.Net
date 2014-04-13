@@ -1,6 +1,38 @@
-﻿@{
-    ViewBag.Title = "登录";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model mvc.Models.LogOnModel
+@{
+    ViewBag.Title = ViewBag.Title+":::登录";
+    Layout = "~/Views/Shared/Login/_LoginLayout.cshtml";
 }
+<script type="text/javascript" src="@Url.Content("~/Content/common/js/ajax/jquery/jquery-1.7.1.js")"></script>
+<script src="@Url.Content("~/Content/common/js/ajax/jquery/plugin/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/common/js/ajax/jquery/plugin/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
-<h2>login</h2>
+<div id="main">
+@using (Html.BeginForm()) {
+	<div id="content">
+		<table class="content">
+			<tr class="left">
+                <td class="leftContent" align="center"><img src="@Url.Content("~/Content/images/logo.png")" class="logoLeft" alt="@ViewBag.SiteName 后台管理" /></td>
+				<td class="right">
+					<table class="right">
+						<tr align="center"><td class="title" align="center"><b>@ViewBag.SiteName 后台管理</b></td></tr>
+						<tr align="center"><td>@Html.ValidationSummary(true, "登录不成功。请更正错误并重试。")</td></tr>
+						<tr align="center"><td><label>@Html.LabelFor(m => m.UserName)&nbsp;&nbsp;&nbsp;</label><input class="inputNormal" type="text" name="UserName" /><br/>@Html.ValidationMessageFor(m => m.UserName)</td></tr>
+						<tr align="center"><td><label>@Html.LabelFor(m => m.Password)&nbsp;&nbsp;&nbsp;</label><input class="inputNormal" type="password" name="Password" /><br/>@Html.ValidationMessageFor(m => m.Password)</td></tr>
+						<tr align="center"><td><label id="lVerImg">@Html.LabelFor(m => m.ValidateCode)</label><input class="inputVerify" name="ValidateCode" id="ValidateCode" size="15" type="text" /><img src="@Url.Content("~/HttpData/ValidateCode.ashx")" id="ValidateImg" onclick="changeCode();" style="cursor: pointer;vertical-align:top;"/><br/>@Html.ValidationMessageFor(m => m.ValidateCode)</td></tr>
+						<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="cursor: pointer;" onclick="changeCode();">看不清楚？换张图片</a></td></tr>
+						<tr><td align="center"><input type="submit" name="Submit" value="登录" class="btnSubmit" /></td></tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<div align="center">[测试账号]管理员名:admin,密码:admin。</div>
+	</div>
+}
+</div>	
+
+<script>
+	function changeCode(){
+	    document.getElementById('ValidateImg').src = "@Url.Content("~/HttpData/ValidateCode.ashx")?" + Math.random();
+	}
+</script>

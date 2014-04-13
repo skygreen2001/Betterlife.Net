@@ -1,4 +1,5 @@
 ﻿
+using System;
 namespace Util.Common
 {
     /// <summary>
@@ -50,6 +51,24 @@ namespace Util.Common
             int result=0;
             int.TryParse(numberString,out result);
             return result;
+        }
+
+        /// <summary>
+        /// 产生随机数
+        /// </summary>
+        /// <param name="int_NumberLength">随机数长度</param>
+        /// <returns></returns>
+        public static string RandomNumber(int int_NumberLength)
+        {
+            System.Text.StringBuilder str_Number = new System.Text.StringBuilder();//字符串存储器
+            Random rand = new Random(Guid.NewGuid().GetHashCode());//生成随机数
+
+            for (int i = 1; i <= int_NumberLength; i++)
+            {
+                str_Number.Append(rand.Next(0, 10).ToString());//产生0~9的随机数
+            }
+
+            return str_Number.ToString();
         }
 	}
 }

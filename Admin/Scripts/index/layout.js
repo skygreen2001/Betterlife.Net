@@ -31,7 +31,7 @@ Bn.Layout =
                                     }, '-',
                                     {
                                         text: '退出', iconCls: 'icon-quit', ref: 'exit', handler: function () {
-                                            window.location.href = "index.php?go=admin.index.logout";
+                                            window.location.href = "/Index/Logout";
                                         }
                                     }
                                 ]
@@ -111,7 +111,7 @@ Bn.Layout =
                             }
                         }, new Ext.Toolbar.Fill(), '-', {
                             text: '退出', iconCls: 'icon-quit', ref: '../../exit', handler: function () {
-                                window.location.href = "index.php?go=admin.index.logout";
+                                window.location.href = "/Index/Logout";
                             }
                         }]
                 }),
@@ -145,7 +145,7 @@ Bn.Layout =
 		title : '功能区',
 		collapseMode : 'mini',
 		split : true,
-		width : 150,
+		width : 200,
 		minSize : 100,
 		maxSize : 400,
 		collapsible : true,

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -17,6 +18,7 @@ namespace Admin
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new ActionBase() { Message = "全局信息" },0);
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -26,17 +28,15 @@ namespace Admin
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Index", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Index", action = "Login", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }
 
         protected void Application_Start()
         {
+            Gc.init();
             AreaRegistration.RegisterAllAreas();
-
-            // Use LocalDB for Entity Framework by default
-            Database.DefaultConnectionFactory = new SqlConnectionFactory(@"Data Source=(localdb)\v11.0; Integrated Security=True; MultipleActiveResultSets=True");
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
