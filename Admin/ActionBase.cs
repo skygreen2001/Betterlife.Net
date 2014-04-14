@@ -10,6 +10,7 @@ namespace Admin
     /// <summary>
     /// 所有Controller的拦截器:在Controller的action方法执行前和执行后执行的方法
     /// </summary>
+    /// <see cref="http://www.cnblogs.com/fly_dragon/archive/2011/06/15/2081063.html"/>
     public class ActionBase : ActionFilterAttribute
     {
         public string Message { get; set; }
