@@ -160,7 +160,12 @@ Bn.Layout =
 	 * 左侧菜单(超级管理员)
 	 */
 	LeftMenuGroups: [
-        {
+       {
+           contentEl: 'systemNav',
+           title: '系统管理',
+           border: false,
+           iconCls: 'systemNav'
+        },{
             contentEl: 'devNav',
             title: '开发者园地',
             border: false,
@@ -175,12 +180,7 @@ Bn.Layout =
             title: '教学区',
             border: false,
             iconCls: 'schoolNav'
-        }, {
-            contentEl: 'systemNav',
-            title: '系统管理',
-            border: false,
-            iconCls: 'systemNav'
-        }
+        } 
 	],
 	/**
 	 * 页面内容区

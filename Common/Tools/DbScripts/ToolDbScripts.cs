@@ -15,7 +15,18 @@ namespace Tools.DbScripts
     /// </summary>
     public static class ToolDbScripts
     {
+        /**
+         * Mysql或者Sqserver的数据库表信息
+         */ 
         private static Dictionary<string, Dictionary<string, string>> tableInfos;
+        /**
+         * 所有需要定义表主键是GUID类型的表名称列表
+         */
+        private static String[] tablesIDTypeGuid = { "Cart", "Comment", "Company", "Coupon", "Couponitems", "Couponlog", "Delivery", "Deliveryitem", "Deliverylog", "Goodslog", "Helpcenter", "Invoice", "Jifenlog", "Member", "Ocouponlog", "Ordergoods", "Orderlog", "Orders", "Paylog", "Payments", "Pcouponlog", "Prefcoupon", "Preferentialrule", "Prefproduct", "Promotionlog", "Pwdreset", "Rankjifenlog", "Seeproduct", "Voucher", "Vouchergoods", "Voucheritems", "Voucheritemslog", "Workfloworder" };
+        /**
+         * 所有的表名列表
+         */ 
+        private static List<String> tablenames = new List<String>();
         /// <summary>
         /// 移植数据库脚本
         /// </summary>
@@ -134,14 +145,15 @@ GO
                     column_name = UtilString.UcFirst(column_name);
                     if (column_name.ToUpper().Contains("_ID"))
                     {
-                        
                         refer_tablename=column_name.Replace("_ID","");
                         refer_tablename = refer_tablename.Replace("_id", "");
                         if (refer_tablename.ToUpper().Equals("PARENT"))
                         {
                             refer_tablename = tablename;
                         }
-                        sql_template= @"
+                        if (tablenames.Contains(refer_tablename))
+                        {
+                            sql_template = @"
 ALTER TABLE [dbo].[{0}]  WITH CHECK ADD CONSTRAINT [FK_{0}_{1}] FOREIGN KEY([{2}])
 REFERENCES [dbo].[{1}] ([ID])
 GO
@@ -149,7 +161,8 @@ GO
 ALTER TABLE [dbo].[{0}] CHECK CONSTRAINT [FK_{0}_{1}]
 GO
 ";
-                        result += string.Format(sql_template, tablename,refer_tablename,column_name);
+                            result += string.Format(sql_template, tablename, refer_tablename, column_name);
+                        }
 
                     }
                 }
@@ -167,11 +180,13 @@ GO
 
             string tablename, tableComment;
             string column_name,column_comment;
+            tablenames.Clear();
             foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
             {
                 //获取表名
                 tablename = tableInfo["Name"];
                 tablename = UtilString.UcFirst(tablename);
+                tablenames.Add(tablename);
                 tableComment = tableInfo["Comment"];
                 result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}'\r\nGO\r\n\r\n",tableComment,tablename);
 
@@ -186,6 +201,12 @@ GO
                     result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}', @level2type=N'COLUMN',@level2name=N'{2}'\r\nGO\r\n\r\n",column_comment,tablename,column_name);
                 }
             }
+            Console.WriteLine("sssssssssssssssssss");
+            foreach (string tablename_n in tablenames)
+            {
+                Console.Write("\"" + tablename_n + "\"" + ",");
+            }
+            Console.WriteLine("sssssssssssssssssss");
             return result;
         }
 
@@ -196,7 +217,7 @@ GO
         {
             string result = "/****** 创建数据库所有表    Script Date:" + DateTime.Now + " ******/\r\n";
             result += "USE " + UtilString.UcFirst(UtilMysql.Database_Name) + "\r\n";
-            string tablename, tableComment, columnDefine;
+            string tablename, refer_tablename, tableComment, columnDefine;
             string sqlTemplate, column_name, column_type, column_null,column_default,resetSeed;
             string defaultValue;
             Dictionary<string, Dictionary<string, string>> columnInfos;
@@ -217,9 +238,17 @@ GO
                     column_name = UtilString.UcFirst(column_name);
                     if (column_name.ToUpper().Equals("ID"))
                     {
-                        columnDefine += "[ID][numeric](10, 0) IDENTITY(1,1) NOT NULL,";
-                        resetSeed += "DBCC CHECKIDENT ('" + tablename + "', RESEED, 1)\r\n";
-                        //defaultValue += string.Format("ALTER TABLE [dbo].[{0}] ADD  CONSTRAINT [DF_{0}_ID]  DEFAULT (newid()) FOR [ID]\r\nGO\r\n",tablename);
+                        
+                        if (tablesIDTypeGuid.Contains(tablename))
+                        {
+                            columnDefine += "[ID] [uniqueidentifier] NOT NULL,";
+                            defaultValue += string.Format("ALTER TABLE [dbo].[{0}] ADD  CONSTRAINT [DF_{0}_ID]  DEFAULT (newid()) FOR [ID]\r\nGO\r\n",tablename);
+                        }
+                        else
+                        {
+                            columnDefine += "[ID][numeric](11, 0) IDENTITY(1,1) NOT NULL,";
+                            resetSeed += "DBCC CHECKIDENT ('" + tablename + "', RESEED, 1)\r\n";
+                        }
                     }
                     else
                     {
@@ -231,7 +260,20 @@ GO
                         column_default = columnInfo["Default"];
                         if (column_name.ToUpper().Contains("_ID"))
                         {
-                            column_type = "[numeric](10, 0)";
+                            refer_tablename = column_name.Replace("_ID", "");
+                            refer_tablename = refer_tablename.Replace("_id", "");
+                            if (refer_tablename.ToUpper().Equals("PARENT"))
+                            {
+                                refer_tablename = tablename;
+                            }
+                            if (tablesIDTypeGuid.Contains(refer_tablename))
+                            {
+                                column_type = "[uniqueidentifier]";
+                            }
+                            else
+                            {
+                                column_type = "[numeric](11, 0)";
+                            }
                             column_null = "NOT NULL";
                         }
                         if (UtilString.Contains(column_name.ToUpper(),"TIME","DATE"))
@@ -257,6 +299,18 @@ GO
                         if ((column_name.ToUpper().Equals("COMMITTIME"))||(column_name.ToUpper().Equals("UPDATETIME")))
                         {
                             defaultValue += string.Format("ALTER TABLE [dbo].[{0}] ADD  CONSTRAINT [DF_{0}_{1}]  DEFAULT (getdate()) FOR [{1}]\r\nGO\r\n",tablename,column_name);
+                        }
+
+                        string[] type_length=column_type.Split(new char[4] { '[', ']', '(', ')' },StringSplitOptions.RemoveEmptyEntries);
+                        if (type_length.Length == 2)
+                        {
+                            string length = type_length[1];
+                            int i_len=UtilNumber.Parse(length);
+                            if (i_len > 4000)
+                            {
+                                i_len = 4000;
+                                column_type = "[" + type_length[0] + "]" + "(" + i_len + ")";
+                            }
                         }
 
                         columnDefine += string.Format("     [{0}]  {1}  {2},", column_name, column_type, column_null);
@@ -321,7 +375,12 @@ GO
                         newType = "[smallint]";
                     }else if (oldType.Contains("int")){
                         newType = "[int]";
-                    }else
+                    }
+                    else if (oldType.Contains("bit"))
+                    {
+                        newType = "[bit]";
+                    }
+                    else
                     {
                         newType = "[" + oldType + "](" + otArr[1] + ")";
                     }

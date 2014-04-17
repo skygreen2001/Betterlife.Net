@@ -5,7 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 
-namespace Util.Util.Common
+namespace Util.Common
 {
 
     /// <summary>

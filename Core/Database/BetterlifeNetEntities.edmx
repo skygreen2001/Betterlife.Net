@@ -75,7 +75,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="30" StoreGeneratedPattern="Identity" />
           <Property Name="Department_ID" Type="numeric" Nullable="false" Precision="10" />
           <Property Name="Username" Type="nvarchar" MaxLength="200" />
           <Property Name="Realname" Type="nvarchar" MaxLength="200" />
@@ -231,7 +231,7 @@
           <Property Name="District" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="500" />
           <Property Name="Qq" Type="nvarchar" MaxLength="100" />
-          <Property Name="Sex" Type="smallint" />
+          <Property Name="Sex" Type="bit" />
           <Property Name="Birthday" Type="date" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
@@ -472,7 +472,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="30" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="Department_ID" Nullable="false" Precision="10" Scale="0" />
           <Property Type="String" Name="Username" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Realname" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -647,7 +647,7 @@
           <Property Type="Int32" Name="District" />
           <Property Type="String" Name="Address" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Qq" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="Int16" Name="Sex" />
+          <Property Type="Boolean" Name="Sex" />
           <Property Type="DateTime" Name="Birthday" Precision="0" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
@@ -819,7 +819,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>

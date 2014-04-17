@@ -1,4 +1,4 @@
-﻿Ext.namespace("Jjshop.Admin.Admin");
+﻿Ext.namespace("BetterlifeNet.Admin");
 Bn = BetterlifeNet.Admin;
 Bn.Admin = {
     /**
@@ -69,15 +69,7 @@ Bn.Admin.Store = {
                 { name: 'Admin_ID', type: 'string', mapping: 'ID' },
                 { name: 'Username', type: 'string' },
                 { name: 'Realname', type: 'string' },
-                { name: 'Password', type: 'string' },
-                { name: 'Store_ID', type: 'string' },
-                { name: 'Store_Name', type: 'string' },
-                { name: 'Authority', type: 'string' },
-                { name: 'Operation', type: 'string' },
-                { name: 'RoletypeShow', type: 'string' },
-                { name: 'Roletype', type: 'int' },
-                { name: 'SeescopeShow', type: 'string' },
-                { name: 'Seescope', type: 'int' }
+                { name: 'Password', type: 'string' }
             ]
         }
 		),
@@ -90,40 +82,6 @@ Bn.Admin.Store = {
                     if (!options.params.limit) options.params.limit = Bn.Admin.Config.PageSize;
                     Ext.apply(options.params, Bn.Admin.View.Running.adminGrid.filter);//保证分页也将查询条件带上
                 }
-            }
-        }
-    }),
-    /**
-     * 本地数据库门店
-     */
-    storeStore: new Ext.data.Store({
-        reader: new Ext.data.JsonReader({
-            root: 'data',
-            autoLoad: true,
-            totalProperty: 'totalCount',
-            id: 'Store_ID'
-        }, [
-            { name: 'Store_ID', mapping: 'ID' },
-            { name: 'Store_Name', mapping: 'Name' }
-        ])
-    }),
-    /**
-     * 锦江中央数据库门店
-     */
-    JjstoreStore: new Ext.data.Store({
-        reader: new Ext.data.JsonReader({
-            root: 'data',
-            autoLoad: true,
-            totalProperty: 'totalCount',
-            id: 'Code'
-        }, [
-            { name: 'Code'},
-            { name: 'Name'},
-            { name: 'Ip'}
-        ]),
-        listeners: {
-            load: function (store, options) {
-                var a = 1;
             }
         }
     })
@@ -170,74 +128,9 @@ Bn.Admin.View = {
 					    },
 					    items: [
                             { xtype: 'hidden', name: 'Admin_ID', ref: '../Admin_ID' },
-                            { xtype: 'hidden', name: 'Seescope', ref: '../Seescope' },
-                            { xtype: 'hidden', name: 'Code', ref: '../Code' },//门店编码
-                            { xtype: 'hidden', name: 'Name', ref: '../Name' },//门店名称
-                            { xtype: 'hidden', name: 'Ip', ref: '../Ip' },//门店IP
-                            { xtype: 'hidden', name: 'IsStaff', ref: '../IsStaff', value: 0 },//是否获取用户
-                            { xtype: 'hidden', name: 'Username', ref: '../Username' },
-                            { xtype: 'hidden', name: 'Authority', ref: '../Describe' },
-                            {
-                                xtype: 'compositefield',ref: '../StaffName',
-                            	items: [
-                                    { fieldLabel: '真实姓名', name: 'Realname', xtype: 'textfield', ref: 'Realname',width:300 },
-                                    {
-                                        name: 'button', xtype: 'button', width: 80, text: '<font color=green>获取用户</font>', id: 'invocationStaff',
-                                        ref: 'invocationStaff',
-                                        handler: function () {
-                                            Bn.Admin.View.Running.edit_window.getStaff();
-                                        }
-                                    }
-                            	]
-                            },
-                            //{ fieldLabel: '用户信息(<font color=red>获取</font>)', name: 'UsernameShow', ref: '../UsernameShow', readOnly: true },
-                            { fieldLabel: '用户信息(<font color=red>获取</font>)', name: 'AuthorityShow', ref: '../DescribeShow', xtype:'displayfield'},
-                            { fieldLabel: '密码', name: 'Password', allowBlank: false, vtype: "alphanum", inputType: 'password'},
-                            {
-                                fieldLabel: '扮演角色', hiddenName: 'Roletype', xtype: 'combo', ref: '../Roletype',
-                                mode: 'local', triggerAction: 'all', lazyRender: true, editable: false, allowBlank: false,
-                                store: new Ext.data.SimpleStore({
-                                    fields: ['value', 'text'],
-                                    data: [['0', '超级管理员'], ['1', '门店管理员']]
-                                }), emptyText: '请选择扮演角色',
-                                valueField: 'value', displayField: 'text', value: 1,grid:this,
-                                listeners : {
-                                    select:function(combo, record,index){  
-                                        if (record.data.value == '0') {
-                                            this.grid.Store_Com.setVisible(false);
-                                            this.grid.Store_Com.allowBlank = true;
-                                            this.grid.Seescope.setVisible(1);
-                                        }else{
-                                            this.grid.Store_Com.setVisible(true);
-                                            this.grid.Store_Com.allowBlank = false;
-                                            this.grid.Seescope.setVisible(0);
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                fieldLabel: '门店', ref: '../Store_Com', xtype: 'combo',
-                                store: Bn.Admin.Store.JjstoreStore, grid: this,
-                                emptyText: '请选择门店', itemSelector: 'div.search-item',
-                                loadingText: '查询中...', width: 280, pageSize: Bn.Admin.Config.PageSize,
-                                mode: 'remote', editable: true, minChars: 1, autoSelect: true, typeAhead: false,
-                                forceSelection: true, triggerAction: 'all', resizable: true, selectOnFocus: true,
-                                tpl: new Ext.XTemplate(
-                                    '<tpl for="."><div class="search-item">',
-                                    '<h3>{Name}</h3>',
-                                    '</div></tpl>'
-                                ),
-                                onSelect:function(record,index){
-                                    if(this.fireEvent('beforeselect', this, record, index) !== false){
-                                        var data = record.data;
-                                        this.grid.Code.setValue(data.Code);
-                                        this.grid.Name.setValue(data.Name);
-                                        this.grid.Store_Com.setValue(data.Name);
-                                        this.grid.Ip.setValue(data.Ip);
-                                        this.collapse();
-                                    }
-                                }
-                            }
+                            { fieldLabel: '用户名', name: 'Username', ref: '../Username' },
+                            { fieldLabel: '真实姓名', name: 'Realname', ref: '../Realname' },
+                            { fieldLabel: '密码', name: 'Password', allowBlank: false, vtype: "alphanum", inputType: 'password' }
 					    ]
 					})
                 ],
@@ -245,10 +138,6 @@ Bn.Admin.View = {
                     text: "", ref: "../saveBtn", scope: this,
                     handler: function () {
                         var editwindow = Bn.Admin.View.Running.edit_window;
-                        if (editwindow.IsStaff.getValue()=="0") {
-                            Ext.Msg.alert("提示", "<font color=red>请先获取用户！</font>");
-                            return
-                        }
                         if (!this.editForm.getForm().isValid()) {
                             return;
                         }
@@ -283,9 +172,9 @@ Bn.Admin.View = {
                                     if (response.result && !response.result.success) {
                                         Ext.Msg.alert("提示", response.result.msg,
                                             function () {
-                                                var check_user = Ext.getCmp("Check_User");
-                                                check_user.focus(true);
-                                                check_user.markInvalid(response.result.msg);
+                                                //var check_user = Ext.getCmp("Check_User");
+                                                //check_user.focus(true);
+                                                //check_user.markInvalid(response.result.msg);
                                             }
                                         );
                                     } else {
@@ -305,18 +194,6 @@ Bn.Admin.View = {
                     handler: function () {
                         var sel = Bn.Admin.View.Running.adminGrid.getSelectionModel().getSelected();
                         this.editForm.form.loadRecord(sel);
-                        edit_window = this.editForm.ownerCt;
-                        edit_window.Code.setValue("");
-                        edit_window.Name.setValue("");
-                        edit_window.Ip.setValue("");
-                        if (sel.data.Roletype == "0") {
-                            edit_window.Store_Com.setVisible(false);
-                            edit_window.Store_Com.allowBlank = true;
-                        } else {
-                            edit_window.Store_Com.setVisible(true);
-                            edit_window.Store_Com.setValue(sel.data.Store_Name);
-                            edit_window.Store_Com.allowBlank = false;
-                        }
                     }
                 }]
             }, config);
@@ -339,10 +216,6 @@ Bn.Admin.View = {
                         var info = response.result.info;
                         var editwindow = Bn.Admin.View.Running.edit_window;
                         editwindow.Username.setValue(info.Username);
-                        editwindow.Describe.setValue(info.Realname);
-                        //editwindow.UsernameShow.setValue(info.Username);
-                        editwindow.DescribeShow.setValue(info.Realname);
-                        editwindow.IsStaff.setValue("1");
                     } else {
                         Ext.Msg.alert('提示', "<font color=red>" + response.result.msg + "</font>");
                     }
@@ -415,20 +288,10 @@ Bn.Admin.View = {
                             '<table class="viewdoblock">',
                             '    <tr class="entry"><td class="head">用户名</td><td class="content">{Username}</td></tr>',
                             '    <tr class="entry"><td class="head">真实姓名</td><td class="content">{Realname}</td></tr>',
-                            '    <tr class="entry"><td class="head">用户信息</td><td class="content">{Authority}</td></tr>',
-                            //'    <tr class="entry"><td class="head">密码</td><td class="content">{Password}</td></tr>',
-                            '    <tr class="entry"><td class="head">门店</td><td class="content">{Store_Name}</td></tr>',
-                            //'    <tr class="entry"><td class="head">权限</td><td class="content">{Authority}</td></tr>',
-                            //'    <tr class="entry"><td class="head">操作权限</td><td class="content">{Operation}</td></tr>',
-                            '    <tr class="entry"><td class="head">扮演角色</td><td class="content">{RoletypeShow}</td></tr>',
-                            //'    <tr class="entry"><td class="head">视野</td><td class="content">{SeescopeShow}</td></tr>',
                             '</table>'
 					    ]
 					}
 				);
-                this.add(
-                    { title: '其他', iconCls: 'tabs' }
-                );
             }
         }),
         /**
@@ -464,75 +327,6 @@ Bn.Admin.View = {
             }
         })
     },
-    /**
-	 * 窗口：批量上传系统管理人员
-	 */
-    UploadWindow: Ext.extend(Ext.Window, {
-        constructor: function (config) {
-            config = Ext.apply({
-                title: '批量上传系统管理人员数据', width: 400, height: 110, minWidth: 300, minHeight: 100,
-                layout: 'fit', plain: true, bodyStyle: 'padding:5px;', buttonAlign: 'center', closeAction: "hide",
-                items: [
-					new Ext.form.FormPanel({
-					    ref: 'uploadForm', fileUpload: true,
-					    width: 500, labelWidth: 50, autoHeight: true, baseCls: 'x-plain',
-					    frame: true, bodyStyle: 'padding: 10px 10px 10px 10px;',
-					    defaults: {
-					        anchor: '95%', allowBlank: false, msgTarget: 'side'
-					    },
-					    items: [{
-					        xtype: 'fileuploadfield',
-					        fieldLabel: '文 件', name: 'upload_file', ref: 'upload_file',
-					        emptyText: '请上传系统管理人员Excel文件', buttonText: '',
-					        accept: 'application/vnd.ms-excel',
-					        buttonCfg: { iconCls: 'upload-icon' }
-					    }]
-					})
-                ],
-                buttons: [{
-                    text: '上 传',
-                    scope: this,
-                    handler: function () {
-                        uploadWindow = this;
-                        validationExpression = /([\u4E00-\u9FA5]|\w)+(.xlsx|.XLSX|.xls|.XLS)$/;/**允许中文名*/
-                        var isValidExcelFormat = new RegExp(validationExpression);
-                        var result = isValidExcelFormat.test(this.uploadForm.upload_file.getValue());
-                        if (!result) {
-                            Ext.Msg.alert('提示', '请上传Excel文件，后缀名为xls或者xlsx！');
-                            return;
-                        }
-                        if (this.uploadForm.getForm().isValid()) {
-                            Ext.Msg.show({
-                                title: '请等待', msg: '文件正在上传中，请稍后...',
-                                animEl: 'loading', icon: Ext.Msg.WARNING,
-                                closable: true, progress: true, progressText: '', width: 300
-                            });
-                            this.uploadForm.getForm().submit({
-                                url: 'index.php?go=admin.upload.uploadAdmin',
-                                success: function (form, response) {
-                                    Ext.Msg.alert('成功', '上传成功');
-                                    uploadWindow.hide();
-                                    uploadWindow.uploadForm.upload_file.setValue('');
-                                    Bn.Admin.View.Running.adminGrid.doSelectAdmin();
-                                },
-                                failure: function (form, response) {
-                                    Ext.Msg.alert('错误', response.result.data);
-                                }
-                            });
-                        }
-                    }
-                }, {
-                    text: '取 消',
-                    scope: this,
-                    handler: function () {
-                        this.uploadForm.upload_file.setValue('');
-                        this.hide();
-                    }
-                }]
-            }, config);
-            Bn.Admin.View.UploadWindow.superclass.constructor.call(this, config);
-        }
-    }),
 
     /**
 	 * 视图：系统管理人员列表
@@ -561,10 +355,6 @@ Bn.Admin.View = {
                         { header: '标识', dataIndex: 'Admin_ID', hidden: true },
                         { header: '用户名', dataIndex: 'Username' },
                         { header: '真实姓名', dataIndex: 'Realname' },
-                        //{ header: '密码', dataIndex: 'Password' },
-                        { header: '门店', dataIndex: 'Store_Name' },
-                        { header: '扮演角色', dataIndex: 'RoletypeShow' }
-                        //{ header: '视野', dataIndex: 'SeescopeShow' }
                     ]
                 }),
                 tbar: {
@@ -586,29 +376,6 @@ Bn.Admin.View = {
 						    items: [
                                 '用户名', '&nbsp;&nbsp;', { ref: '../aUsername' }, '&nbsp;&nbsp;',
                                 '真实姓名', '&nbsp;&nbsp;', { ref: '../aRealname' }, '&nbsp;&nbsp;',
-                                '门店', '&nbsp;&nbsp;', {
-                                    ref: '../aStore_ID', xtype: 'combo',
-                                    store: Bn.Admin.Store.storeStore, hiddenName: 'Store_ID',
-                                    emptyText: '请选择门店', itemSelector: 'div.search-item',
-                                    loadingText: '查询中...', width: 280, pageSize: Bn.Admin.Config.PageSize,
-                                    displayField: 'Store_Name', valueField: 'Store_ID',
-                                    mode: 'remote', editable: true, minChars: 1, autoSelect: true, typeAhead: false,
-                                    forceSelection: true, triggerAction: 'all', resizable: true, selectOnFocus: true,
-                                    tpl: new Ext.XTemplate(
-                                        '<tpl for="."><div class="search-item">',
-                                        '<h3>{Store_Name}</h3>',
-                                        '</div></tpl>'
-                                    )
-                                }, '&nbsp;&nbsp;',
-                                '扮演角色', '&nbsp;&nbsp;', {
-                                    ref: '../aRoletype', xtype: 'combo', mode: 'local',
-                                    triggerAction: 'all', lazyRender: true, editable: false,
-                                    store: new Ext.data.SimpleStore({
-                                        fields: ['value', 'text'],
-                                        data: [['0', '超级管理员'], ['1', '门店管理员']]
-                                    }),
-                                    valueField: 'value', displayField: 'text',width:120
-                                }, '&nbsp;&nbsp;',
 								{
 								    xtype: 'button', text: '查询', scope: this,
 								    handler: function () {
@@ -620,8 +387,6 @@ Bn.Admin.View = {
 								    handler: function () {
 								        this.topToolbar.aUsername.setValue("");
 								        this.topToolbar.aRealname.setValue("");
-								        this.topToolbar.aStore_ID.setValue("");
-								        this.topToolbar.aRoletype.setValue("");
 								        this.filter = {};
 								        this.doSelectAdmin();
 								    }
@@ -646,45 +411,28 @@ Bn.Admin.View = {
 								        this.updateAdmin();
 								    }
 								}
-                                //, '-', {
-								//    text: '删除系统管理人员', ref: '../../btnRemove', iconCls: 'icon-delete', disabled: true,
-								//    handler: function () {
-								//        this.deleteAdmin();
-								//    }
-								//}
-                                //, '-', {
-								//    xtype: 'tbsplit', text: '导入', iconCls: 'icon-import',
-								//    handler: function () {
-								//        this.importAdmin();
-								//    },
-								//    menu: {
-								//        xtype: 'menu', plain: true,
-								//        items: [
-								//			{ text: '批量导入系统管理人员', iconCls: 'icon-import', scope: this, handler: function () { this.importAdmin() } }
-								//        ]
-								//    }
-								//}, '-', {
-								//    text: '导出', iconCls: 'icon-export',
-								//    handler: function () {
-								//        this.exportAdmin();
-								//    }
-								//}
                                 , '-', {
-								    xtype: 'tbsplit', text: '查看系统管理人员', ref: '../../tvpView', iconCls: 'icon-updown',
-								    enableToggle: true, disabled: true,
-								    handler: function () { this.showAdmin() },
-								    menu: {
-								        xtype: 'menu', plain: true,
-								        items: [
+                                    text: '删除系统管理人员', ref: '../../btnRemove', iconCls: 'icon-delete', disabled: true,
+                                    handler: function () {
+                                        this.deleteAdmin();
+                                    }
+                                }
+                                , '-', {
+                                    xtype: 'tbsplit', text: '查看系统管理人员', ref: '../../tvpView', iconCls: 'icon-updown',
+                                    enableToggle: true, disabled: true,
+                                    handler: function () { this.showAdmin() },
+                                    menu: {
+                                        xtype: 'menu', plain: true,
+                                        items: [
 											{ text: '上方', group: 'mlayout', checked: false, iconCls: 'view-top', scope: this, handler: function () { this.onUpDown(1) } },
 											{ text: '下方', group: 'mlayout', checked: true, iconCls: 'view-bottom', scope: this, handler: function () { this.onUpDown(2) } },
 											{ text: '左侧', group: 'mlayout', checked: false, iconCls: 'view-left', scope: this, handler: function () { this.onUpDown(3) } },
 											{ text: '右侧', group: 'mlayout', checked: false, iconCls: 'view-right', scope: this, handler: function () { this.onUpDown(4) } },
 											{ text: '隐藏', group: 'mlayout', checked: false, iconCls: 'view-hide', scope: this, handler: function () { this.hideAdmin(); Bn.Admin.Config.View.IsShow = 0; } }, '-',
 											{ text: '固定', ref: 'mBind', checked: true, scope: this, checkHandler: function (item, checked) { this.onBindGrid(item, checked); Bn.Admin.Cookie.set('View.IsFix', Bn.Admin.Config.View.IsFix); } }
-								        ]
-								    }
-								}, '-']
+                                        ]
+                                    }
+                                }, '-']
 						}
 					)]
                 },
@@ -752,7 +500,7 @@ Bn.Admin.View = {
             listeners: {
                 selectionchange: function (sm) {
                     // 判断删除和更新按钮是否可以激活
-                    //this.grid.btnRemove.setDisabled(sm.getCount() < 1);
+                    this.grid.btnRemove.setDisabled(sm.getCount() < 1);
                     this.grid.btnUpdate.setDisabled(sm.getCount() != 1);
                     this.grid.tvpView.setDisabled(sm.getCount() != 1);
                 },
@@ -832,9 +580,7 @@ Bn.Admin.View = {
             if (this.topToolbar) {
                 var aUsername = this.topToolbar.aUsername.getValue();
                 var aRealname = this.topToolbar.aRealname.getValue();
-                var aStore_ID = this.topToolbar.aStore_ID.getValue();
-                var aRoletype = this.topToolbar.aRoletype.getValue();
-                this.filter = { 'Username': aUsername, 'Realname': aRealname, 'Store_ID': aStore_ID, 'Roletype': aRoletype };
+                this.filter = { 'Username': aUsername, 'Realname': aRealname };
             }
             var condition = { 'start': 0, 'limit': Bn.Admin.Config.PageSize };
             Ext.apply(condition, this.filter);
@@ -988,16 +734,11 @@ Bn.Admin.View = {
             }
             var edit_window = Bn.Admin.View.Running.edit_window;
             edit_window.resetBtn.setVisible(false);
-            edit_window.StaffName.invocationStaff.setVisible(true);
             edit_window.saveBtn.setText('保 存');
             edit_window.setTitle('添加系统管理人员');
             edit_window.savetype = 0;
             edit_window.Admin_ID.setValue("");
-            edit_window.Roletype.setValue(1);
-            edit_window.Seescope.setValue(0);
-            edit_window.Store_Com.setVisible(true);
-            edit_window.Store_Com.allowBlank = false;
-            
+
             edit_window.show();
             edit_window.maximize();
         },
@@ -1009,24 +750,12 @@ Bn.Admin.View = {
                 Bn.Admin.View.Running.edit_window = new Bn.Admin.View.EditWindow();
             }
             var edit_window = Bn.Admin.View.Running.edit_window;
-            edit_window.IsStaff.setValue("1");
-            edit_window.StaffName.invocationStaff.setVisible(false);
             edit_window.saveBtn.setText('修 改');
             edit_window.resetBtn.setVisible(true);
             edit_window.setTitle('修改系统管理人员');
             var sel = this.getSelectionModel().getSelected();
             edit_window.editForm.form.loadRecord(sel);
-            //edit_window.UsernameShow.setValue(sel.data.Username);
-            edit_window.DescribeShow.setValue(sel.data.Authority);
             edit_window.savetype = 1;
-            if (sel.data.Roletype == "0") {
-                edit_window.Store_Com.setVisible(false);
-                edit_window.Store_Com.allowBlank = true;
-            } else {
-                edit_window.Store_Com.setVisible(true);
-                edit_window.Store_Com.setValue(sel.data.Store_Name);
-                edit_window.Store_Com.allowBlank = false;
-            }
 
             edit_window.show();
             edit_window.maximize();
@@ -1051,25 +780,6 @@ Bn.Admin.View = {
                 this.doSelectAdmin();
                 Ext.Msg.alert("提示", "删除成功！");
             }
-        },
-        /**
-		 * 导出系统管理人员
-		 */
-        exportAdmin: function () {
-            ExtServiceAdmin.exportAdmin(this.filter, function (provider, response) {
-                if (response.result.data) {
-                    window.open(response.result.data);
-                }
-            });
-        },
-        /**
-		 * 导入系统管理人员
-		 */
-        importAdmin: function () {
-            if (Bn.Admin.View.current_uploadWindow == null) {
-                Bn.Admin.View.current_uploadWindow = new Bn.Admin.View.UploadWindow();
-            }
-            Bn.Admin.View.current_uploadWindow.show();
         }
     }),
     /**
@@ -1126,20 +836,13 @@ Bn.Admin.View = {
 Ext.onReady(function () {
     Ext.QuickTips.init();
     Ext.state.Manager.setProvider(Bn.Admin.Cookie);
-    //Ext.Direct.addProvider(Ext.app.REMOTING_API);
-    Ext.Direct.addProvider(Ext.app.remote_admin, Ext.app.remote_store);
+    Ext.Direct.addProvider(Ext.app.remote_admin);
     Bn.Admin.Init();
     /**
 	 * 系统管理人员数据模型获取数据Direct调用
 	 */
     Bn.Admin.Store.adminStore.proxy = new Ext.data.DirectProxy({
         api: { read: ExtServiceAdmin.queryPageAdmin }
-    });
-    Bn.Admin.Store.JjstoreStore.proxy = new Ext.data.DirectProxy({
-        api: { read: ExtServiceAdmin.queryPageJjStore }
-    });
-    Bn.Admin.Store.storeStore.proxy = new Ext.data.DirectProxy({
-        api: { read: ExtServiceStore.queryPageStore }
     });
     /**
 	 * 系统管理人员页面布局

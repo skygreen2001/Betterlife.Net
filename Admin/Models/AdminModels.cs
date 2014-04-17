@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace mvc.Models
+namespace Admin.Models
 {
 
     public class ChangePasswordModel
