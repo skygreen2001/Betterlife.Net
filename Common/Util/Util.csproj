@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Common\UtilDateTime.cs" />
+    <Compile Include="Util\Common\UtilDictionary.cs" />
     <Compile Include="Util\Common\UtilImage.cs" />
     <Compile Include="Util\Excel\ExcelBE.cs" />
     <Compile Include="Util\Excel\UtilExcel.cs" />

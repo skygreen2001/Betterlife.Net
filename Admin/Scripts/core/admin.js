@@ -8,7 +8,7 @@ Bn.Admin = {
         /**
 		 *分页:每页显示记录数
 		 */
-        PageSize: 15,
+        PageSize: 3,
         /**
 		 *显示配置
 		 */

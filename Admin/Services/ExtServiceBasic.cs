@@ -20,7 +20,7 @@ namespace Admin.Services
     {
         protected static BetterlifeNetEntities db = new BetterlifeNetEntities();
 
-        public int PageCount=15;
+        public int pageCount=15;
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
         /// </summary>

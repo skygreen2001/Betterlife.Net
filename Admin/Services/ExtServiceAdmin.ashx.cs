@@ -10,6 +10,7 @@ using Util.Common;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.Entity.Core.Objects;
 using Newtonsoft.Json;
+using Util.Util.Common;
 
 namespace Admin.Services
 {
@@ -113,26 +114,31 @@ namespace Admin.Services
         /// <param name="condition"></param>
         /// <returns></returns>
         [DirectMethod]
-        public ExtServiceAdminHandler queryPageAdmin(Dictionary<String, Object> condition)
+        public ExtServiceAdminHandler queryPageAdmin(Dictionary<String, object> condition)
         {
-            int CurrentPage = 0;
-            int limit = 10;
-            if (condition.ContainsKey("limit"))limit=Convert.ToInt16(condition["limit"]);
-            PageCount = limit;
-            int start = 0;
-            if (condition.ContainsKey("start"))start=Convert.ToInt16(condition["start"]);
+            int currentPage = 0;
+            int start = 0, limit = 10;
 
-            CurrentPage = start / PageCount;
+            if (condition.ContainsKey("limit")) limit = Convert.ToInt16(condition["limit"]);
+            if (condition.ContainsKey("start")) start = Convert.ToInt16(condition["start"]);
+            UtilDictionary.Removes(condition, "start", "limit");
+
+            pageCount = limit;
+            currentPage = start / pageCount;
             this.Stores = new List<Object>();
-            condition.Remove("start");
-            condition.Remove("limit");
+            //this.Stores.Clear();
 
-            this.Stores.Clear();
+            string Username = "", Realname = "";
+            if (condition.ContainsKey("Username")) Username = Convert.ToString(condition["Username"]);
+            if (condition.ContainsKey("Realname")) Realname = Convert.ToString(condition["Realname"]);
+            int rowCount = 0;//总行记录数
+            rowCount = db.Admin.Count();
 
-            int RowCount = 0;//总行记录数
-            RowCount = db.Admin.Count();
 
-            var admins = db.Admin.OrderByDescending(p => p.ID).Skip(start).Take(PageCount);
+            var admins = db.Admin.Where(e => e.Username.Contains(Username) &&
+                                             e.Realname.Contains(Realname)).
+                OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
+
             List<Administrator> listAdmins=admins.ToList<Administrator>();
             foreach (Administrator row in listAdmins)
             {
@@ -140,7 +146,7 @@ namespace Admin.Services
                 this.Stores.Add(row);
                 
             }
-            this.TotalCount = RowCount;
+            this.TotalCount = rowCount;
             this.Success = true;
             return this;
         }
@@ -192,7 +198,8 @@ namespace Admin.Services
             {
                 if (!String.IsNullOrEmpty(admin_id))
                 {
-                    Administrator admin = db.Admin.Single(e => e.ID.Equals(admin_id));
+                    int id = UtilNumber.Parse(admin_id);
+                    Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
                     if (admin != null && admin.Username == Username)
                     {
                         Used = false;
