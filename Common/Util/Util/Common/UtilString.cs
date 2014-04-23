@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Util.Common
 {
@@ -101,7 +102,41 @@ namespace Util.Common
             pattern = string.Join("|",args);
             Regex r = new Regex(pattern);
             return r.IsMatch(subject);
+        }
 
+        /// <summary>
+        ///  计算字符串出现的次数
+        /// </summary>
+        /// <param name="haystack">必需。规定要检查的字符串。</param>
+        /// <param name="needle">要搜索的字符串</param>
+        /// <param name="type">查找方式，默认0:正则表达式方式,这种方式如果子字符串有特殊符号不推荐用；其他:标准的查找子字符串的方式</param>
+        /// <returns></returns>
+        public static int substr_count(string haystack, string needle, int type = 0)
+        {
+
+            int count = 0;
+            if (type == 0)
+            {
+                if (haystack != String.Empty && needle != String.Empty)
+                {
+                    MatchCollection mc = Regex.Matches(haystack, needle);
+                    count = mc.Count;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < haystack.Length; i++)
+                {
+                    for (int j = 1; j <= (haystack.Length - i); j++)
+                    {
+                        if (haystack.Substring(i, j) == needle)
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+            return count;
         }
 	}
 }

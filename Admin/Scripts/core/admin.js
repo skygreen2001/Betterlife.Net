@@ -146,40 +146,30 @@ Bn.Admin.View = {
                             this.editForm.api.submit = ExtServiceAdmin.save;
                             this.editForm.getForm().submit({
                                 success: function (form, action) {
+                                    Ext.Msg.alert("提示", action.result.msg);
                                     Bn.Admin.View.Running.adminGrid.doSelectAdmin();
                                     form.reset();
                                     editWindow.hide();
-                                    Ext.Msg.alert("提示", action.result.msg);
                                 },
                                 failure: function (form, response) {
-                                    if (response.result && !response.result.success) {
-                                        Ext.Msg.alert("提示", response.result.msg);
-                                    } else {
-                                        Ext.Msg.alert("提示", "操作失败,请重试！");
-                                    }
+                                    Ext.Msg.show({ title: '提示', width: 350, buttons: { yes: '确定' }, msg: response.result.msg });
                                 }
                             });
                         } else {
                             this.editForm.api.submit = ExtServiceAdmin.update;
                             this.editForm.getForm().submit({
                                 success: function (form, action) {
-                                    Bn.Admin.View.Running.adminGrid.doSelectAdmin();
+                                    Bn.Admin.View.Running.adminGrid.store.reload();
+                                    Ext.Msg.show({
+                                        title: '提示', msg: '修改成功！', buttons: { yes: '确定' }, fn: function () {
+                                            Bn.Admin.View.Running.adminGrid.bottomToolbar.doRefresh();
+                                        }
+                                    });
                                     form.reset();
                                     editWindow.hide();
-                                    Ext.Msg.alert("提示", action.result.msg);
                                 },
                                 failure: function (form, response) {
-                                    if (response.result && !response.result.success) {
-                                        Ext.Msg.alert("提示", response.result.msg,
-                                            function () {
-                                                //var check_user = Ext.getCmp("Check_User");
-                                                //check_user.focus(true);
-                                                //check_user.markInvalid(response.result.msg);
-                                            }
-                                        );
-                                    } else {
-                                        Ext.Msg.alert("提示", "操作失败,请重试！");
-                                    }
+                                    Ext.Msg.show({ title: '提示', width: 350, buttons: { yes: '确定' }, msg: response.result.msg });
                                 }
                             });
                         }

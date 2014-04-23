@@ -10,3 +10,8 @@ i18n globalization with gettext and ASP.NET MVC
 Asp.Net MVC3 Razor and RESX Localisations/Localizations
 	http://adventureswith.net/asp-net-mvc3-razor-and-resx-localisationslocalizations/
 
+Ext.Direct:
+	https://github.com/evantrimboli
+
+Json.Net:
+	https://github.com/JamesNK/Newtonsoft.Json

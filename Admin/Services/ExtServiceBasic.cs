@@ -12,11 +12,10 @@ using Util.Reflection;
 
 namespace Admin.Services
 {
-
     /// <summary>
     /// BUILD ASP.NET WEB APPS FASTE:http://www.ext.net/
-    /// 
     /// </summary>
+    /// <see cref="https://github.com/evantrimboli"/>
     public class ExtServiceBasic : DirectHandler, IRequiresSessionState
     {
         protected static BetterlifeNetEntities db = new BetterlifeNetEntities();
@@ -48,7 +47,7 @@ namespace Admin.Services
         /// 基本的保存动作
         /// </summary>
         /// <param name="enti"></param>
-        protected void copyProperties(Object entityObject, HttpRequest condition)
+        protected void copyProperties(object entityObject, HttpRequest condition)
         {
             NameValueCollection conForm = condition.Form;
             String[] keys = conForm.AllKeys;

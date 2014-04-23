@@ -9,6 +9,7 @@ using Administrator=Database.Admin;
 using Util.Common;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.Entity.Core.Objects;
+using Newtonsoft.Json;
 
 namespace Admin.Services
 {
@@ -48,9 +49,11 @@ namespace Admin.Services
                     base.copyProperties(admin, condition);
                     try
                     {
+                        admin.Department_ID = 1;
                         db.Admin.Add(admin); 
                         db.SaveChanges();
                         msg = "保存成功!";
+                        result = true;
                     }
                     catch (Exception error)
                     {
@@ -83,10 +86,13 @@ namespace Admin.Services
                     
                     try
                     {
-                        Administrator admin = db.Admin.Single(e => e.ID.Equals(id_str));
+                        int id = UtilNumber.Parse(id_str);
+                        Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
+                        //admin.Realname = "ccc";
                         base.copyProperties(admin, condition);
                         db.SaveChanges();
                         msg = "保存成功!";
+                        result = true;
                     }
                     catch (Exception error)
                     {
@@ -110,9 +116,12 @@ namespace Admin.Services
         public ExtServiceAdminHandler queryPageAdmin(Dictionary<String, Object> condition)
         {
             int CurrentPage = 0;
-            int limit = Convert.ToInt16(condition["limit"]);
+            int limit = 10;
+            if (condition.ContainsKey("limit"))limit=Convert.ToInt16(condition["limit"]);
             PageCount = limit;
-            int start = Convert.ToInt16(condition["start"]);
+            int start = 0;
+            if (condition.ContainsKey("start"))start=Convert.ToInt16(condition["start"]);
+
             CurrentPage = start / PageCount;
             this.Stores = new List<Object>();
             condition.Remove("start");
@@ -127,8 +136,9 @@ namespace Admin.Services
             List<Administrator> listAdmins=admins.ToList<Administrator>();
             foreach (Administrator row in listAdmins)
             {
-                row.Department = null;
+                //row.Department = null;
                 this.Stores.Add(row);
+                
             }
             this.TotalCount = RowCount;
             this.Success = true;
@@ -155,6 +165,7 @@ namespace Admin.Services
                     {
                         db.Admin.Remove(toDelete);
                     }
+                    db.SaveChanges();
                 }
             }
 
@@ -186,6 +197,10 @@ namespace Admin.Services
                     {
                         Used = false;
                     }
+                }
+                else
+                {
+                    Used = false;
                 }
             }
             return Used;

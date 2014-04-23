@@ -31,7 +31,7 @@ namespace Util.Common
             }
             catch (Exception e)
             {
-                Console.Write("Error");
+                Console.Write("Error:"+e.Message);
             }
             finally
             {

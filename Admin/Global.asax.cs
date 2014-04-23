@@ -1,4 +1,5 @@
 ﻿using Business;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -30,13 +31,15 @@ namespace Admin
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Index", action = "Login", id = UrlParameter.Optional } // Parameter defaults
             );
-
         }
 
         protected void Application_Start()
         {
             Gc.init();
             AreaRegistration.RegisterAllAreas();
+            
+            // var config = GlobalConfiguration.Configuration;
+            // config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);

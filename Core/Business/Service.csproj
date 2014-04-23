@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Gc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\IServiceAdmin.cs" />
     <Compile Include="Service\ServiceAdmin.cs" />
     <Compile Include="Service\ServiceBasic.cs" />
   </ItemGroup>
