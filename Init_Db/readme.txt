@@ -1,12 +1,17 @@
-³õÊ¼»¯Êı¾İ¿â×¼±¸
-1.
-Ö®Ç°ÊÇÔÚMysqlWorkbenchÀï½øĞĞÊı¾İ¿âÔ­ĞÍµÄÉè¼Æ£¬È»ºóµ¼ÈëMysqlÊı¾İ¿â
-È»ºóÉú³É´ÓMysqlµ½×ñÑ­SqlserverÊı¾İ¿â±íÉè¼Æ¹æ·¶µÄ´´½¨Êı¾İ¿â½Å±¾
-	http://localhost/betterlife/tools/tools/db/db_sqlserver_convert_prepare.php
-ÔÚMysqlÖĞÔËĞĞ¸ÃÊı¾İ¿â½Å±¾ºó£¬Éú³ÉÁË¸ÃInit_Db\Mysql\BetterlifeNet.sql
+ï»¿åˆå§‹åŒ–æ•°æ®åº“å‡†å¤‡
+**********************åœ¨PHP:betterlifeé‡Œ****************************
+betterlifeåœ°å€:https://github.com/skygreen2001/betterlife
+1.ä¹‹å‰æ˜¯åœ¨MysqlWorkbenché‡Œè¿›è¡Œæ•°æ®åº“åŸå‹çš„è®¾è®¡ï¼Œç„¶åå¯¼å…¥Mysqlæ•°æ®åº“
+  ç„¶åç”Ÿæˆä»Mysqlåˆ°éµå¾ªSqlserveræ•°æ®åº“è¡¨è®¾è®¡è§„èŒƒçš„åˆ›å»ºæ•°æ®åº“è„šæœ¬
+		http://127.0.0.1/betterlife/tools/tools/db/sqlserver/db_sqlserver_convert_prepare.php
+2.åœ¨BetterlifeNeté‡Œè¿è¡Œç”Ÿæˆsqlè„šæœ¬åï¼Œç”Ÿæˆäº†è¯¥Init_Db\Mysql\BetterlifeNet.sql
 
-2.È»ºóÔËĞĞBetterlife.NetÖĞµÄToolsÏîÄ¿ÖĞµÄ
-  ¹¤¾ßÏä-¡µÏÔÊ¾Êı¾İ¿âĞÅÏ¢-¡µ{ÒÆÖ²Êı¾İ¿â½Å±¾[Mysql-¡µSQLServer]}
-  ¿ÉÉú³ÉËùÓĞÉú³ÉBetterlifeNetÊı¾İ¿âµÄ½Å±¾[»ùÓÚT-SQL]£»
-  ĞèÒª×¢ÒâÒª½«½Å±¾ÖĞµÄÍâ¼üÒıÓÃ£º[Sender]ºÍ[Receiver]ĞŞ¸Ä³É[User]¼´¿ÉÈ«²¿Õı³£ÔËĞĞ
-  Éú³ÉÁË¸ÃInit_Db\Sqlserver\BetterlifeNet.bakÊı¾İ¿â±¸·İÎÄ¼ş
+**********************åœ¨Net:Betterlife.Neté‡Œ*************************
+Betterlife.Netåœ°å€:https://github.com/skygreen2001/betterlife.net
+1.å…ˆç¡®ä¿æ•´ä¸ªè§£å†³æ–¹æ¡ˆæ­£å¸¸ç¼–è¯‘å®Œæˆ.
+2.è¿è¡ŒBetterlife.Net\Common\Tools\å·¥ç¨‹,åœ¨å¼¹å‡ºçª—å£ç‚¹å‡»é€‰æ‹©æŒ‰é’®:æ˜¾ç¤ºæ•°æ®åº“ä¿¡æ¯.
+  å·¥å…·ç®±-ã€‰æ˜¾ç¤ºæ•°æ®åº“ä¿¡æ¯-ã€‰{ç§»æ¤æ•°æ®åº“è„šæœ¬[Mysql-ã€‰SQLServer]}
+  å¯ç”Ÿæˆæ‰€æœ‰ç”ŸæˆBetterlifeNetæ•°æ®åº“çš„è„šæœ¬[åŸºäºT-SQL]ï¼›
+3.é€‰æ‹©æ•°æ®åº“ç±»å‹:Mysql,æ•°æ®åº“åç§°é€‰æ‹©:BetterlifeNet,ç‚¹å‡»é€‰æ‹©æŒ‰é’®:
+  ç§»æ¤æ•°æ®åº“è„šæœ¬[ä»Mysql->Sqlserver],ç”Ÿæˆåˆ›å»ºSqlserveræ•°æ®åº“è„šæœ¬
+4.åˆ©ç”¨SSMSåˆ›å»ºæ•°æ®åº“BetterlifeNet,è¿è¡Œä¸Šä¸€æ­¥ç”Ÿæˆçš„sqlè„šæœ¬
