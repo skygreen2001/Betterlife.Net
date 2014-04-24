@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Util.Common
 {
+    /// <summary>
+    /// 工具类：导入导出Excel的基类
+    /// http://www.cnblogs.com/springyangwc/archive/2011/08/12/2136498.html
+    /// </summary>
     public class ExcelBE
     {
         private int _row = 0;
@@ -15,10 +19,16 @@ namespace Util.Common
         private string _interiorColor = string.Empty;
         private bool _isMerge = false;
         private int _size = 0;
+        private double _columnWidth = 16;
+        private double _rowHeight = 16;
+        private byte _horizontalAlignmentIndex = 1;
         private string _fontColor = string.Empty;
+        private string _fontName = string.Empty;
+        private int _fontSize = 12;
+        private bool _fontBold = false;
         private string _format = string.Empty;
 
-        public ExcelBE(int row, int col, string text, string startCell, string endCell, string interiorColor, bool isMerge, int size, string fontColor, string format)
+        public ExcelBE(int row, int col, string text, string startCell, string endCell, string interiorColor, bool isMerge, int size, double columnWidth, double rowHeight, byte horizontalAlignmentIndex, string fontColor, string fontName, int fontSize, bool fontBold, string format)
         {
             _row = row;
             _col = col;
@@ -28,7 +38,13 @@ namespace Util.Common
             _interiorColor = interiorColor;
             _isMerge = isMerge;
             _size = size;
+            _columnWidth = columnWidth;
+            _rowHeight = rowHeight;
+            _horizontalAlignmentIndex = horizontalAlignmentIndex;
             _fontColor = fontColor;
+            _fontName = fontName;
+            _fontSize = fontSize;
+            _fontBold = fontBold;
             _format = format;
         }
 
@@ -83,10 +99,47 @@ namespace Util.Common
             set { _size = value; }
         }
 
+        public double ColumnWidth
+        {
+            get { return _columnWidth; }
+            set { _columnWidth = value; }
+        }
+
+        public double RowHeight
+        {
+            get { return _rowHeight; }
+            set { _rowHeight = value; }
+        }
+
+        public byte HorizontalAlignmentIndex
+        {
+            get { return _horizontalAlignmentIndex; }
+            set { _horizontalAlignmentIndex = value; }
+        }
+
+
         public string FontColor
         {
             get { return _fontColor; }
             set { _fontColor = value; }
+        }
+
+        public string FontName
+        {
+            get { return _fontName; }
+            set { _fontName = value; }
+        }
+
+        public int FontSize
+        {
+            get { return _fontSize; }
+            set { _fontSize = value; }
+        }
+
+        public bool FontBold
+        {
+            get { return _fontBold; }
+            set { _fontBold = value; }
         }
 
         public string Formart

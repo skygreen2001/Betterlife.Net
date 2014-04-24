@@ -1,19 +1,31 @@
+//使用Excel的Com组件，需要安装Office.
+//参考第二种方式:http://blog.csdn.net/zhaoyu008/article/details/6294454
+#define IS_USE_EXCEL_COM
+//不使用Excel的Com组件
+//#undef IS_USE_EXCEL_COM
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Text;
-using System.Web; 
+using System.Web;
+#if IS_USE_EXCEL_COM
 using Excel = Microsoft.Office.Interop.Excel;
-
+#endif
 namespace Util.Common
 {
+    /// <summary>
+    /// 工具类：导入导出Excel的基类
+    /// http://www.cnblogs.com/springyangwc/archive/2011/08/12/2136498.html
+    /// </summary>
     public class UtilExcel
     {
+#if IS_USE_EXCEL_COM
         private Excel.Application app = null;
         private Excel.Workbook workbook = null;
         private Excel.Worksheet worksheet = null;
         private Excel.Range workSheet_range = null;
+#endif
 
         public UtilExcel()
         {
@@ -22,6 +34,7 @@ namespace Util.Common
 
         public void createDoc()
         {
+#if IS_USE_EXCEL_COM
             try
             {
                 app = new Excel.Application();
@@ -31,24 +44,45 @@ namespace Util.Common
             }
             catch (Exception e)
             {
-                Console.Write("Error:"+e.Message);
+                Console.Write("Error:" + e.Message);
             }
             finally
             {
 
             }
+#endif
         }
 
         public void InsertData(ExcelBE be)
         {
+#if IS_USE_EXCEL_COM
             worksheet.Cells[be.Row, be.Col] = be.Text;
+            worksheet.Name = "Summary";
             workSheet_range = worksheet.get_Range(be.StartCell, be.EndCell);
             workSheet_range.Merge(be.IsMerge);
             workSheet_range.Interior.Color = GetColorValue(be.InteriorColor);
             workSheet_range.Borders.Color = System.Drawing.Color.Black.ToArgb();
-            workSheet_range.ColumnWidth = be.Size;
+            workSheet_range.ColumnWidth = be.ColumnWidth;
+            workSheet_range.RowHeight = be.RowHeight;
+            //to-do:枚举HorizontalAlignment
+            if (be.HorizontalAlignmentIndex == 1)
+            {
+                workSheet_range.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft; ;
+            }
+            else if (be.HorizontalAlignmentIndex == 2)
+            {
+                workSheet_range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter; ;
+            }
+            //to-do:设置单元格边框(未列在参数)
+            workSheet_range.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+            workSheet_range.Borders.Color = System.Drawing.Color.White.ToArgb();
+
             workSheet_range.Font.Color = string.IsNullOrEmpty(be.FontColor) ? System.Drawing.Color.White.ToArgb() : System.Drawing.Color.Black.ToArgb();
+            workSheet_range.Font.Name = be.FontName;
+            workSheet_range.Font.Bold = be.FontBold;
+            workSheet_range.Font.Size = be.FontSize;
             workSheet_range.NumberFormat = be.Formart;
+#endif
         }
 
         private int GetColorValue(string interiorColor)
@@ -92,7 +126,7 @@ namespace Util.Common
         }
 
         /// <summary>
-        /// 读取邦礼商品Excel
+        /// 读取商品Excel
         /// </summary>
         /// <param name="filepath">文件物理路径</param>
         /// <param name="productfield">商品字段映射</param>
@@ -114,8 +148,8 @@ namespace Util.Common
             product = exchangeColName(product, productfields);
             image = exchangeColName(image, imagefields);
             Dictionary<String, DataTable> result = new Dictionary<String, DataTable>();
-            result.Add("Product",product);
-            result.Add("Image",image);
+            result.Add("Product", product);
+            result.Add("Image", image);
             objConn.Close();
             objConn.Dispose();
             return result;
@@ -159,6 +193,14 @@ namespace Util.Common
                     break;
             }
             return connectionString;
+        }
+
+        /// <summary>
+        /// 导出
+        /// </summary>
+        public void doExport()
+        {
+            app.Visible = true;
         }
     }
 }

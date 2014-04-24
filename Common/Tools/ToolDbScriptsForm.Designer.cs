@@ -41,6 +41,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbDatabases = new System.Windows.Forms.ComboBox();
             this.btnDropAllTables = new System.Windows.Forms.Button();
+            this.btnExportexcel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnViewDbInfo
@@ -126,7 +127,7 @@
             // 
             // btnMigrantScript
             // 
-            this.btnMigrantScript.Location = new System.Drawing.Point(394, 12);
+            this.btnMigrantScript.Location = new System.Drawing.Point(394, 21);
             this.btnMigrantScript.Name = "btnMigrantScript";
             this.btnMigrantScript.Size = new System.Drawing.Size(125, 56);
             this.btnMigrantScript.TabIndex = 9;
@@ -164,19 +165,30 @@
             // 
             // btnDropAllTables
             // 
-            this.btnDropAllTables.Location = new System.Drawing.Point(525, 14);
+            this.btnDropAllTables.Location = new System.Drawing.Point(525, 20);
             this.btnDropAllTables.Name = "btnDropAllTables";
-            this.btnDropAllTables.Size = new System.Drawing.Size(112, 54);
+            this.btnDropAllTables.Size = new System.Drawing.Size(112, 56);
             this.btnDropAllTables.TabIndex = 13;
             this.btnDropAllTables.Text = "删除所有表";
             this.btnDropAllTables.UseVisualStyleBackColor = true;
             this.btnDropAllTables.Click += new System.EventHandler(this.btnDropAllTables_Click);
+            // 
+            // btnExportexcel
+            // 
+            this.btnExportexcel.Location = new System.Drawing.Point(394, 97);
+            this.btnExportexcel.Name = "btnExportexcel";
+            this.btnExportexcel.Size = new System.Drawing.Size(129, 42);
+            this.btnExportexcel.TabIndex = 15;
+            this.btnExportexcel.Text = "导出Excel(Beta)";
+            this.btnExportexcel.UseVisualStyleBackColor = true;
+            this.btnExportexcel.Click += new System.EventHandler(this.btnExportexcel_Click);
             // 
             // ToolDbScriptsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 649);
+            this.Controls.Add(this.btnExportexcel);
             this.Controls.Add(this.btnDropAllTables);
             this.Controls.Add(this.cbDatabases);
             this.Controls.Add(this.label4);
@@ -214,5 +226,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbDatabases;
         private System.Windows.Forms.Button btnDropAllTables;
+        private System.Windows.Forms.Button btnExportexcel;
     }
 }
