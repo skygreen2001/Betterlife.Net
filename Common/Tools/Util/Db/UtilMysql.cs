@@ -1,4 +1,5 @@
 ﻿//使用Mysql调用数据库
+//需要下载ADO.NET Driver for MySQL (Connector/NET)：http://www.mysql.com/products/connector/
 #define IS_USE_MYSQL 
 //不使用Mysql调用数据库
 //#undef IS_USE_MYSQL
