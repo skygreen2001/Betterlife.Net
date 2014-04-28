@@ -11,6 +11,7 @@ using System.Text;
 using System.Web;
 #if IS_USE_EXCEL_COM
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Reflection;
 #endif
 namespace Util.Common
 {
@@ -27,11 +28,17 @@ namespace Util.Common
         private Excel.Range workSheet_range = null;
 #endif
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public UtilExcel()
         {
             createDoc();
         }
 
+        /// <summary>
+        /// 实例化Excel应用，新建一个Excel工作簿，设置第一张表当前活动表
+        /// </summary>
         public void createDoc()
         {
 #if IS_USE_EXCEL_COM
@@ -52,12 +59,75 @@ namespace Util.Common
             }
 #endif
         }
+        
+        /// <summary>
+        /// 当前工作簿的表计数
+        /// </summary>
+        public int getSheetCount()
+        {
+#if IS_USE_EXCEL_COM
+            return workbook.Sheets.Count;
+#endif
+        }
 
+        /// <summary>
+        /// 当前活动表的表名
+        /// </summary>
+        public string getSheetName()
+        {
+#if IS_USE_EXCEL_COM
+            return worksheet.Name;
+#endif
+        }
+
+        /// <summary>
+        /// 修改当前活动表的名称
+        /// </summary>
+        /// <param name="sheetName">表名</param>
+        public void setSheet(String sheetName)
+        {
+#if IS_USE_EXCEL_COM
+            worksheet.Name = sheetName;
+#endif
+        }
+
+        /// <summary>
+        /// 在所有表尾部插入一张新表
+        /// 如果不设置表名，则使用默认值
+        /// </summary>
+        /// <param name="sheetName">表名</param>
+        public void addSheet(String sheetName)
+        {
+#if IS_USE_EXCEL_COM
+            worksheet = (Excel.Worksheet)workbook.Sheets.Add(After:(Excel.Worksheet)workbook.Sheets[workbook.Sheets.Count]);
+            if (sheetName!= String.Empty)
+            {
+                worksheet.Name = sheetName;
+            }
+#endif
+        }
+
+        /// <summary>
+        /// 设置当前活动表
+        /// </summary>
+        /// <param name="sheetNO">表索引值</param>
+        public void setActivateSheet(byte sheetNO)
+        {
+#if IS_USE_EXCEL_COM
+            worksheet = (Excel.Worksheet)workbook.Sheets[sheetNO];
+            worksheet.Activate();
+#endif
+        }
+        
+
+        /// <summary>
+        /// 向当前活动表插入
+        /// </summary>
+        /// <param name="be"></param>
         public void InsertData(ExcelBE be)
         {
 #if IS_USE_EXCEL_COM
             worksheet.Cells[be.Row, be.Col] = be.Text;
-            worksheet.Name = "Summary";
             workSheet_range = worksheet.get_Range(be.StartCell, be.EndCell);
             workSheet_range.Merge(be.IsMerge);
             workSheet_range.Interior.Color = GetColorValue(be.InteriorColor);
@@ -85,6 +155,11 @@ namespace Util.Common
 #endif
         }
 
+        /// <summary>
+        /// 返回颜色的ARGB值
+        /// </summary>
+        /// <param name="interiorColor">颜色字符串</param>
+        /// <returns></returns>
         private int GetColorValue(string interiorColor)
         {
             switch (interiorColor)
