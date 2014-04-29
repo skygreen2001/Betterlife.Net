@@ -266,38 +266,84 @@ namespace Tools
 
         }
 
+        /// <summary>
+        /// 点击生成数据库说明Excel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExportexcel_Click(object sender, EventArgs e)
         {
             btnExportexcel.Enabled = false;
 
-            UtilExcel.init();
+            UtilExcel excel = new UtilExcel();
             ExcelBE be = null;
             Dictionary<string, Dictionary<string, string>> tableInfos;
             tableInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.TableinfoList() : UtilMysql.TableinfoList();
 
+            //数据库表说明
+            excel.setSheet("Summary");
             be = new ExcelBE(1, 1, "ID", "A1", "A1", "GRAY", false, 10, 13.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-            UtilExcel.InsertData(be);
+            excel.InsertData(be);
             be = new ExcelBE(1, 2, "Table Name", "B1", "B1", "GRAY", false, 10, 32.63, 26.50, 2, null, "Century Gothic", 10, true, null);
-            UtilExcel.InsertData(be);
+            excel.InsertData(be);
             be = new ExcelBE(1, 3, "Description", "C1", "C1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-            UtilExcel.InsertData(be);
+            excel.InsertData(be);
             int rowno = 2;
             int index = 1;
             foreach (Dictionary<string, string> tablename in tableInfos.Values)
             {
                 be = new ExcelBE(rowno, 1, "A" + index, "A" + rowno, "A" + rowno, null, false, 10, 13.50, 26.50, 2, null, "Century Gothic", 10, false, null);
-                UtilExcel.InsertData(be);
+                excel.InsertData(be);
                 be = new ExcelBE(rowno, 2, tablename["Name"], "B" + rowno, "B" + rowno, null, false, 10, 32.63, 26.50, 1, null, "Century Gothic", 10, false, null);
-                UtilExcel.InsertData(be);
+                excel.InsertData(be);
                 be = new ExcelBE(rowno, 3, tablename["Comment"], "C" + rowno, "C" + rowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                UtilExcel.InsertData(be);
+                excel.InsertData(be);
                 rowno++;
                 index++;
             }
-            //this.listResult.AppendText(tablenames);
-            UtilExcel.doExport();
-            btnExportexcel.Enabled = true;
 
+            //数据库各表详细说明
+            Dictionary<string, Dictionary<string, string>> columnInfos;
+            foreach (Dictionary<string, string> tablename in tableInfos.Values)
+            {
+                columnInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.FieldInfoList(tablename["Name"]) : UtilMysql.FieldInfoList(tablename["Name"]);
+                excel.addSheet(tablename["Name"]);
+                be = new ExcelBE(1, 1, "列名", "A1", "A1", "GRAY", false, 10, 36.50, 26.50, 2, null, "Century Gothic", 10, true, null);
+                excel.InsertData(be);
+                be = new ExcelBE(1, 2, "数据类型", "B1", "B1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
+                excel.InsertData(be);
+                be = new ExcelBE(1, 3, "长度", "C1", "C1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
+                excel.InsertData(be);
+                be = new ExcelBE(1, 4, "允许NULL", "D1", "D1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
+                excel.InsertData(be);
+                be = new ExcelBE(1, 5, "键值", "E1", "E1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
+                excel.InsertData(be);
+                be = new ExcelBE(1, 6, "说明", "F1", "F1", "GRAY", false, 10, 48.50, 26.50, 2, null, "Century Gothic", 10, true, null);
+                excel.InsertData(be);
+                int tablerowno = 2;
+                foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
+                {
+                    be = new ExcelBE(tablerowno, 1, columnInfo["Field"], "A" + tablerowno, "A" + tablerowno, null, false, 10, 36.50, 26.50, 2, null, "Century Gothic", 10, false, null);
+                    excel.InsertData(be);
+                    be = new ExcelBE(tablerowno, 2, columnInfo["Type"], "B" + tablerowno, "B" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
+                    excel.InsertData(be);
+                    be = new ExcelBE(tablerowno, 3, "", "C" + tablerowno, "C" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
+                    excel.InsertData(be);
+                    be = new ExcelBE(tablerowno, 4, columnInfo["Null"], "D" + tablerowno, "D" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
+                    excel.InsertData(be);
+                    be = new ExcelBE(tablerowno, 5, "", "E" + tablerowno, "E" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
+                    excel.InsertData(be);
+                    be = new ExcelBE(tablerowno, 6, columnInfo["Comment"], "F" + tablerowno, "F" + tablerowno, null, false, 10, 48.50, 26.50, 1, null, "Century Gothic", 10, false, null);
+                    excel.InsertData(be);
+                    tablerowno++;
+                }
+            }
+
+            excel.setActivateSheet(1);
+            //显示Excel
+            excel.doExport();
+
+            btnExportexcel.Enabled = true;
         }
     }
 }
