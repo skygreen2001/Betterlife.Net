@@ -290,17 +290,23 @@ namespace Tools
             UtilExcel.Current().InsertData(be);
             be = new ExcelBE(1, 3, "说明", "C1", "C1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
             UtilExcel.Current().InsertData(be);
+
             int rowno = 2;
             int index = 1;
             string idIndex = "";
+            string tablet_name = "";
             foreach (Dictionary<string, string> tablename in tableInfos.Values)
             {
                 idIndex = index.ToString();
                 if (idIndex.Length < 2) idIndex = "0" + idIndex;
                 be = new ExcelBE(rowno, 1, "A" + idIndex, "A" + rowno, "A" + rowno, null, false, 10, 13.50, rowHeight, 2, null, "Century Gothic", 10, false, null);
                 UtilExcel.Current().InsertData(be);
-                be = new ExcelBE(rowno, 2, tablename["Name"], "B" + rowno, "B" + rowno, null, false, 10, 32.63, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                tablet_name=tablename["Name"];
+                be = new ExcelBE(rowno, 2, tablet_name, "B" + rowno, "B" + rowno, null, false, 10, 32.63, rowHeight, 1, null, "Century Gothic", 10, false, null);
                 UtilExcel.Current().InsertData(be);
+                //添加链接
+                UtilExcel.Current().addLink(be,tablet_name,"列名");
+
                 be = new ExcelBE(rowno, 3, tablename["Comment"], "C" + rowno, "C" + rowno, null, false, 10, 24.50, rowHeight, 1, null, "Century Gothic", 10, false, null);
                 UtilExcel.Current().InsertData(be);
                 rowno++;

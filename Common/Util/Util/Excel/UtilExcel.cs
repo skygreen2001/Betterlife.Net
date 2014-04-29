@@ -211,6 +211,31 @@ namespace Util.Common
         }
 
         /// <summary>
+        /// 在当前列上加链接
+        /// </summary>
+        /// <param name="sheetName">sheet名称</param>
+        /// <param name="screenTipMsg">鼠标移上去显示文字</param>
+        public void addLink(ExcelBE be,string sheetName, string screenTipMsg)
+        {
+            
+            string hyperlinkTargetAddress = sheetName+"!A1";
+            worksheet.Hyperlinks.Add(
+                workSheet_range,
+                string.Empty,
+                hyperlinkTargetAddress,
+                sheetName + "!A1-"+screenTipMsg,
+                sheetName);
+            workSheet_range.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+            workSheet_range.Borders.Color = System.Drawing.Color.White.ToArgb();
+
+            workSheet_range.Font.Color = string.IsNullOrEmpty(be.FontColor) ? System.Drawing.Color.White.ToArgb() : System.Drawing.Color.Black.ToArgb();
+            workSheet_range.Font.Name = be.FontName;
+            workSheet_range.Font.Bold = be.FontBold;
+            workSheet_range.Font.Size = be.FontSize;
+            workSheet_range.NumberFormat = be.Formart;
+        }
+
+        /// <summary>
         /// 中文表头转为数据表字段
         /// </summary>
         /// <param name="dt">excel数据</param>
@@ -258,6 +283,10 @@ namespace Util.Common
             app.Visible = true;
         }
 
+        /// <summary>
+        /// 保存到文件
+        /// </summary>
+        /// <param name="filepath"></param>
         public void save(string filepath)
         {
             workbook.Saved = true;
