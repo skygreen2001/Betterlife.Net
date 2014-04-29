@@ -26,7 +26,14 @@ namespace Util.Common
         private Excel.Workbook workbook = null;
         private Excel.Worksheet worksheet = null;
         private Excel.Range workSheet_range = null;
+        private static UtilExcel current;
 #endif
+
+        public static UtilExcel Current()
+        {
+            if (current == null) current = new UtilExcel();
+            return current;
+        }
 
         /// <summary>
         /// 构造函数
@@ -46,6 +53,7 @@ namespace Util.Common
             {
                 app = new Excel.Application();
                 app.Visible = false;
+                
                 workbook = app.Workbooks.Add(1);
                 worksheet = (Excel.Worksheet)workbook.Sheets[1];
             }
@@ -174,6 +182,8 @@ namespace Util.Common
                     return System.Drawing.Color.Turquoise.ToArgb();
                 case "PeachPuff":
                     return System.Drawing.Color.PeachPuff.ToArgb();
+                case "GRAYDARK":
+                    return System.Drawing.Color.DarkGray.ToArgb();
                 default:
                     return System.Drawing.Color.White.ToArgb();
             }
@@ -198,36 +208,6 @@ namespace Util.Common
             objConn.Close();
             objConn.Dispose();
             return dt;
-        }
-
-        /// <summary>
-        /// 读取商品Excel
-        /// </summary>
-        /// <param name="filepath">文件物理路径</param>
-        /// <param name="productfield">商品字段映射</param>
-        /// <param name="imagefield">商品图片字段映射</param>
-        /// <returns></returns>
-        public static Dictionary<String, DataTable> CallExcelFromBonli(string filepath, Dictionary<string, string> productfields, Dictionary<string, string> imagefields)
-        {
-            string strConn = GetExcelConnectionString(filepath);
-            OleDbConnection objConn = new OleDbConnection(strConn);
-            objConn.Open();
-            string productsql = "select * from [product$]";
-            OleDbDataAdapter productAdapter = new OleDbDataAdapter(productsql, objConn);
-            string imagesql = "select * from [seriesimg$]";
-            OleDbDataAdapter imageAdapter = new OleDbDataAdapter(imagesql, objConn);
-            DataTable product = new DataTable();
-            productAdapter.Fill(product);
-            DataTable image = new DataTable();
-            imageAdapter.Fill(image);
-            product = exchangeColName(product, productfields);
-            image = exchangeColName(image, imagefields);
-            Dictionary<String, DataTable> result = new Dictionary<String, DataTable>();
-            result.Add("Product", product);
-            result.Add("Image", image);
-            objConn.Close();
-            objConn.Dispose();
-            return result;
         }
 
         /// <summary>
@@ -276,6 +256,12 @@ namespace Util.Common
         public void doExport()
         {
             app.Visible = true;
+        }
+
+        public void save(string filepath)
+        {
+            workbook.Saved = true;
+            workbook.SaveCopyAs(filepath);
         }
     }
 }

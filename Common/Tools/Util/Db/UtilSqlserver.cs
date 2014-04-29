@@ -37,7 +37,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 查看所有表注释
         /// </summary>
-        private static string Sql_Table_Comment = "SELECT objname as name, cast(value as varchar) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', null, null, null) order by objname asc";
+        private static string Sql_Table_Comment = "SELECT objname as name, cast(value as nvarchar(4000)) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', null, null, null) order by objname asc";
         /// <summary>
         /// 查看指定表所有的列
         /// </summary>
@@ -45,7 +45,7 @@ namespace Tools.Util.Db
         /// <summary>
         /// 查看指定表所有的列的注释
         /// </summary>
-        private static string Sql_Table_Columns_Comment = "SELECT objname as column_name, cast(value as varchar) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', '{0}', 'column', '{1}')";
+        private static string Sql_Table_Columns_Comment = "SELECT objname as column_name, cast(value as nvarchar(4000)) as comment FROM fn_listextendedproperty('MS_DESCRIPTION','schema', 'dbo', 'table', '{0}', 'column', '{1}')";
         /// <summary>
         /// 查询数据库所有的外键
         /// 参考：http://chenjianjx.iteye.com/blog/222267
@@ -238,14 +238,36 @@ namespace Tools.Util.Db
 
             string sql = string.Format(Sql_Table_Columns,table_name);
             DataTable columns = UtilSqlserver.SqlExecute(sql);
-            string column_name;
+            string column_name,column_type;
             foreach (DataRow item in columns.Rows)
             {
                 Dictionary<string, string> columnInfo = new Dictionary<string, string>();
                 column_name = (string)item.ItemArray[3];
                 columnInfo["Field"] = column_name;
-                columnInfo["Type"] = (string)item.ItemArray[7];
-                columnInfo["Null"] = (string)item.ItemArray[6];
+                column_type=(string)item.ItemArray[7];
+                columnInfo["Type"] = column_type;
+                var nullYN = (string)item.ItemArray[6];
+                if (nullYN.Contains("YES")) nullYN = "是";else nullYN = "否";
+
+                columnInfo["Null"] = nullYN;
+                if (column_type.Contains("char"))
+                {
+                    var len = item.ItemArray[8];
+                    columnInfo["Length"] = len.ToString();
+                }
+                else if (column_type.Contains("numeric") || (column_type.Contains("int")))
+                {
+                    var len = item.ItemArray[10];
+                    columnInfo["Length"] = len.ToString();
+                }
+                else 
+                {
+                    columnInfo["Length"] = "";
+                }
+                var fkPk = "";
+                if (column_name.Equals("ID")) fkPk = "PK";
+                if (column_name.Contains("_ID")) fkPk = "FK";
+                columnInfo["Fkpk"] = fkPk;
                 sql = string.Format(Sql_Table_Columns_Comment,  table_name, column_name);
                 DataTable column_comment = UtilSqlserver.SqlExecute(sql);
                 foreach (DataRow item_c in column_comment.Rows)

@@ -22,7 +22,7 @@ namespace Tools.DbScripts
         /**
          * 所有需要定义表主键是GUID类型的表名称列表
          */
-        private static String[] tablesIDTypeGuid = { "Cart", "Comment", "Company", "Coupon", "Couponitems", "Couponlog", "Delivery", "Deliveryitem", "Deliverylog", "Goodslog", "Helpcenter", "Invoice", "Jifenlog", "Member", "Ocouponlog", "Ordergoods", "Orderlog", "Orders", "Paylog", "Payments", "Pcouponlog", "Prefcoupon", "Preferentialrule", "Prefproduct", "Promotionlog", "Pwdreset", "Rankjifenlog", "Seeproduct", "Voucher", "Vouchergoods", "Voucheritems", "Voucheritemslog", "Workfloworder" };
+        private static String[] tablesIDTypeGuid = {""};//{ "Cart", "Comment", "Company", "Coupon", "Couponitems", "Couponlog", "Delivery", "Deliveryitem", "Deliverylog", "Goodslog", "Helpcenter", "Invoice", "Jifenlog", "Member", "Ocouponlog", "Ordergoods", "Orderlog", "Orders", "Paylog", "Payments", "Pcouponlog", "Prefcoupon", "Preferentialrule", "Prefproduct", "Promotionlog", "Pwdreset", "Rankjifenlog", "Seeproduct", "Voucher", "Vouchergoods", "Voucheritems", "Voucheritemslog", "Workfloworder" };
         /**
          * 所有的表名列表
          */ 
@@ -44,7 +44,10 @@ namespace Tools.DbScripts
 
             //创建数据库的外键部分
             result += CreateDbKeyDefine();
-
+            if (UtilMysql.Database_Name.Contains("BetterlifeNet"))
+            {
+                result += InitBetterlifeNetData();
+            }
             return result;
         }
 
@@ -57,7 +60,7 @@ namespace Tools.DbScripts
 
             tableInfos = UtilSqlserver.TableinfoList();
             string result = "/****** 删除数据库所有表的脚本    Script Date:" + DateTime.Now + " ******/\r\n";
-            string tablename, refer_tablename;
+            string tablename;
             string sql_template, sql_refer_tempalte, sql_df_template;
             Dictionary<string, Dictionary<string, string>> columnInfos;
             sql_template = @"
@@ -81,7 +84,7 @@ GO
 ";
 
             Dictionary<string, Dictionary<string, string>>  table_fk=UtilSqlserver.Table_Foreign_Key();
-            string fkname, ftablename, fkcol, rtable;
+            string fkname, ftablename;
             foreach (Dictionary<string, string> table_fkInfo in table_fk.Values)
             {
                 fkname = table_fkInfo["fkname"];
@@ -201,12 +204,10 @@ GO
                     result+=string.Format("EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'{1}', @level2type=N'COLUMN',@level2name=N'{2}'\r\nGO\r\n\r\n",column_comment,tablename,column_name);
                 }
             }
-            Console.WriteLine("sssssssssssssssssss");
             foreach (string tablename_n in tablenames)
             {
                 Console.Write("\"" + tablename_n + "\"" + ",");
             }
-            Console.WriteLine("sssssssssssssssssss");
             return result;
         }
 
@@ -343,6 +344,17 @@ GO
             }
             return result;
         }
+
+        /// <summary>
+        /// 数据库:BetterlifeNet:初始化数据
+        /// </summary>
+        /// <returns></returns>
+        private static string InitBetterlifeNetData()
+        {
+            string result = UtilFile.ReadFile2String("DbScripts\\initdata.txt");
+            return result;
+        }
+
 
         /// <summary>
         /// 转换数据类型

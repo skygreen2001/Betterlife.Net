@@ -85,10 +85,17 @@ namespace Util.Common
         /// <summary>
         /// 字符串头字母大写
         /// </summary>
+        /// <see cref="http://www.dotnetperls.com/uppercase-first-letter"/>
         /// <param name="content">字符串内容</param>
         public static string UcFirst(string content)
         {
-            content = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(content);
+            //废弃原因,如commitTime，预期是CommitTime，结果是Committime:content = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(content);
+            if (string.IsNullOrEmpty(content))
+            {
+                return string.Empty;
+            }
+            content = char.ToUpper(content[0]) + content.Substring(1);
+
             return content;
         }
 

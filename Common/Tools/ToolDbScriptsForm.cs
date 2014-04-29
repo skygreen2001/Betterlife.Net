@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Windows.Forms;
 using Tools.DbScripts;
 using Tools.Util.Db;
 using Util.Common;
+using System.Configuration;
 
 namespace Tools
 {
@@ -274,74 +276,156 @@ namespace Tools
         private void btnExportexcel_Click(object sender, EventArgs e)
         {
             btnExportexcel.Enabled = false;
-
-            UtilExcel excel = new UtilExcel();
             ExcelBE be = null;
             Dictionary<string, Dictionary<string, string>> tableInfos;
             tableInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.TableinfoList() : UtilMysql.TableinfoList();
 
+
+            int rowHeight = 25;
             //数据库表说明
-            excel.setSheet("Summary");
-            be = new ExcelBE(1, 1, "ID", "A1", "A1", "GRAY", false, 10, 13.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-            excel.InsertData(be);
-            be = new ExcelBE(1, 2, "Table Name", "B1", "B1", "GRAY", false, 10, 32.63, 26.50, 2, null, "Century Gothic", 10, true, null);
-            excel.InsertData(be);
-            be = new ExcelBE(1, 3, "Description", "C1", "C1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-            excel.InsertData(be);
+            UtilExcel.Current().setSheet("Summary");
+            be = new ExcelBE(1, 1, "编号", "A1", "A1", "GRAYDARK", false, 10, 13.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+            UtilExcel.Current().InsertData(be);
+            be = new ExcelBE(1, 2, "表名称", "B1", "B1", "GRAYDARK", false, 10, 32.63, rowHeight, 2, null, "Century Gothic", 10, true, null);
+            UtilExcel.Current().InsertData(be);
+            be = new ExcelBE(1, 3, "说明", "C1", "C1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+            UtilExcel.Current().InsertData(be);
             int rowno = 2;
             int index = 1;
+            string idIndex = "";
             foreach (Dictionary<string, string> tablename in tableInfos.Values)
             {
-                be = new ExcelBE(rowno, 1, "A" + index, "A" + rowno, "A" + rowno, null, false, 10, 13.50, 26.50, 2, null, "Century Gothic", 10, false, null);
-                excel.InsertData(be);
-                be = new ExcelBE(rowno, 2, tablename["Name"], "B" + rowno, "B" + rowno, null, false, 10, 32.63, 26.50, 1, null, "Century Gothic", 10, false, null);
-                excel.InsertData(be);
-                be = new ExcelBE(rowno, 3, tablename["Comment"], "C" + rowno, "C" + rowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                excel.InsertData(be);
+                idIndex = index.ToString();
+                if (idIndex.Length < 2) idIndex = "0" + idIndex;
+                be = new ExcelBE(rowno, 1, "A" + idIndex, "A" + rowno, "A" + rowno, null, false, 10, 13.50, rowHeight, 2, null, "Century Gothic", 10, false, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(rowno, 2, tablename["Name"], "B" + rowno, "B" + rowno, null, false, 10, 32.63, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(rowno, 3, tablename["Comment"], "C" + rowno, "C" + rowno, null, false, 10, 24.50, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                UtilExcel.Current().InsertData(be);
                 rowno++;
                 index++;
             }
 
             //数据库各表详细说明
             Dictionary<string, Dictionary<string, string>> columnInfos;
+            string comment="", dicComment="";
+            string[] commentArr;
+            ArrayList commentList;
             foreach (Dictionary<string, string> tablename in tableInfos.Values)
             {
+                rowHeight = 16;
                 columnInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.FieldInfoList(tablename["Name"]) : UtilMysql.FieldInfoList(tablename["Name"]);
-                excel.addSheet(tablename["Name"]);
-                be = new ExcelBE(1, 1, "列名", "A1", "A1", "GRAY", false, 10, 36.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-                excel.InsertData(be);
-                be = new ExcelBE(1, 2, "数据类型", "B1", "B1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-                excel.InsertData(be);
-                be = new ExcelBE(1, 3, "长度", "C1", "C1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-                excel.InsertData(be);
-                be = new ExcelBE(1, 4, "允许NULL", "D1", "D1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-                excel.InsertData(be);
-                be = new ExcelBE(1, 5, "键值", "E1", "E1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-                excel.InsertData(be);
-                be = new ExcelBE(1, 6, "说明", "F1", "F1", "GRAY", false, 10, 48.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-                excel.InsertData(be);
-                int tablerowno = 2;
+                UtilExcel.Current().addSheet(tablename["Name"]);
+                be = new ExcelBE(1, 1, "列名", "A1", "A1", "GRAYDARK", false, 10, 36.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(1, 2, "数据类型", "B1", "B1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(1, 3, "长度", "C1", "C1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(1, 4, "允许NULL", "D1", "D1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(1, 5, "键值", "E1", "E1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                UtilExcel.Current().InsertData(be);
+                be = new ExcelBE(1, 6, "说明", "F1", "F1", "GRAYDARK", false, 10, 39, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                UtilExcel.Current().InsertData(be);
+
+                bool isDicComment = false;
                 foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
                 {
-                    be = new ExcelBE(tablerowno, 1, columnInfo["Field"], "A" + tablerowno, "A" + tablerowno, null, false, 10, 36.50, 26.50, 2, null, "Century Gothic", 10, false, null);
-                    excel.InsertData(be);
-                    be = new ExcelBE(tablerowno, 2, columnInfo["Type"], "B" + tablerowno, "B" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                    excel.InsertData(be);
-                    be = new ExcelBE(tablerowno, 3, "", "C" + tablerowno, "C" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                    excel.InsertData(be);
-                    be = new ExcelBE(tablerowno, 4, columnInfo["Null"], "D" + tablerowno, "D" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                    excel.InsertData(be);
-                    be = new ExcelBE(tablerowno, 5, "", "E" + tablerowno, "E" + tablerowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                    excel.InsertData(be);
-                    be = new ExcelBE(tablerowno, 6, columnInfo["Comment"], "F" + tablerowno, "F" + tablerowno, null, false, 10, 48.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                    excel.InsertData(be);
+                    comment = columnInfo["Comment"];
+                    if (UtilString.Contains(comment, "\r", "\n"))
+                    {
+
+                        if (columnInfo["Type"].Equals("char"))
+                        {
+                            isDicComment = true;
+                            break;
+                        }
+                    }
+                }
+                if (isDicComment)
+                {
+                    be = new ExcelBE(1, 7, "数据字典定义", "G1", "G1", "GRAYDARK", false, 10, 48.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
+                    UtilExcel.Current().InsertData(be);
+                }
+                int tablerowno = 2;
+                bool isColumnDicComment = false;
+                foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
+                {
+                    rowHeight = 16;
+                    comment = columnInfo["Comment"];
+                    isColumnDicComment = false;
+                    if (isDicComment)
+                    {
+                        if (UtilString.Contains(comment, "\r", "\n"))
+                        {
+                            commentArr = comment.Split(new char[2] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            comment = commentArr[0];
+                            commentList = new ArrayList(commentArr);
+                            commentList.Remove(0);
+                            int line = 1;
+                            dicComment = "";
+                            foreach (var commenti in commentList)
+                            {
+                                dicComment += commenti + "\r\n";
+                                line += 1;
+                            }
+                            dicComment = dicComment.Substring(0, dicComment.Length - 2);
+                            rowHeight = rowHeight * line - 20;
+                            if (columnInfo["Type"].Equals("char")) isColumnDicComment = true;
+                        }
+                        else
+                        {
+                            dicComment = comment;
+                        }
+                    }
+                    else
+                    {
+                        if (UtilString.Contains(comment, "\r", "\n"))
+                        {
+                            commentArr = comment.Split(new char[2] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            int line = commentArr.Length;
+                            rowHeight = rowHeight * line;
+                        }
+                        dicComment = comment;
+                    }
+                    be = new ExcelBE(tablerowno, 1, columnInfo["Field"], "A" + tablerowno, "A" + tablerowno, null, false, 10, 18, rowHeight, 2, null, "Century Gothic", 10, false, null);
+                    UtilExcel.Current().InsertData(be);
+                    be = new ExcelBE(tablerowno, 2, columnInfo["Type"], "B" + tablerowno, "B" + tablerowno, null, false, 10, 12, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                    UtilExcel.Current().InsertData(be);
+                    be = new ExcelBE(tablerowno, 3, columnInfo["Length"], "C" + tablerowno, "C" + tablerowno, null, false, 10, 9, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                    UtilExcel.Current().InsertData(be);
+                    be = new ExcelBE(tablerowno, 4, columnInfo["Null"], "D" + tablerowno, "D" + tablerowno, null, false, 10, 9, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                    UtilExcel.Current().InsertData(be);
+                    be = new ExcelBE(tablerowno, 5, columnInfo["Fkpk"], "E" + tablerowno, "E" + tablerowno, null, false, 10, 9, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                    UtilExcel.Current().InsertData(be);
+                    if (isDicComment)
+                    {
+                        be = new ExcelBE(tablerowno, 6, comment, "F" + tablerowno, "F" + tablerowno, null, false, 10, 39, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                        UtilExcel.Current().InsertData(be);
+                        if (!isColumnDicComment)
+                        {
+                            dicComment = "";
+                        }
+                        be = new ExcelBE(tablerowno, 7, dicComment, "G" + tablerowno, "G" + tablerowno, null, false, 10, 50, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                        UtilExcel.Current().InsertData(be);
+                    }
+                    else
+                    {
+                        be = new ExcelBE(tablerowno, 6, dicComment, "F" + tablerowno, "F" + tablerowno, null, false, 10, 39, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                        UtilExcel.Current().InsertData(be);
+                    }
                     tablerowno++;
                 }
             }
 
-            excel.setActivateSheet(1);
+            UtilExcel.Current().setActivateSheet(1);
             //显示Excel
-            excel.doExport();
+            UtilExcel.Current().doExport();
+
+            string sitename = ConfigurationManager.AppSettings["SiteName"];
+            UtilExcel.Current().save(System.Environment.CurrentDirectory + "\\" +sitename+ "数据模型.xlsx");
 
             btnExportexcel.Enabled = true;
         }
