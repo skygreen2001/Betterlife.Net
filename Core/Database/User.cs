@@ -29,7 +29,7 @@ namespace Database
         public string Password { get; set; }
         public string Email { get; set; }
         public string Cellphone { get; set; }
-        public Nullable<System.DateTime> Logintimes { get; set; }
+        public Nullable<int> Logintimes { get; set; }
         public Nullable<System.DateTime> Committime { get; set; }
         public Nullable<System.DateTime> Updatetime { get; set; }
     

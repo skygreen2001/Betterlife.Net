@@ -14,7 +14,7 @@ namespace Database
     
     public partial class Comment
     {
-        public decimal ID { get; set; }
+        public System.Guid ID { get; set; }
         public decimal User_ID { get; set; }
         public string Comment1 { get; set; }
         public decimal Blog_ID { get; set; }

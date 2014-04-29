@@ -270,32 +270,32 @@ namespace Tools
         {
             btnExportexcel.Enabled = false;
 
-            UtilExcel excel = new UtilExcel();
+            UtilExcel.init();
             ExcelBE be = null;
             Dictionary<string, Dictionary<string, string>> tableInfos;
             tableInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.TableinfoList() : UtilMysql.TableinfoList();
 
             be = new ExcelBE(1, 1, "ID", "A1", "A1", "GRAY", false, 10, 13.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-            excel.InsertData(be);
+            UtilExcel.InsertData(be);
             be = new ExcelBE(1, 2, "Table Name", "B1", "B1", "GRAY", false, 10, 32.63, 26.50, 2, null, "Century Gothic", 10, true, null);
-            excel.InsertData(be);
+            UtilExcel.InsertData(be);
             be = new ExcelBE(1, 3, "Description", "C1", "C1", "GRAY", false, 10, 24.50, 26.50, 2, null, "Century Gothic", 10, true, null);
-            excel.InsertData(be);
+            UtilExcel.InsertData(be);
             int rowno = 2;
             int index = 1;
             foreach (Dictionary<string, string> tablename in tableInfos.Values)
             {
                 be = new ExcelBE(rowno, 1, "A" + index, "A" + rowno, "A" + rowno, null, false, 10, 13.50, 26.50, 2, null, "Century Gothic", 10, false, null);
-                excel.InsertData(be);
+                UtilExcel.InsertData(be);
                 be = new ExcelBE(rowno, 2, tablename["Name"], "B" + rowno, "B" + rowno, null, false, 10, 32.63, 26.50, 1, null, "Century Gothic", 10, false, null);
-                excel.InsertData(be);
+                UtilExcel.InsertData(be);
                 be = new ExcelBE(rowno, 3, tablename["Comment"], "C" + rowno, "C" + rowno, null, false, 10, 24.50, 26.50, 1, null, "Century Gothic", 10, false, null);
-                excel.InsertData(be);
+                UtilExcel.InsertData(be);
                 rowno++;
                 index++;
             }
             //this.listResult.AppendText(tablenames);
-            excel.doExport();
+            UtilExcel.doExport();
             btnExportexcel.Enabled = true;
 
         }

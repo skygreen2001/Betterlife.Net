@@ -42,6 +42,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="Loguser" EntitySet="Loguser" />
           </AssociationSet>
+          <AssociationSet Name="FK_Region_Region" Association="BetterlifeNetModel.Store.FK_Region_Region">
+            <End Role="Region" EntitySet="Region" />
+            <End Role="Region1" EntitySet="Region" />
+          </AssociationSet>
           <AssociationSet Name="FK_Rolefunctions_Functions" Association="BetterlifeNetModel.Store.FK_Rolefunctions_Functions">
             <End Role="Functions" EntitySet="Functions" />
             <End Role="Rolefunctions" EntitySet="Rolefunctions" />
@@ -75,13 +79,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="30" StoreGeneratedPattern="Identity" />
-          <Property Name="Department_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="Department_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Username" Type="nvarchar" MaxLength="200" />
           <Property Name="Realname" Type="nvarchar" MaxLength="200" />
           <Property Name="Password" Type="nvarchar" MaxLength="45" />
-          <Property Name="Roletype" Type="smallint" />
-          <Property Name="Seescope" Type="smallint" />
+          <Property Name="Roletype" Type="char" MaxLength="1" />
+          <Property Name="Seescope" Type="char" MaxLength="1" />
           <Property Name="Logintimes" Type="int" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
@@ -90,8 +94,8 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Blog_Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Blog_Content" Type="nvarchar" MaxLength="500" />
           <Property Name="Committime" Type="datetime" />
@@ -101,10 +105,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Comment" Type="text" />
-          <Property Name="Blog_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="Blog_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
         </EntityType>
@@ -112,7 +116,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Department_Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Manager" Type="nvarchar" MaxLength="100" />
           <Property Name="Budget" Type="int" />
@@ -126,7 +130,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Url" Type="nvarchar" MaxLength="500" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
@@ -135,19 +139,19 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Logtime" Type="datetime" />
           <Property Name="Ident" Type="char" MaxLength="1" />
-          <Property Name="Priority" Type="smallint" />
+          <Property Name="Priority" Type="char" MaxLength="1" />
           <Property Name="Message" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Loguser">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="10" />
-          <Property Name="Usertype" Type="smallint" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="11" />
+          <Property Name="Usertype" Type="char" MaxLength="1" />
           <Property Name="Log_Content" Type="nvarchar" MaxLength="200" />
           <Property Name="Committime" Type="datetime" />
         </EntityType>
@@ -155,13 +159,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Senderid" Type="int" Nullable="false" />
           <Property Name="Receiverid" Type="int" Nullable="false" />
           <Property Name="Sendername" Type="nvarchar" MaxLength="200" />
           <Property Name="Receivername" Type="nvarchar" MaxLength="200" />
           <Property Name="Content" Type="nvarchar" MaxLength="500" />
-          <Property Name="Status" Type="smallint" />
+          <Property Name="Status" Type="char" MaxLength="1" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
         </EntityType>
@@ -169,7 +173,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Noticetype" Type="int" />
           <Property Name="Title" Type="nvarchar" MaxLength="200" />
           <Property Name="Notice_Content" Type="nvarchar" MaxLength="1000" />
@@ -180,10 +184,11 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="Parent_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="Parent_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Region_Name" Type="nvarchar" MaxLength="120" />
-          <Property Name="Region_Type" Type="smallint" />
+          <Property Name="Region_Type" Type="char" MaxLength="1" />
+          <Property Name="Level" Type="int" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
         </EntityType>
@@ -191,7 +196,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Role_Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
@@ -200,20 +205,20 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="Role_ID" Type="numeric" Nullable="false" Precision="10" />
-          <Property Name="Functions_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="Role_ID" Type="numeric" Nullable="false" Precision="11" />
+          <Property Name="Functions_ID" Type="numeric" Nullable="false" Precision="11" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="nvarchar" MaxLength="200" />
           <Property Name="Password" Type="nvarchar" MaxLength="200" />
           <Property Name="Email" Type="nvarchar" MaxLength="500" />
           <Property Name="Cellphone" Type="nvarchar" MaxLength="500" />
-          <Property Name="Logintimes" Type="datetime" />
+          <Property Name="Logintimes" Type="int" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
         </EntityType>
@@ -221,8 +226,8 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Realname" Type="nvarchar" MaxLength="45" />
           <Property Name="Profile" Type="nvarchar" MaxLength="500" />
           <Property Name="Country" Type="int" />
@@ -231,7 +236,7 @@
           <Property Name="District" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="500" />
           <Property Name="Qq" Type="nvarchar" MaxLength="100" />
-          <Property Name="Sex" Type="bit" />
+          <Property Name="Sex" Type="char" MaxLength="1" />
           <Property Name="Birthday" Type="date" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
@@ -240,9 +245,9 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="10" />
-          <Property Name="Notice_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="11" />
+          <Property Name="Notice_ID" Type="numeric" Nullable="false" Precision="11" />
           <Property Name="Committime" Type="datetime" />
           <Property Name="Updatetime" Type="datetime" />
         </EntityType>
@@ -250,9 +255,9 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="numeric" Nullable="false" Precision="10" StoreGeneratedPattern="Identity" />
-          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="10" />
-          <Property Name="Role_ID" Type="numeric" Nullable="false" Precision="10" />
+          <Property Name="ID" Type="numeric" Nullable="false" Precision="11" StoreGeneratedPattern="Identity" />
+          <Property Name="User_ID" Type="numeric" Nullable="false" Precision="11" />
+          <Property Name="Role_ID" Type="numeric" Nullable="false" Precision="11" />
         </EntityType>
         <Association Name="FK_Admin_Department">
           <End Role="Department" Type="BetterlifeNetModel.Store.Department" Multiplicity="1" />
@@ -311,6 +316,18 @@
             </Principal>
             <Dependent Role="Loguser">
               <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Region">
+          <End Role="Region" Type="BetterlifeNetModel.Store.Region" Multiplicity="1" />
+          <End Role="Region1" Type="BetterlifeNetModel.Store.Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Region1">
+              <PropertyRef Name="Parent_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -447,6 +464,10 @@
             <End Role="Notice" EntitySet="Notice" />
             <End Role="Usernotice" EntitySet="Usernotice" />
           </AssociationSet>
+          <AssociationSet Name="FK_Region_Region" Association="BetterlifeNetModel.FK_Region_Region">
+            <End Role="Region" EntitySet="Region" />
+            <End Role="Region1" EntitySet="Region" />
+          </AssociationSet>
           <AssociationSet Name="FK_Rolefunctions_Role" Association="BetterlifeNetModel.FK_Rolefunctions_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="Rolefunctions" EntitySet="Rolefunctions" />
@@ -472,13 +493,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="30" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="Department_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="Department_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="String" Name="Username" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Realname" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Password" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Type="Int16" Name="Roletype" />
-          <Property Type="Int16" Name="Seescope" />
+          <Property Type="String" Name="Roletype" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Seescope" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="Int32" Name="Logintimes" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
@@ -488,8 +509,8 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="String" Name="Blog_Name" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Blog_Content" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
@@ -501,10 +522,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="String" Name="Comment1" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="Blog_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="Blog_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
           <NavigationProperty Name="Blog" Relationship="BetterlifeNetModel.FK_Comment_Blog" FromRole="Comment" ToRole="Blog" />
@@ -514,7 +535,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Department_Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Manager" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Budget" />
@@ -529,7 +550,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Url" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
@@ -539,19 +560,19 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="DateTime" Name="Logtime" Precision="3" />
           <Property Type="String" Name="Ident" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Int16" Name="Priority" />
+          <Property Type="String" Name="Priority" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="Message" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Loguser">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="10" Scale="0" />
-          <Property Type="Int16" Name="Usertype" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="11" Scale="0" />
+          <Property Type="String" Name="Usertype" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="String" Name="Log_Content" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="Loguser" ToRole="User" />
@@ -560,13 +581,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Senderid" Nullable="false" />
           <Property Type="Int32" Name="Receiverid" Nullable="false" />
           <Property Type="String" Name="Sendername" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Receivername" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Content" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="Int16" Name="Status" />
+          <Property Type="String" Name="Status" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
         </EntityType>
@@ -574,7 +595,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Noticetype" />
           <Property Type="String" Name="Title" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Notice_Content" MaxLength="1000" FixedLength="false" Unicode="true" />
@@ -586,18 +607,21 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="Parent_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="Parent_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="String" Name="Region_Name" MaxLength="120" FixedLength="false" Unicode="true" />
-          <Property Type="Int16" Name="Region_Type" />
+          <Property Type="String" Name="Region_Type" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Int32" Name="Level" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
+          <NavigationProperty Name="Region1" Relationship="BetterlifeNetModel.FK_Region_Region" FromRole="Region" ToRole="Region1" />
+          <NavigationProperty Name="Region2" Relationship="BetterlifeNetModel.FK_Region_Region" FromRole="Region1" ToRole="Region" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Role_Name" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
@@ -608,9 +632,9 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="Role_ID" Nullable="false" Precision="10" Scale="0" />
-          <Property Type="Decimal" Name="Functions_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="Role_ID" Nullable="false" Precision="11" Scale="0" />
+          <Property Type="Decimal" Name="Functions_ID" Nullable="false" Precision="11" Scale="0" />
           <NavigationProperty Name="Functions" Relationship="BetterlifeNetModel.FK_Rolefunctions_Functions" FromRole="Rolefunctions" ToRole="Functions" />
           <NavigationProperty Name="Role" Relationship="BetterlifeNetModel.FK_Rolefunctions_Role" FromRole="Rolefunctions" ToRole="Role" />
         </EntityType>
@@ -618,12 +642,12 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Username" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Password" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Email" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Cellphone" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="Logintimes" Precision="3" />
+          <Property Type="Int32" Name="Logintimes" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
           <NavigationProperty Name="Blog" Relationship="BetterlifeNetModel.FK_Blog_User" FromRole="User" ToRole="Blog" />
@@ -637,8 +661,8 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="String" Name="Realname" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Profile" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Country" />
@@ -647,7 +671,7 @@
           <Property Type="Int32" Name="District" />
           <Property Type="String" Name="Address" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Qq" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="Sex" />
+          <Property Type="String" Name="Sex" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Type="DateTime" Name="Birthday" Precision="0" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
@@ -657,9 +681,9 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="10" Scale="0" />
-          <Property Type="Decimal" Name="Notice_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="11" Scale="0" />
+          <Property Type="Decimal" Name="Notice_ID" Nullable="false" Precision="11" Scale="0" />
           <Property Type="DateTime" Name="Committime" Precision="3" />
           <Property Type="DateTime" Name="Updatetime" Precision="3" />
           <NavigationProperty Name="Notice" Relationship="BetterlifeNetModel.FK_Usernotice_Notice" FromRole="Usernotice" ToRole="Notice" />
@@ -669,9 +693,9 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Type="Decimal" Name="ID" Nullable="false" Precision="10" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="10" Scale="0" />
-          <Property Type="Decimal" Name="Role_ID" Nullable="false" Precision="10" Scale="0" />
+          <Property Type="Decimal" Name="ID" Nullable="false" Precision="11" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="User_ID" Nullable="false" Precision="11" Scale="0" />
+          <Property Type="Decimal" Name="Role_ID" Nullable="false" Precision="11" Scale="0" />
           <NavigationProperty Name="Role" Relationship="BetterlifeNetModel.FK_Userrole_Role" FromRole="Userrole" ToRole="Role" />
           <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Userrole_User" FromRole="Userrole" ToRole="User" />
         </EntityType>
@@ -756,6 +780,18 @@
             </Principal>
             <Dependent Role="Usernotice">
               <PropertyRef Name="Notice_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Region">
+          <End Type="BetterlifeNetModel.Region" Role="Region" Multiplicity="1" />
+          <End Type="BetterlifeNetModel.Region" Role="Region1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Region1">
+              <PropertyRef Name="Parent_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -944,6 +980,7 @@
               <MappingFragment StoreEntitySet="Region">
                 <ScalarProperty Name="Updatetime" ColumnName="Updatetime" />
                 <ScalarProperty Name="Committime" ColumnName="Committime" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="Region_Type" ColumnName="Region_Type" />
                 <ScalarProperty Name="Region_Name" ColumnName="Region_Name" />
                 <ScalarProperty Name="Parent_ID" ColumnName="Parent_ID" />

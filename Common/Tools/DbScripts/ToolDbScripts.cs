@@ -372,7 +372,7 @@ GO
 
                     if (oldType.Contains("enum"))
                     {
-                        newType = "[smallint]";
+                        newType = "[char](1)";
                     }else if (oldType.Contains("int")){
                         newType = "[int]";
                     }

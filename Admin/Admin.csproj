@@ -113,6 +113,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HttpData\Core\Department.ashx.cs">
+      <DependentUpon>Department.ashx</DependentUpon>
+    </Compile>
     <Compile Include="HttpData\SwfUpload.ashx.cs">
       <DependentUpon>SwfUpload.ashx</DependentUpon>
     </Compile>
@@ -2165,6 +2168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Services\ExtServiceAdmin.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HttpData\Core\Department.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

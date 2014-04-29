@@ -11,6 +11,7 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.Entity.Core.Objects;
 using Newtonsoft.Json;
 using Util.Util.Common;
+using Database.Domain.Enums;
 
 namespace Admin.Services
 {
@@ -135,16 +136,19 @@ namespace Admin.Services
             rowCount = db.Admin.Count();
 
 
-            var admins = db.Admin.Where(e => e.Username.Contains(Username) &&
-                                             e.Realname.Contains(Realname)).
+            var admins = db.Admin.//Where(e => e.Username.Contains(Username) &&
+                                  //           e.Realname.Contains(Realname)).
                 OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
 
             List<Administrator> listAdmins=admins.ToList<Administrator>();
+            int i=1;
             foreach (Administrator row in listAdmins)
             {
-                //row.Department = null;
+                row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
+                row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
+                row.Department_Name = row.Department.Department_Name;
                 this.Stores.Add(row);
-                
+                i++;
             }
             this.TotalCount = rowCount;
             this.Success = true;

@@ -66,10 +66,17 @@ Bn.Admin.Store = {
             successProperty: 'success',
             root: 'data', remoteSort: true,
             fields: [
-                { name: 'Admin_ID', type: 'string', mapping: 'ID' },
+                { name: 'ID', type: 'int' },
+                { name: 'Department_ID', type: 'int' },
+                { name: 'Department_Name', type: 'string' },
                 { name: 'Username', type: 'string' },
                 { name: 'Realname', type: 'string' },
-                { name: 'Password', type: 'string' }
+                { name: 'Password', type: 'string' },
+                { name: 'RoletypeShow', type: 'string' },
+                { name: 'Roletype', type: 'string' },
+                { name: 'SeescopeShow', type: 'string' },
+                { name: 'Seescope', type: 'string' },
+                { name: 'LoginTimes', type: 'int' }
             ]
         }
 		),
@@ -84,6 +91,23 @@ Bn.Admin.Store = {
                 }
             }
         }
+    }),
+    /**
+     * 用户所属部门
+     */
+    departmentStoreForCombo:new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'HttpData/Core/Department.ashx'
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'departments',
+            autoLoad: true,
+            totalProperty: 'totalCount',
+            idProperty: 'ID'
+        }, [
+            {name: 'ID', mapping: 'ID'},
+            {name: 'department_name', mapping: 'department_name'}
+        ])
     })
 };
 /**
@@ -112,9 +136,6 @@ Bn.Admin.View = {
                     beforehide: function () {
                         this.editForm.form.getEl().dom.reset();
                         this.editForm.form.clearInvalid();
-                    },
-                    afterrender: function () {
-
                     }
                 },
                 items: [
@@ -127,10 +148,30 @@ Bn.Admin.View = {
 					        xtype: 'textfield', anchor: '98%'
 					    },
 					    items: [
-                            { xtype: 'hidden', name: 'Admin_ID', ref: '../Admin_ID' },
-                            { fieldLabel: '用户名', name: 'Username', ref: '../Username' },
-                            { fieldLabel: '真实姓名', name: 'Realname', ref: '../Realname' },
-                            { fieldLabel: '密码', name: 'Password', allowBlank: false, vtype: "alphanum", inputType: 'password' }
+                            { xtype: 'hidden', name: 'ID', ref: '../ID' },
+                            { xtype: 'hidden', name: 'Department_ID', ref: '../Department_ID' },
+                            { fieldLabel: '用户名', name: 'Username' },
+                            { fieldLabel: '真实姓名', name: 'Realname' },
+                            { fieldLabel: '密码(<font color=red>*</font>)', name: 'Password', inputType: 'Password', ref: '../Password' },
+                            { xtype: 'hidden', name: 'Password_old', ref: '../Password_old' },
+                            {
+                                fieldLabel: '扮演角色', hiddenName: 'Roletype', xtype: 'combo', ref: '../Roletype',
+                                mode: 'local', triggerAction: 'all', lazyRender: true, editable: false, allowBlank: false,
+                                store: new Ext.data.SimpleStore({
+                                    fields: ['value', 'text'],
+                                    data: [['0', '超级管理员'], ['1', '管理人员'], ['2', '运维人员'], ['3', '合作伙伴']]
+                                }), emptyText: '请选择扮演角色',
+                                valueField: 'value', displayField: 'text'
+                            },
+                            {
+                                fieldLabel: '视野', hiddenName: 'Seescope', xtype: 'combo', ref: '../Seescope',
+                                mode: 'local', triggerAction: 'all', lazyRender: true, editable: false, allowBlank: false,
+                                store: new Ext.data.SimpleStore({
+                                    fields: ['value', 'text'],
+                                    data: [['0', '只能查看自己的信息'], ['1', '查看所有的信息']]
+                                }), emptyText: '请选择视野',
+                                valueField: 'value', displayField: 'text'
+                            }
 					    ]
 					})
                 ],
@@ -275,10 +316,14 @@ Bn.Admin.View = {
 					{
 					    title: '基本信息', ref: 'tabAdminDetail', iconCls: 'tabs',
 					    tpl: [
-                            '<table class="viewdoblock">',
-                            '    <tr class="entry"><td class="head">用户名</td><td class="content">{Username}</td></tr>',
-                            '    <tr class="entry"><td class="head">真实姓名</td><td class="content">{Realname}</td></tr>',
-                            '</table>'
+                             '<table class="viewdoblock">',
+                             '    <tr class="entry"><td class="head">部门</td><td class="content">{Department_Name}</td></tr>',
+                             '    <tr class="entry"><td class="head">用户名</td><td class="content">{Username}</td></tr>',
+                             '    <tr class="entry"><td class="head">真实姓名</td><td class="content">{Realname}</td></tr>',
+                             '    <tr class="entry"><td class="head">扮演角色</td><td class="content">{RoletypeShow}</td></tr>',
+                             '    <tr class="entry"><td class="head">视野</td><td class="content">{SeescopeShow}</td></tr>',
+                             '    <tr class="entry"><td class="head">登录次数</td><td class="content">{LoginTimes}</td></tr>',
+                             '</table>'
 					    ]
 					}
 				);
@@ -342,9 +387,13 @@ Bn.Admin.View = {
                     },
                     columns: [
 						this.sm,
-                        { header: '标识', dataIndex: 'Admin_ID', hidden: true },
+                        { header: '标识', dataIndex: 'ID', hidden: true },
+                        { header: '部门', dataIndex: 'Department_Name' },
                         { header: '用户名', dataIndex: 'Username' },
                         { header: '真实姓名', dataIndex: 'Realname' },
+                        { header: '扮演角色', dataIndex: 'RoletypeShow' },
+                        { header: '视野', dataIndex: 'SeescopeShow' },
+                        { header: '登录次数', dataIndex: 'LoginTimes' }
                     ]
                 }),
                 tbar: {
@@ -727,7 +776,7 @@ Bn.Admin.View = {
             edit_window.saveBtn.setText('保 存');
             edit_window.setTitle('添加系统管理人员');
             edit_window.savetype = 0;
-            edit_window.Admin_ID.setValue("");
+            edit_window.ID.setValue("");
 
             edit_window.show();
             edit_window.maximize();

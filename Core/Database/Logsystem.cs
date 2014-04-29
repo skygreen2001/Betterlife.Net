@@ -17,7 +17,7 @@ namespace Database
         public decimal ID { get; set; }
         public Nullable<System.DateTime> Logtime { get; set; }
         public string Ident { get; set; }
-        public Nullable<short> Priority { get; set; }
+        public string Priority { get; set; }
         public string Message { get; set; }
     }
 }

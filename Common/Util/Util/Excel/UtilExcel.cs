@@ -21,18 +21,18 @@ namespace Util.Common
     public class UtilExcel
     {
 #if IS_USE_EXCEL_COM
-        private Excel.Application app = null;
-        private Excel.Workbook workbook = null;
-        private Excel.Worksheet worksheet = null;
-        private Excel.Range workSheet_range = null;
+        private static Excel.Application app = null;
+        private static Excel.Workbook workbook = null;
+        private static Excel.Worksheet worksheet = null;
+        private static Excel.Range workSheet_range = null;
 #endif
 
-        public UtilExcel()
+        public static void init()
         {
             createDoc();
         }
 
-        public void createDoc()
+        public static void createDoc()
         {
 #if IS_USE_EXCEL_COM
             try
@@ -53,7 +53,7 @@ namespace Util.Common
 #endif
         }
 
-        public void InsertData(ExcelBE be)
+        public static void InsertData(ExcelBE be)
         {
 #if IS_USE_EXCEL_COM
             worksheet.Cells[be.Row, be.Col] = be.Text;
@@ -85,7 +85,7 @@ namespace Util.Common
 #endif
         }
 
-        private int GetColorValue(string interiorColor)
+        private static int GetColorValue(string interiorColor)
         {
             switch (interiorColor)
             {
@@ -110,7 +110,7 @@ namespace Util.Common
         /// <param name="filepath">文件物理路径</param>
         /// <param name="fields">字段映射</param>
         /// <returns></returns>
-        public DataTable CallExcel(string filepath, Dictionary<string, string> fields)
+        public static DataTable CallExcel(string filepath, Dictionary<string, string> fields)
         {
             string strConn = GetExcelConnectionString(filepath);
             OleDbConnection objConn = new OleDbConnection(strConn);
@@ -198,7 +198,7 @@ namespace Util.Common
         /// <summary>
         /// 导出
         /// </summary>
-        public void doExport()
+        public static void doExport()
         {
             app.Visible = true;
         }

@@ -19,8 +19,8 @@ namespace Database
         public string Username { get; set; }
         public string Realname { get; set; }
         public string Password { get; set; }
-        public Nullable<short> Roletype { get; set; }
-        public Nullable<short> Seescope { get; set; }
+        public string Roletype { get; set; }
+        public string Seescope { get; set; }
         public Nullable<int> Logintimes { get; set; }
         public Nullable<System.DateTime> Committime { get; set; }
         public Nullable<System.DateTime> Updatetime { get; set; }

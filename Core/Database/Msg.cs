@@ -20,7 +20,7 @@ namespace Database
         public string Sendername { get; set; }
         public string Receivername { get; set; }
         public string Content { get; set; }
-        public Nullable<short> Status { get; set; }
+        public string Status { get; set; }
         public Nullable<System.DateTime> Committime { get; set; }
         public Nullable<System.DateTime> Updatetime { get; set; }
     }

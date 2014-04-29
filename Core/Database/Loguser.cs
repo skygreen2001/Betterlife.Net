@@ -16,7 +16,7 @@ namespace Database
     {
         public decimal ID { get; set; }
         public decimal User_ID { get; set; }
-        public Nullable<short> Usertype { get; set; }
+        public string Usertype { get; set; }
         public string Log_Content { get; set; }
         public Nullable<System.DateTime> Committime { get; set; }
     

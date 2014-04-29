@@ -24,7 +24,7 @@ namespace Database
         public Nullable<int> District { get; set; }
         public string Address { get; set; }
         public string Qq { get; set; }
-        public Nullable<bool> Sex { get; set; }
+        public string Sex { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
         public Nullable<System.DateTime> Committime { get; set; }
         public Nullable<System.DateTime> Updatetime { get; set; }

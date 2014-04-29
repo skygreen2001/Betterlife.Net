@@ -79,6 +79,8 @@
     <Compile Include="Department.cs">
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\Core\Admin.cs" />
+    <Compile Include="Domain\Enums\Enum.cs" />
     <Compile Include="Domain\Enums\Error\CommonError.cs" />
     <Compile Include="Domain\Enums\Error\MessageError.cs" />
     <Compile Include="Domain\Enums\System\CopyDataStruct.cs" />
@@ -166,9 +168,7 @@
       <Name>Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\Core\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
