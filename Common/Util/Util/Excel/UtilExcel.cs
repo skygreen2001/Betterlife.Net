@@ -40,13 +40,13 @@ namespace Util.Common
         /// </summary>
         public UtilExcel()
         {
-            createDoc();
+            CreateDoc();
         }
 
         /// <summary>
         /// 实例化Excel应用，新建一个Excel工作簿，设置第一张表当前活动表
         /// </summary>
-        public void createDoc()
+        public void CreateDoc()
         {
 #if IS_USE_EXCEL_COM
             try
@@ -71,7 +71,7 @@ namespace Util.Common
         /// <summary>
         /// 当前工作簿的表计数
         /// </summary>
-        public int getSheetCount()
+        public int GetSheetCount()
         {
 #if IS_USE_EXCEL_COM
             return workbook.Sheets.Count;
@@ -81,7 +81,7 @@ namespace Util.Common
         /// <summary>
         /// 当前活动表的表名
         /// </summary>
-        public string getSheetName()
+        public string GetSheetName()
         {
 #if IS_USE_EXCEL_COM
             return worksheet.Name;
@@ -92,7 +92,7 @@ namespace Util.Common
         /// 修改当前活动表的名称
         /// </summary>
         /// <param name="sheetName">表名</param>
-        public void setSheet(String sheetName)
+        public void SetSheet(String sheetName)
         {
 #if IS_USE_EXCEL_COM
             worksheet.Name = sheetName;
@@ -104,7 +104,7 @@ namespace Util.Common
         /// 如果不设置表名，则使用默认值
         /// </summary>
         /// <param name="sheetName">表名</param>
-        public void addSheet(String sheetName)
+        public void AddSheet(String sheetName)
         {
 #if IS_USE_EXCEL_COM
             worksheet = (Excel.Worksheet)workbook.Sheets.Add(After:(Excel.Worksheet)workbook.Sheets[workbook.Sheets.Count]);
@@ -119,7 +119,7 @@ namespace Util.Common
         /// 设置当前活动表
         /// </summary>
         /// <param name="sheetNO">表索引值</param>
-        public void setActivateSheet(byte sheetNO)
+        public void SetActivateSheet(byte sheetNO)
         {
 #if IS_USE_EXCEL_COM
             worksheet = (Excel.Worksheet)workbook.Sheets[sheetNO];
@@ -204,7 +204,7 @@ namespace Util.Common
             OleDbDataAdapter adapter = new OleDbDataAdapter(sql, objConn);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
-            dt = exchangeColName(dt, fields);
+            dt = ExchangeColName(dt, fields);
             objConn.Close();
             objConn.Dispose();
             return dt;
@@ -215,7 +215,7 @@ namespace Util.Common
         /// </summary>
         /// <param name="sheetName">sheet名称</param>
         /// <param name="screenTipMsg">鼠标移上去显示文字</param>
-        public void addLink(ExcelBE be,string sheetName, string screenTipMsg)
+        public void AddLink(ExcelBE be,string sheetName, string screenTipMsg)
         {
             
             string hyperlinkTargetAddress = sheetName+"!A1";
@@ -241,7 +241,7 @@ namespace Util.Common
         /// <param name="dt">excel数据</param>
         /// <param name="fields">列名对照</param>
         /// <returns></returns>
-        public static DataTable exchangeColName(DataTable dt, Dictionary<string, string> fields)
+        public static DataTable ExchangeColName(DataTable dt, Dictionary<string, string> fields)
         {
             for (int i = 0; i < dt.Columns.Count; i++)
             {
@@ -278,16 +278,25 @@ namespace Util.Common
         /// <summary>
         /// 导出
         /// </summary>
-        public void doExport()
+        public void DoExport()
         {
             app.Visible = true;
+        }
+
+        public static void Release()
+        {
+            if (current == null) return;
+            if (current.workbook != null) current.workbook.Close(true);
+            current. workbook = null;
+            if (current.app != null) current.app.Quit();
+            current.app = null;
         }
 
         /// <summary>
         /// 保存到文件
         /// </summary>
         /// <param name="filepath"></param>
-        public void save(string filepath)
+        public void Save(string filepath)
         {
             workbook.Saved = true;
             workbook.SaveCopyAs(filepath);

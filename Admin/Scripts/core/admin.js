@@ -813,7 +813,7 @@ Bn.Admin.View = {
                 var del_admin_ids = "";
                 var selectedRows = this.getSelectionModel().getSelections();
                 for (var flag = 0; flag < selectedRows.length; flag++) {
-                    del_admin_ids = del_admin_ids + selectedRows[flag].data.Admin_ID + ",";
+                    del_admin_ids = del_admin_ids + selectedRows[flag].data.ID + ",";
                 }
                 ExtServiceAdmin.deleteByIds(del_admin_ids);
                 this.doSelectAdmin();

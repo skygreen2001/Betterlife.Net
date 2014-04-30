@@ -276,14 +276,14 @@ namespace Tools
         private void btnExportexcel_Click(object sender, EventArgs e)
         {
             btnExportexcel.Enabled = false;
+            UtilExcel.Release();
             ExcelBE be = null;
             Dictionary<string, Dictionary<string, string>> tableInfos;
             tableInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.TableinfoList() : UtilMysql.TableinfoList();
 
-
             int rowHeight = 25;
             //数据库表说明
-            UtilExcel.Current().setSheet("Summary");
+            UtilExcel.Current().SetSheet("Summary");
             be = new ExcelBE(1, 1, "编号", "A1", "A1", "GRAYDARK", false, 10, 13.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
             UtilExcel.Current().InsertData(be);
             be = new ExcelBE(1, 2, "表名称", "B1", "B1", "GRAYDARK", false, 10, 32.63, rowHeight, 2, null, "Century Gothic", 10, true, null);
@@ -305,7 +305,7 @@ namespace Tools
                 be = new ExcelBE(rowno, 2, tablet_name, "B" + rowno, "B" + rowno, null, false, 10, 32.63, rowHeight, 1, null, "Century Gothic", 10, false, null);
                 UtilExcel.Current().InsertData(be);
                 //添加链接
-                UtilExcel.Current().addLink(be,tablet_name,"列名");
+                UtilExcel.Current().AddLink(be,tablet_name,"列名");
 
                 be = new ExcelBE(rowno, 3, tablename["Comment"], "C" + rowno, "C" + rowno, null, false, 10, 24.50, rowHeight, 1, null, "Century Gothic", 10, false, null);
                 UtilExcel.Current().InsertData(be);
@@ -322,7 +322,7 @@ namespace Tools
             {
                 rowHeight = 16;
                 columnInfos = (cbDbType.SelectedIndex == 0) ? UtilSqlserver.FieldInfoList(tablename["Name"]) : UtilMysql.FieldInfoList(tablename["Name"]);
-                UtilExcel.Current().addSheet(tablename["Name"]);
+                UtilExcel.Current().AddSheet(tablename["Name"]);
                 be = new ExcelBE(1, 1, "列名", "A1", "A1", "GRAYDARK", false, 10, 36.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
                 UtilExcel.Current().InsertData(be);
                 be = new ExcelBE(1, 2, "数据类型", "B1", "B1", "GRAYDARK", false, 10, 24.50, rowHeight, 2, null, "Century Gothic", 10, true, null);
@@ -339,7 +339,14 @@ namespace Tools
                 bool isDicComment = false;
                 foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
                 {
-                    comment = columnInfo["Comment"];
+                    if (columnInfo.Keys.Contains("Comment"))
+                    {
+                        comment = columnInfo["Comment"];
+                    }
+                    else
+                    {
+                        comment = "";
+                    }
                     if (UtilString.Contains(comment, "\r", "\n"))
                     {
 
@@ -359,8 +366,15 @@ namespace Tools
                 bool isColumnDicComment = false;
                 foreach (Dictionary<string, string> columnInfo in columnInfos.Values)
                 {
-                    rowHeight = 16;
-                    comment = columnInfo["Comment"];
+                    rowHeight = 16; 
+                    if (columnInfo.Keys.Contains("Comment"))
+                    {
+                        comment = columnInfo["Comment"];
+                    }
+                    else
+                    {
+                        comment = "";
+                    }
                     isColumnDicComment = false;
                     if (isDicComment)
                     {
@@ -426,13 +440,12 @@ namespace Tools
                 }
             }
 
-            UtilExcel.Current().setActivateSheet(1);
+            UtilExcel.Current().SetActivateSheet(1);
             //显示Excel
-            UtilExcel.Current().doExport();
+            UtilExcel.Current().DoExport();
 
             string sitename = ConfigurationManager.AppSettings["SiteName"];
-            UtilExcel.Current().save(System.Environment.CurrentDirectory + "\\" +sitename+ "数据模型.xlsx");
-
+            UtilExcel.Current().Save(System.Environment.CurrentDirectory + "\\" +sitename+ "数据模型.xlsx");
             btnExportexcel.Enabled = true;
         }
     }

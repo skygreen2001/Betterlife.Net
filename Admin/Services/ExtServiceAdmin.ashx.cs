@@ -76,7 +76,7 @@ namespace Admin.Services
             string msg  = "";
             if (condition != null)
             {
-                string id_str = condition["Admin_ID"];
+                string id_str = condition["ID"];
                 string Username = condition["Username"];
                 bool Flag = this.usernameHandler(Username, id_str);
                 if (Flag)
@@ -175,10 +175,9 @@ namespace Admin.Services
                     {
                         db.Admin.Remove(toDelete);
                     }
-                    db.SaveChanges();
                 }
             }
-
+            db.SaveChanges();
             return new JObject(
                 new JProperty("success", true)
             );

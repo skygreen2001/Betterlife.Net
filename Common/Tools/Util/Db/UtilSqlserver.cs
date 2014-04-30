@@ -270,6 +270,10 @@ namespace Tools.Util.Db
                 columnInfo["Fkpk"] = fkPk;
                 sql = string.Format(Sql_Table_Columns_Comment,  table_name, column_name);
                 DataTable column_comment = UtilSqlserver.SqlExecute(sql);
+                if ((column_comment == null) || (column_comment.Rows.Count == 0))
+                {
+                    Console.WriteLine("表：" + table_name + "-列:" + column_name+"【无注释】");
+                }
                 foreach (DataRow item_c in column_comment.Rows)
                 {
                     columnInfo["Comment"] = (string)item_c.ItemArray[1];
