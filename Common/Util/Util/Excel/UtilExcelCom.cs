@@ -17,28 +17,31 @@ namespace Util.Common
 {
     /// <summary>
     /// 工具类：导入导出Excel的基类
-    /// http://www.cnblogs.com/springyangwc/archive/2011/08/12/2136498.html
+    /// 
+    /// Com组件的方式读写Excel
+    /// 需要安装Office，一般只在本地工具集运行
     /// </summary>
-    public class UtilExcel
+    /// <see cref="http://www.cnblogs.com/springyangwc/archive/2011/08/12/2136498.html"/>
+    public partial class UtilExcelCom
     {
 #if IS_USE_EXCEL_COM
         private Excel.Application app = null;
         private Excel.Workbook workbook = null;
         private Excel.Worksheet worksheet = null;
         private Excel.Range workSheet_range = null;
-        private static UtilExcel current;
+        private static UtilExcelCom current;
 #endif
 
-        public static UtilExcel Current()
+        public static UtilExcelCom Current()
         {
-            if (current == null) current = new UtilExcel();
+            if (current == null) current = new UtilExcelCom();
             return current;
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public UtilExcel()
+        public UtilExcelCom()
         {
             CreateDoc();
         }
@@ -73,9 +76,11 @@ namespace Util.Common
         /// </summary>
         public int GetSheetCount()
         {
+            int result = 0;
 #if IS_USE_EXCEL_COM
-            return workbook.Sheets.Count;
+            result=workbook.Sheets.Count;
 #endif
+            return result;
         }
 
         /// <summary>
@@ -83,9 +88,11 @@ namespace Util.Common
         /// </summary>
         public string GetSheetName()
         {
+            string result = "";
 #if IS_USE_EXCEL_COM
-            return worksheet.Name;
+            result=worksheet.Name;
 #endif
+            return result;
         }
 
         /// <summary>
@@ -123,13 +130,12 @@ namespace Util.Common
         {
 #if IS_USE_EXCEL_COM
             worksheet = (Excel.Worksheet)workbook.Sheets[sheetNO];
-            worksheet.Activate();
+            ((Excel.Worksheet)worksheet).Activate();
 #endif
         }
         
-
         /// <summary>
-        /// 向当前活动表插入
+        /// 向当前活动表插入数据
         /// </summary>
         /// <param name="be"></param>
         public void InsertData(ExcelBE be)
@@ -190,34 +196,13 @@ namespace Util.Common
         }
 
         /// <summary>
-        /// 读取excel文件数据
-        /// </summary>
-        /// <param name="filepath">文件物理路径</param>
-        /// <param name="fields">字段映射</param>
-        /// <returns></returns>
-        public DataTable CallExcel(string filepath, Dictionary<string, string> fields)
-        {
-            string strConn = GetExcelConnectionString(filepath);
-            OleDbConnection objConn = new OleDbConnection(strConn);
-            objConn.Open();
-            string sql = "select * from [Worksheet$]";
-            OleDbDataAdapter adapter = new OleDbDataAdapter(sql, objConn);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            dt = ExchangeColName(dt, fields);
-            objConn.Close();
-            objConn.Dispose();
-            return dt;
-        }
-
-        /// <summary>
         /// 在当前列上加链接
         /// </summary>
         /// <param name="sheetName">sheet名称</param>
         /// <param name="screenTipMsg">鼠标移上去显示文字</param>
         public void AddLink(ExcelBE be,string sheetName, string screenTipMsg)
         {
-            
+#if IS_USE_EXCEL_COM
             string hyperlinkTargetAddress = sheetName+"!A1";
             worksheet.Hyperlinks.Add(
                 workSheet_range,
@@ -233,46 +218,7 @@ namespace Util.Common
             workSheet_range.Font.Bold = be.FontBold;
             workSheet_range.Font.Size = be.FontSize;
             workSheet_range.NumberFormat = be.Formart;
-        }
-
-        /// <summary>
-        /// 中文表头转为数据表字段
-        /// </summary>
-        /// <param name="dt">excel数据</param>
-        /// <param name="fields">列名对照</param>
-        /// <returns></returns>
-        public static DataTable ExchangeColName(DataTable dt, Dictionary<string, string> fields)
-        {
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                bool exist = fields.ContainsKey(dt.Columns[i].ColumnName);
-                if (exist)
-                {
-                    dt.Columns[i].ColumnName = fields[dt.Columns[i].ColumnName];
-                }
-            }
-            return dt;
-        }
-
-        /// <summary>
-        /// 判断连接符
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public static string GetExcelConnectionString(string filepath)
-        {
-            string connectionString = string.Empty;
-            string fileExtension = filepath.Substring(filepath.LastIndexOf(".") + 1);
-            switch (fileExtension)
-            {
-                case "xls":
-                    connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + filepath + ";" + ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1\"";
-                    break;
-                case "xlsx":
-                    connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + filepath + ";" + ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1\"";
-                    break;
-            }
-            return connectionString;
+#endif
         }
 
         /// <summary>
@@ -280,16 +226,25 @@ namespace Util.Common
         /// </summary>
         public void DoExport()
         {
+#if IS_USE_EXCEL_COM
             app.Visible = true;
+#endif
         }
 
+        /// <summary>
+        /// 释放资源
+        /// </summary>
         public static void Release()
         {
+#if IS_USE_EXCEL_COM
             if (current == null) return;
-            if (current.workbook != null) current.workbook.Close(true);
-            current. workbook = null;
+            current.worksheet = null;
+            //if (current.workbook != null) current.workbook.Close(true, Type.Missing, Type.Missing);
+            current.workbook = null;
             if (current.app != null) current.app.Quit();
             current.app = null;
+            current = null;
+#endif
         }
 
         /// <summary>
@@ -298,8 +253,10 @@ namespace Util.Common
         /// <param name="filepath"></param>
         public void Save(string filepath)
         {
+#if IS_USE_EXCEL_COM
             workbook.Saved = true;
             workbook.SaveCopyAs(filepath);
+#endif
         }
     }
 }

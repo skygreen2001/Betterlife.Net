@@ -9,8 +9,9 @@ namespace Test
     [TestClass]
     public class BetterlifeNetUnitTest
     {
-        private const string PersonOriginal = "John Doe";
-        private const string PersonNameUpdated = "Updated Name";
+        private const string PersonOriginal = "skygreen";
+        private const string PersonNameUpdated = "pupu";
+        private const string Password = "4008001666";
         private const int PersonID = 1;
 
         private static BetterlifeNetEntities db = new BetterlifeNetEntities();
@@ -32,7 +33,7 @@ namespace Test
             Admin admin = new Admin();
             admin.Username = PersonOriginal;
             admin.Department_ID = 1;
-            admin.Password = "4008001666";
+            admin.Password = Password;
             //admin.ID = Guid.NewGuid();
             db.Admin.Add(admin);
             db.SaveChanges();

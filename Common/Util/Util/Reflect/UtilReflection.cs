@@ -39,7 +39,7 @@ namespace Util.Reflection
         /// </summary>
         /// <param name="classType"></param>
         /// <returns></returns>
-        public static List<string> GetAllStaticFieldsByPrefix(Type classType,string prefix)
+        public static List<string> GetAllStaticFieldsByPrefix(Type classType, string prefix)
         {
             List<string> result = null;
             FieldInfo[] fields = classType.GetFields(BindingFlags.Public | BindingFlags.Static);
@@ -104,7 +104,7 @@ namespace Util.Reflection
         /// <param name="oldPrefix"></param>
         /// <param name="newPrefix"></param>
         /// <returns></returns>
-        public static object GetPublicStaticFieldValue(Type type, string fieldName,string oldPrefix,string newPrefix)
+        public static object GetPublicStaticFieldValue(Type type, string fieldName, string oldPrefix, string newPrefix)
         {
                 string viewfield_name = fieldName.Replace(oldPrefix, "");
                 string result = (string) UtilReflection.GetPublicStaticFieldValue(type, newPrefix + viewfield_name);
@@ -161,7 +161,8 @@ namespace Util.Reflection
         /// </summary>
         /// <param name="classFullName">类的完整名称如：callcenter.GlobalConfig</param>
         /// <param name="data">指定Key-Value值</param>
-        public static void SetPublicStaticProperties(Type classType, Hashtable data){            
+        public static void SetPublicStaticProperties(Type classType, Hashtable data)
+        {            
             PropertyInfo propertyInfo;
 
             foreach (DictionaryEntry property in data)

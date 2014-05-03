@@ -97,16 +97,16 @@ Bn.Admin.Store = {
      */
     departmentStoreForCombo:new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
-            url: 'HttpData/Core/Department.ashx'
+            url: '../HttpData/Core/Department.ashx'
         }),
         reader: new Ext.data.JsonReader({
             root: 'departments',
             autoLoad: true,
             totalProperty: 'totalCount',
-            idProperty: 'ID'
+            idProperty: 'Department_ID'
         }, [
-            {name: 'ID', mapping: 'ID'},
-            {name: 'department_name', mapping: 'department_name'}
+            {name: 'Department_ID', mapping: 'Department_ID'},
+            {name: 'Department_Name', mapping: 'Department_Name'}
         ])
     })
 };
@@ -154,6 +154,29 @@ Bn.Admin.View = {
                             { fieldLabel: '真实姓名', name: 'Realname' },
                             { fieldLabel: '密码(<font color=red>*</font>)', name: 'Password', inputType: 'Password', ref: '../Password' },
                             { xtype: 'hidden', name: 'Password_old', ref: '../Password_old' },
+                            {
+                                fieldLabel: '部门', xtype: 'combo', name: 'Department_Name', ref: '../Department_Name',
+                                store: Bn.Admin.Store.departmentStoreForCombo, emptyText: '请选择部门', itemSelector: 'div.search-item',
+                                loadingText: '查询中...', width: 570, pageSize: Bn.Admin.Config.PageSize,
+                                displayField: 'Department_Name', grid: this,
+                                mode: 'remote', editable: true, minChars: 1, autoSelect: true, typeAhead: false,
+                                forceSelection: true, triggerAction: 'all', resizable: false, selectOnFocus: true,
+                                tpl: new Ext.XTemplate(
+                                    '<tpl for="."><div class="search-item">',
+                                        '<h3>{Department_Name}</h3>',
+                                    '</div></tpl>'
+                                ),
+                                listeners: {
+                                    'beforequery': function (event) { delete event.combo.lastQuery; }
+                                },
+                                onSelect: function (record, index) {
+                                    if (this.fireEvent('beforeselect', this, record, index) !== false) {
+                                        this.grid.Department_ID.setValue(record.data.ID);
+                                        this.grid.Department_Name.setValue(record.data.Department_Name);
+                                        this.collapse();
+                                    }
+                                }
+                            },
                             {
                                 fieldLabel: '扮演角色', hiddenName: 'Roletype', xtype: 'combo', ref: '../Roletype',
                                 mode: 'local', triggerAction: 'all', lazyRender: true, editable: false, allowBlank: false,
@@ -229,32 +252,6 @@ Bn.Admin.View = {
                 }]
             }, config);
             Bn.Admin.View.EditWindow.superclass.constructor.call(this, config);
-        },
-        /**
-         * 查找用户
-         */
-        getStaff: function () {
-            var userName = Bn.Admin.View.Running.edit_window.StaffName.Realname.getValue();
-            if (!userName) {
-                Ext.Msg.alert('提示', '<font color=red>请先输入用户名！</font>');
-                return false;
-            }
-            var invocStaff = Ext.getCmp("invocationStaff");
-            invocStaff.setText("正在获取用户<img src='/View/Images/ico/loading.gif' align='absbottom'/>");
-            ExtServiceAdmin.getStaff(userName, function (provider, response) {
-                if (response.result) {
-                    if (response.result.success) {
-                        var info = response.result.info;
-                        var editwindow = Bn.Admin.View.Running.edit_window;
-                        editwindow.Username.setValue(info.Username);
-                    } else {
-                        Ext.Msg.alert('提示', "<font color=red>" + response.result.msg + "</font>");
-                    }
-                } else {
-                    Ext.Msg.alert('提示', "<font color=red>获取失败,请重试！</font>");
-                }
-                invocStaff.setText("<font color=green>获取用户</font>");
-            });
         }
     }),
     /**
@@ -362,7 +359,75 @@ Bn.Admin.View = {
             }
         })
     },
-
+    /**
+	 * 窗口：批量上传系统管理人员
+	 */
+    UploadWindow: Ext.extend(Ext.Window, {
+        constructor: function (config) {
+            config = Ext.apply({
+                title: '批量上传系统管理人员数据', width: 400, height: 110, minWidth: 300, minHeight: 100,
+                layout: 'fit', plain: true, bodyStyle: 'padding:5px;', buttonAlign: 'center', closeAction: "hide",
+                items: [
+					new Ext.form.FormPanel({
+					    ref: 'uploadForm', fileUpload: true,
+					    width: 500, labelWidth: 50, autoHeight: true, baseCls: 'x-plain',
+					    frame: true, bodyStyle: 'padding: 10px 10px 10px 10px;',
+					    defaults: {
+					        anchor: '95%', allowBlank: false, msgTarget: 'side'
+					    },
+					    items: [{
+					        xtype: 'fileuploadfield',
+					        fieldLabel: '文 件', name: 'upload_file', ref: 'upload_file',
+					        emptyText: '请上传系统管理人员Excel文件', buttonText: '',
+					        accept: 'application/vnd.ms-excel',
+					        buttonCfg: { iconCls: 'upload-icon' }
+					    }]
+					})
+                ],
+                buttons: [{
+                    text: '上 传',
+                    scope: this,
+                    handler: function () {
+                        uploadWindow = this;
+                        validationExpression = /([\u4E00-\u9FA5]|\w)+(.xlsx|.XLSX|.xls|.XLS)$/;/**允许中文名*/
+                        var isValidExcelFormat = new RegExp(validationExpression);
+                        var result = isValidExcelFormat.test(this.uploadForm.upload_file.getValue());
+                        if (!result) {
+                            Ext.Msg.alert('提示', '请上传Excel文件，后缀名为xls或者xlsx！');
+                            return;
+                        }
+                        if (this.uploadForm.getForm().isValid()) {
+                            Ext.Msg.show({
+                                title: '请等待', msg: '文件正在上传中，请稍后...',
+                                animEl: 'loading', icon: Ext.Msg.WARNING,
+                                closable: true, progress: true, progressText: '', width: 300
+                            });
+                            this.uploadForm.getForm().submit({
+                                url: 'index.php?go=admin.upload.uploadAdmin',
+                                success: function (form, response) {
+                                    Ext.Msg.alert('成功', '上传成功');
+                                    uploadWindow.hide();
+                                    uploadWindow.uploadForm.upload_file.setValue('');
+                                    Bn.Admin.View.Running.AdminGrid.doSelectAdmin();
+                                },
+                                failure: function (form, response) {
+                                    Ext.Msg.alert('错误', response.result.data);
+                                }
+                            });
+                        }
+                    }
+                }, {
+                    text: '取 消',
+                    scope: this,
+                    handler: function () {
+                        this.uploadForm.upload_file.setValue('');
+                        this.hide();
+                    }
+                }]
+            }, config);
+            Bn.Admin.View.UploadWindow.superclass.constructor.call(this, config);
+        }
+    }),
     /**
 	 * 视图：系统管理人员列表
 	 */
@@ -449,14 +514,28 @@ Bn.Admin.View = {
 								    handler: function () {
 								        this.updateAdmin();
 								    }
-								}
-                                , '-', {
+								}, '-', {
                                     text: '删除系统管理人员', ref: '../../btnRemove', iconCls: 'icon-delete', disabled: true,
                                     handler: function () {
                                         this.deleteAdmin();
                                     }
-                                }
-                                , '-', {
+                                }, '-', {
+                                    xtype: 'tbsplit', text: '导入', iconCls: 'icon-import',
+                                    handler: function () {
+                                        this.importAdmin();
+                                    },
+                                    menu: {
+                                        xtype: 'menu', plain: true,
+                                        items: [
+											{ text: '批量导入系统管理人员', iconCls: 'icon-import', scope: this, handler: function () { this.importAdmin() } }
+                                        ]
+                                    }
+                                }, '-', {
+                                    text: '导出', iconCls: 'icon-export',
+                                    handler: function () {
+                                        this.exportAdmin();
+                                    }
+                                }, '-', {
                                     xtype: 'tbsplit', text: '查看系统管理人员', ref: '../../tvpView', iconCls: 'icon-updown',
                                     enableToggle: true, disabled: true,
                                     handler: function () { this.showAdmin() },
@@ -819,6 +898,25 @@ Bn.Admin.View = {
                 this.doSelectAdmin();
                 Ext.Msg.alert("提示", "删除成功！");
             }
+        },
+        /**
+		 * 导出系统管理人员
+		 */
+        exportAdmin: function () {
+            ExtServiceAdmin.exportAdmin(this.filter, function (provider, response) {
+                if (response.result.data) {
+                    window.open(response.result.data);
+                }
+            });
+        },
+        /**
+		 * 导入系统管理人员
+		 */
+        importAdmin: function () {
+            if (Bn.Admin.View.current_uploadWindow == null) {
+                Bn.Admin.View.current_uploadWindow = new Bn.Admin.View.UploadWindow();
+            }
+            Bn.Admin.View.current_uploadWindow.show();
         }
     }),
     /**

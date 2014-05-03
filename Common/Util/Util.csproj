@@ -51,7 +51,7 @@
     <Compile Include="Util\Common\UtilDictionary.cs" />
     <Compile Include="Util\Common\UtilImage.cs" />
     <Compile Include="Util\Excel\ExcelBE.cs" />
-    <Compile Include="Util\Excel\UtilExcel.cs" />
+    <Compile Include="Util\Excel\UtilExcelCom.cs" />
     <Compile Include="Util\Common\UtilFile.cs" />
     <Compile Include="Util\Common\UtilNet.cs" />
     <Compile Include="Util\Common\UtilNumber.cs" />
@@ -60,6 +60,8 @@
     <Compile Include="Util\Common\UtilString.cs" />
     <Compile Include="Util\Common\UtilObjectDump.cs" />
     <Compile Include="Util\Common\UtilSystem.cs" />
+    <Compile Include="Util\Excel\UtilExcelNpoi.cs" />
+    <Compile Include="Util\Excel\UtilExcelOle.cs" />
     <Compile Include="Util\Log\ConfigurationSectionHandler.cs" />
     <Compile Include="Util\Log\Helper.cs" />
     <Compile Include="Util\Log\IWriter.cs" />
@@ -72,6 +74,11 @@
     <Compile Include="Util\Log\Writer\WinEventWriter.cs" />
     <Compile Include="Util\Reflect\UtilBeans.cs" />
     <Compile Include="Util\Reflect\UtilReflection.cs" />
+    <Compile Include="Util\type\datatable\ConversionAttribute.cs" />
+    <Compile Include="Util\type\datatable\DataTableConverter.cs" />
+    <Compile Include="Util\type\datatable\IDataTableConverter.cs" />
+    <Compile Include="Util\type\datatable\MyList.cs" />
+    <Compile Include="Util\type\datatable\UtilDataTable.cs" />
     <Compile Include="Util\Xml\NamespaceIgnorantXmlTextReader.cs" />
     <Compile Include="Util\Xml\UtilXmlConvertor.cs" />
     <Compile Include="Util\Xml\XTWFND.cs" />

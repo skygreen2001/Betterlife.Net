@@ -214,13 +214,24 @@ namespace Tools.Util.Db
         {
             Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
             DataTable tables = UtilSqlserver.SqlExecute(Sql_Table_Comment);
+            if ((tables == null) || (tables.Rows.Count <= 0))
+            {
+                tables = UtilSqlserver.SqlExecute(Sql_Tables);
+            }
             string tablename,key;
             foreach (DataRow item in tables.Rows)
             {
                 tablename = (string)item.ItemArray[0];
                 Dictionary<string, string> tableInfo = new Dictionary<string, string>();
                 tableInfo["Name"] = tablename;
-                tableInfo["Comment"] = (string)item.ItemArray[1];
+                if (item.ItemArray.Count() > 1)
+                {
+                    tableInfo["Comment"] = (string)item.ItemArray[1];
+                }
+                else
+                {
+                    tableInfo["Comment"] = (string)item.ItemArray[0];
+                }
                 key = tablename.ToLower();
                 result[key] = tableInfo;
             }

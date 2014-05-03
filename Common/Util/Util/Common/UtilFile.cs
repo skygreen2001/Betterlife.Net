@@ -24,6 +24,19 @@ namespace Util.Common
             file = null;
         }
 
+
+        public static bool CreateDir(string fullPathFileName)
+        {
+            if (string.IsNullOrEmpty(fullPathFileName))return false;
+            if (File.Exists(fullPathFileName))
+            {
+                return false;
+            }else{
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPathFileName));
+            }
+            return true;
+        }
+
         /// <summary>
         /// 移动目录
         /// </summary>
@@ -63,26 +76,26 @@ namespace Util.Common
         /// 复制目录，提供是否覆盖目标的选项参数
         /// </summary>
         /// <param name="sourceDirectory"></param>
-        /// <param name="destDreictory"></param>
+        /// <param name="destDirectory"></param>
         /// <param name="copySubDirs"></param>
-        public static void CopyDirectoryTo( string sourceDirectory, string destDreictory, bool copySubDirs )
+        public static void CopyDirectoryTo( string sourceDirectory, string destDirectory, bool copySubDirs )
         {
             //直接异步开始并结束，没有回调
             //IAsyncResult result = BeginCopyDirectoryTo( sourceDirectory, destDreictory, copySubDirs, null, null );
             //EndCopyDirectoryTo( result );
 
             if ( String.IsNullOrEmpty( sourceDirectory ) ) throw new ArgumentNullException( "sourceDirectory" );
-            if ( String.IsNullOrEmpty( destDreictory ) ) throw new ArgumentNullException( "destDreictory" );
+            if ( String.IsNullOrEmpty( destDirectory ) ) throw new ArgumentNullException( "destDreictory" );
             if ( sourceDirectory == Path.GetPathRoot( sourceDirectory ) ) throw new IOException( "不能复制根目录!" );
-            if ( sourceDirectory == destDreictory ) throw new IOException( "目标目录与源目录相同!" );
+            if ( sourceDirectory == destDirectory ) throw new IOException( "目标目录与源目录相同!" );
 
             DirectoryInfo source = new DirectoryInfo( sourceDirectory );
             if ( !source.Exists ) throw new DirectoryNotFoundException( sourceDirectory );
 
-            DirectoryInfo dest = new DirectoryInfo( destDreictory );
+            DirectoryInfo dest = new DirectoryInfo( destDirectory );
             if ( !dest.Exists )
             {
-                Directory.CreateDirectory( destDreictory );
+                Directory.CreateDirectory( destDirectory );
             }
             else
             {
@@ -92,7 +105,7 @@ namespace Util.Common
             //逐一复制文件
             foreach ( FileInfo file in source.GetFiles() )
             {
-                string destFullName = Path.Combine( destDreictory, file.Name );
+                string destFullName = Path.Combine( destDirectory, file.Name );
                 FileInfo destInfo = new FileInfo( destFullName );
                 //若已存在，需要将目标文件的只读属性去掉
                 if ( destInfo.Exists ) destInfo.IsReadOnly = false;
@@ -106,7 +119,7 @@ namespace Util.Common
                 DirectoryInfo[] dirs = source.GetDirectories();
                 foreach ( DirectoryInfo subdir in dirs )
                 {
-                    string temppath = Path.Combine( destDreictory, subdir.Name );
+                    string temppath = Path.Combine( destDirectory, subdir.Name );
                     CopyDirectoryTo( subdir.FullName, temppath, copySubDirs );
                 }
             }

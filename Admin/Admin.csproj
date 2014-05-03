@@ -110,8 +110,12 @@
     <Compile Include="ActionBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HttpData\Core\BasicHandler.ashx.cs">
+      <DependentUpon>BasicHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="HttpData\Core\Department.ashx.cs">
       <DependentUpon>Department.ashx</DependentUpon>
@@ -2106,8 +2110,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Upload\Attachment\" />
-    <Folder Include="Upload\Images\" />
+    <Folder Include="App_Data\uploads\attachment\" />
+    <Folder Include="App_Data\uploads\images\" />
+    <Folder Include="HttpData\Import\" />
+    <Folder Include="Uploads\attachment\admin\" />
+    <Folder Include="Uploads\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -2172,6 +2179,9 @@
   <ItemGroup>
     <Content Include="HttpData\Core\Department.ashx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="HttpData\Core\BasicHandler.ashx" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -2188,7 +2198,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>2628</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:1153/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
