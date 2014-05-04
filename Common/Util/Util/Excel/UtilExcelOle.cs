@@ -19,7 +19,7 @@ namespace Util.Common
     /// </summary>
     /// <see cref="http://www.cnblogs.com/yiyumeng/archive/2012/01/19/2327469.html"/>
     /// <see cref="http://developer.51cto.com/art/201302/380622.htm"/>
-    public partial class UtilExcelOle
+    public class UtilExcelOle
     {
         #region 自定义读写Excel方式
         /// <summary>

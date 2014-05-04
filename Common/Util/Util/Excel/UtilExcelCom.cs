@@ -22,7 +22,7 @@ namespace Util.Common
     /// 需要安装Office，一般只在本地工具集运行
     /// </summary>
     /// <see cref="http://www.cnblogs.com/springyangwc/archive/2011/08/12/2136498.html"/>
-    public partial class UtilExcelCom
+    public class UtilExcelCom
     {
 #if IS_USE_EXCEL_COM
         private Excel.Application app = null;

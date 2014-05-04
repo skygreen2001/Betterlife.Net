@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Util.Common
 {
-    public partial class UtilExcelNpoi
+    public class UtilExcelNpoi
     {
     }
 }

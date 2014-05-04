@@ -65,12 +65,17 @@ namespace Util.DataType.Datatable
                 //加入到DataTable
                 dt.Rows.Add(row);
             }
+            //调整列顺序。将列:CommitTime,UpdateTime放置在最后
+            if (dt.Columns.Contains("CommitTime"))
+                dt.Columns["CommitTime"].SetOrdinal(dt.Columns.Count - 1);
+            if (dt.Columns.Contains("UpdateTime"))
+                dt.Columns["UpdateTime"].SetOrdinal(dt.Columns.Count - 1);
             return dt;
         }
 
         /// <summary>
-        /// 转换成DataTable
-        /// DataTable 修改列名 删除列 调整列顺序
+        /// 将DataTable删除不需要显示的列
+        /// DataTable 修改列名 删除列 
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="column_names">需要删除的列名</param>
@@ -78,17 +83,17 @@ namespace Util.DataType.Datatable
         /// <returns></returns>
         public static void DeleteColumns(DataTable dt,params string[] column_names)
         {
-            string[] KeyColumns = new string[2] {"CommitTime","UpdateTime" };
             foreach (string column_name in column_names)
             {
                 if (dt.Columns.Contains(column_name))dt.Columns.Remove(column_name);
             }
-            if (dt.Columns.Contains("CommitTime"))
-                dt.Columns["CommitTime"].SetOrdinal(dt.Columns.Count - 1);
-            if (dt.Columns.Contains("UpdateTime"))
-                dt.Columns["UpdateTime"].SetOrdinal(dt.Columns.Count - 1);
         }
 
+        /// <summary>
+        /// 替换名称
+        /// </summary>
+        /// <param name="dt">数据源</param>
+        /// <param name="columnNames">映射key为原列名，value为新列名</param>
         public static void ReplaceColumnName(DataTable dt, Dictionary<string, string> columnNames)
         {
             foreach (KeyValuePair<string, string> item in columnNames)
