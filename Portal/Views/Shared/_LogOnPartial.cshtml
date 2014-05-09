@@ -1,0 +1,8 @@
+﻿@if(Request.IsAuthenticated) {
+    <span>@Html.ActionLink("修改密码", "ChangePassword", "Account")</span>
+    <text>欢迎 <strong>@User.Identity.Name</strong>!
+    [ @Html.ActionLink("注销", "LogOff", "Account") ]</text>
+}
+else {
+    @:[ @Html.ActionLink("登录", "LogOn", "Account") ]
+}

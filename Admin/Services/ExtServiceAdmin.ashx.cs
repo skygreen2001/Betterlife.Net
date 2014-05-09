@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Data;
 using Administrator=Database.Admin;
 using Util.Common;
-using Util.Util.Common;
 using Database.Domain.Enums;
 using Database;
 using System.Reflection;
@@ -45,7 +44,7 @@ namespace Admin.Services
             {
                 string Username = adminForm["Username"];
                 string admin_id = null;
-                bool Flag = this.usernameHandler(Username, admin_id);
+                bool Flag = this.IsUsernameExist(Username, admin_id);
                 if (Flag)
                 {
                     msg = "该用户名已存在,请重新输入!";
@@ -93,7 +92,7 @@ namespace Admin.Services
             {
                 string id_str = adminForm["ID"];
                 string Username = adminForm["Username"];
-                bool Flag = this.usernameHandler(Username, id_str);
+                bool Flag = this.IsUsernameExist(Username, id_str);
                 if (Flag)
                 {
                     msg = "该用户名已存在,请重新输入!";
@@ -202,6 +201,7 @@ namespace Admin.Services
             );
         }
 
+        //TODO:导入:系统管理员
         /// <summary>
         /// 导入:系统管理员
         /// </summary>
@@ -268,7 +268,7 @@ namespace Admin.Services
         /// <param name="Username">用户名</param>
         /// <param name="admin_id">用户ID</param>
         /// <returns>true:已使用 ;false:未使用</returns>
-        private bool usernameHandler(string Username, string admin_id)
+        private bool IsUsernameExist(string Username, string admin_id)
         {
             bool Used = true;
             var adminToUpdate=db.Admin.FirstOrDefault(person => person.Username == Username);

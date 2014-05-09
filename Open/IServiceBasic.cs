@@ -19,7 +19,7 @@ namespace Open
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        // TODO: Add your service operations here
+        // TODO: 在这里添加需定义的服务【暂无】
     }
 
 

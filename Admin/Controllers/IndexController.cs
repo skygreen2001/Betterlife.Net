@@ -1,14 +1,19 @@
 ﻿using Admin.Models;
+using Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Administrator = Database.Admin;
 
 namespace Admin.Controllers
 {
     public class IndexController : Controller
     {
+
+        protected static BetterlifeNetEntities db = new BetterlifeNetEntities();
+
         //首页
         // GET: /Index/
         public ActionResult Index()
@@ -34,14 +39,23 @@ namespace Admin.Controllers
 
                 if (model.ValidateCode.Equals(ValidateNumber))
                 {
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    Administrator admin = db.Admin.SingleOrDefault(e => e.Username.Equals(model.UserName) &&
+                                         e.Password.Equals(model.Password));
+                    if (admin == null)
                     {
-                        return Redirect(returnUrl);
+                        ModelState.AddModelError("", "用户名或密码不正确，请重试！");
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Index");
+                        if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Index");
+                        }
                     }
                 }
                 else

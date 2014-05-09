@@ -9,7 +9,12 @@ namespace Business.Core.Service
 {
     public class ServiceBasic
     {
-        private static BetterlifeNetEntities db = new BetterlifeNetEntities();
+        protected static BetterlifeNetEntities db;
+
+
+        public ServiceBasic(){
+            if (db==null) db = new BetterlifeNetEntities();
+        }
 
     }
 }
