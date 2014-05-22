@@ -79,6 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ToolModifyFile.cs" />
+    <Compile Include="DbScripts\Migrant\MigrantFromMysql.cs" />
+    <Compile Include="DbScripts\Migrant\MigrantFromSqlserver.cs" />
     <Compile Include="DbScripts\ToolDbScripts.cs" />
     <Compile Include="Default.cs" />
     <Compile Include="ToolDbScriptsForm.cs">

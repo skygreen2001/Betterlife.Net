@@ -131,7 +131,7 @@
             this.btnMigrantScript.Name = "btnMigrantScript";
             this.btnMigrantScript.Size = new System.Drawing.Size(125, 56);
             this.btnMigrantScript.TabIndex = 9;
-            this.btnMigrantScript.Text = "移植数据库脚本[Mysql->SQLServer]";
+            this.btnMigrantScript.Text = "移植数据库脚本[SQLServer->Mysql]";
             this.btnMigrantScript.UseVisualStyleBackColor = true;
             this.btnMigrantScript.Click += new System.EventHandler(this.btnMigrantScript_Click);
             // 

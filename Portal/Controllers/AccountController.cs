@@ -123,6 +123,8 @@ namespace Portal.Controllers
         {
             if (ModelState.IsValid)
             {
+                MembershipCreateStatus tt = new MembershipCreateStatus();
+
 
                 // 在某些出错情况下，ChangePassword 将引发异常，
                 // 而不是返回 false。

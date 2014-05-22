@@ -31,7 +31,7 @@ namespace Tools
             cbDatabases.SelectedIndex = 0;
             btnColumns.Enabled = false;
 
-            btnMigrantScript.Enabled = false;
+            //btnMigrantScript.Enabled = false;
             btnDropAllTables.Enabled = true;
 
         }
@@ -180,7 +180,15 @@ namespace Tools
         private void btnMigrantScript_Click(object sender, EventArgs e)
         {
             this.btnMigrantScript.Enabled = false;
-            string sql=ToolDbScripts.MigrantFromMysql();
+            string sql="";
+            if (cbDbType.SelectedIndex == (int)DbType.SqlServer)
+            {
+                sql = ToolDbScripts.DbCreateMigrantFromSqlserver();
+            }
+            else
+            {
+                sql = ToolDbScripts.DbCreateMigrantFromMysql();
+            }
             this.listResult.Clear();
             this.listResult.AppendText(sql);
             this.btnMigrantScript.Enabled = true;
@@ -196,12 +204,18 @@ namespace Tools
         {
             Default.mainWindow.Show();
         }
+
         private bool isDbChanged = false;
         private void cbDatabases_TextChanged(object sender, EventArgs e)
         {
             isDbChanged = true;
         }
 
+        /// <summary>
+        /// 选择不同的数据库
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbDatabases_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (isDbChanged)
@@ -230,6 +244,11 @@ namespace Tools
             isDbTypeChanged = true;
         }
 
+        /// <summary>
+        /// 选择不同数据库类型
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbDbType_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (isDbTypeChanged)
@@ -238,13 +257,15 @@ namespace Tools
                 if (cbDbType.SelectedIndex == (int)DbType.SqlServer)
                 {
                     UtilSqlserver.SetDatabase(UtilSqlserver.Database_Name);
-                    btnMigrantScript.Enabled = false;
+                    //btnMigrantScript.Enabled = false;
+                    btnMigrantScript.Text = "移植数据库脚本[SQLServer->Mysql]";
                     btnDropAllTables.Enabled = true;
                 }
                 else
                 {
                     UtilMysql.SetDatabase(UtilMysql.Database_Name);
-                    btnMigrantScript.Enabled = true;
+                   // btnMigrantScript.Enabled = true;
+                    btnMigrantScript.Text = "移植数据库脚本[Mysql->SQLServer]";
                     btnDropAllTables.Enabled = false;
                 }
                 cbDatabases.Text = "";
