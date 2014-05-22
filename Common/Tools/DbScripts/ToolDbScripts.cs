@@ -101,7 +101,7 @@ GO
                 //获取表名
                 tablename = tableInfo["Name"];
                 tablename = UtilString.UcFirst(tablename);
-                columnInfos = UtilMysql.FieldInfoList(tablename);
+                columnInfos = UtilSqlserver.FieldInfoList(tablename);
                 allTbNames.Add(tablename);
                 string column_name;
 
