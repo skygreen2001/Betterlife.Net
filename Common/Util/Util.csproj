@@ -51,6 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pinyin\NPinyin\Pinyin.cs" />
+    <Compile Include="Pinyin\NPinyin\PyCode.cs" />
+    <Compile Include="Pinyin\NPinyin\PyHash.cs" />
+    <Compile Include="Pinyin\UtilPinyin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\UtilDateTime.cs" />
     <Compile Include="Common\UtilDictionary.cs" />
@@ -80,11 +84,11 @@
     <Compile Include="Log\Writer\WinEventWriter.cs" />
     <Compile Include="Reflect\UtilBeans.cs" />
     <Compile Include="Reflect\UtilReflection.cs" />
-    <Compile Include="type\datatable\ConversionAttribute.cs" />
-    <Compile Include="type\datatable\DataTableConverter.cs" />
-    <Compile Include="type\datatable\IDataTableConverter.cs" />
-    <Compile Include="type\datatable\MyList.cs" />
-    <Compile Include="type\datatable\UtilDataTable.cs" />
+    <Compile Include="Type\Datatable\ConversionAttribute.cs" />
+    <Compile Include="Type\Datatable\DataTableConverter.cs" />
+    <Compile Include="Type\Datatable\IDataTableConverter.cs" />
+    <Compile Include="Type\Datatable\MyList.cs" />
+    <Compile Include="Type\Datatable\UtilDataTable.cs" />
     <Compile Include="Xml\NamespaceIgnorantXmlTextReader.cs" />
     <Compile Include="Xml\UtilXmlConvertor.cs" />
     <Compile Include="Xml\XTWFND.cs" />

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Util.Common;
 
-namespace Test
+namespace Test.Util
 {
     /// <summary>
     /// 测试加密算法

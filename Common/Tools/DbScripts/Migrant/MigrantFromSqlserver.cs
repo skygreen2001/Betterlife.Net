@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tools.Util.Db;
 using Util.Common;
@@ -147,10 +148,10 @@ SET FOREIGN_KEY_CHECKS=0;
 ";
             result = string.Format(result, UtilSqlserver.Database_Name, now);
             string tablename, tableComment, columnDefine;
-            string sqlTemplate, column_name,column_comment,column_type, column_default;
-            string foreign_key;
+            string sqlTemplate, column_name,column_comment,column_type, column_default,column_pkeys;
             List<string> primary_keys;
             Dictionary<string, Dictionary<string, string>> columnInfos;
+            string[] type_length,p_keys,enum_comments;
             foreach (Dictionary<string, string> tableInfo in tableInfos.Values)
             {
                 //获取表名
@@ -169,28 +170,27 @@ SET FOREIGN_KEY_CHECKS=0;
                 {
                     column_name = columnInfo["Field"];
                     column_name = UtilString.UcFirst(column_name);
-
-                    column_comment = columnInfo["Comment"];
+                    if (columnInfo.Keys.Contains("Comment")) column_comment = columnInfo["Comment"]; else column_comment = column_name;
                     if (column_name.ToUpper().Equals("ID"))
                     {
-                        columnDefine += "     'ID' int(11) NOT NULL AUTO_INCREMENT COMMENT '" + column_comment + "',";
-                        primary_keys.Add("'ID'");
+                        columnDefine += "     `ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '" + column_comment + "',";
+                        primary_keys.Add("`ID`");
                     }
                     else
                     {
                         //获取列名|列类型|是否Null
                         column_type = columnInfo["Type"];
-                        column_type = ConvertType(column_type);
 
                         //column_default = columnInfo["Default"];
                         if (column_name.ToUpper().Contains("_ID"))
                         {
                             column_type = "int(11) NOT NULL ";
-                            primary_keys.Add("'"+column_name+"'");
+                            primary_keys.Add("`" + column_name + "`");
+                            column_default = "DEFAULT '0'";
                         }
                         else
                         {
-                            if (columnInfo["Null"].Equals("YES")) column_default = "DEFAULT NULL";
+                            if (columnInfo["Null"].Equals("YES") || columnInfo["Null"].Equals("是")) column_default = "DEFAULT NULL";
                             if (UtilString.Contains(column_name.ToUpper(), "TIME", "DATE"))
                             {
                                 if (UtilString.Contains(column_name.ToUpper(), "TIMES"))
@@ -205,21 +205,34 @@ SET FOREIGN_KEY_CHECKS=0;
                             }
                         }
 
-                        string[] type_length = column_type.Split(new char[4] { '[', ']', '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (type_length.Length == 2)
+                        type_length = column_type.Split(new char[4] { '[', ']', '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (type_length.Length == 1)
                         {
-                            string length = type_length[1];
-                            int i_len = UtilNumber.Parse(length);
-                            if (i_len > 4000)
+                            column_type = type_length[0];
+                            if (column_type.Equals("nvarchar")) column_type = "varchar";
+
+                            if (column_type.Equals("char"))
                             {
-                                i_len = 4000;
-                                column_type = "" + type_length[0] + "" + "(" + i_len + ")";
+                                enum_comments=Enum_ColumnDefine(column_comment);
+                                if ((enum_comments != null) && (enum_comments.Length > 0))
+                                {
+                                    column_type = "enum(" + string.Join(",", enum_comments) + ")";
+                                }
+                            }
+                            else
+                            {
+                                if (!column_type.Equals("datetime") && !type_length.Contains("date"))
+                                {
+                                    string length = columnInfo["Length"];
+                                    int i_len = UtilNumber.Parse(length);
+                                    column_type += "(" + i_len + ")";
+                                }
                             }
                         }
                         column_comment = column_comment.Replace("\r","\\r");
                         column_comment = column_comment.Replace("\n", "\\n");
                         column_comment = "COMMENT '" + column_comment + "'";
-                        columnDefine += string.Format("     '{0}' {1} {2} {3},", column_name, column_type, column_default, column_comment);
+                        columnDefine += string.Format("     `{0}` {1} {2} {3},", column_name, column_type, column_default, column_comment);
                     }
                     columnDefine += "\r\n";
                 }
@@ -235,6 +248,9 @@ CREATE TABLE `{0}` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='{2}';
 
 ";
+                p_keys = primary_keys.ToArray();
+                column_pkeys = "\r\n    PRIMARY KEY (" + string.Join(",", p_keys) + ")";
+                columnDefine += column_pkeys;
                 result += string.Format(sqlTemplate, tablename, columnDefine, tableComment);
             }
             return result;
@@ -245,58 +261,54 @@ CREATE TABLE `{0}` (
         /// </summary>
         /// <param name="oldType">原数据类型</param>
         /// <returns>新数据类型</returns>
-        private static string ConvertType(string oldType)
+        private static string[] Enum_ColumnDefine(string column_comment)
         {
-            string newType = oldType;
-            string[] otArr = null;
-            if (oldType.Contains("("))
+            string[] result=null;
+            List<string> resultL;
+            List<string> enumL = new List<string>();
+            List<Dictionary<string, string>> commentsDicL;
+            Dictionary<string, string> commentsDic;
+            string m_comment;
+            string[] c_comments = column_comment.Split(new char[2] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if ((c_comments != null) && (c_comments.Length > 0))
             {
-                otArr = oldType.Split(new char[2] { '(', ')' });
-                oldType = otArr[0];
-
-                switch (oldType)
+                string[] c_comment;
+                string comment_c,comment_v;
+                commentsDicL=new List<Dictionary<string,string>>();
+                resultL = new List<string>();
+                foreach (string comment in c_comments)
                 {
-                    case "varchar":
-                        oldType = "nvarchar";
-                        break;
-                    default:
-                        break;
+                    m_comment = comment;
+                    if (comment.Contains("：")) m_comment = comment.Replace("：", ":");
+                    c_comment = Regex.Split(m_comment, ":");
+                    if ((c_comment != null) && (c_comment.Length == 2))
+                    {
+                        commentsDic = new Dictionary<string, string>();
+                        comment_v=c_comment[0];
+                        comment_c=c_comment[1];
+                        if (UtilNumber.IsDigit(comment_v))
+                        {
+                            if (comment_c.Contains("-"))
+                            {
+                                commentsDic.Add("value", comment_v);
+                                commentsDic.Add("name", comment_c.Substring(comment_c.IndexOf("-") + 1));
+                                commentsDic.Add("comment", comment_c.Substring(0,comment_c.IndexOf("-")));
+                            }
+                        }
+                        else
+                        {
+                            commentsDic.Add("value", comment_v);
+                            commentsDic.Add("name", comment_v);
+                            commentsDic.Add("comment", comment_c);
+                        }
+                        commentsDicL.Add(commentsDic);
+                        if (commentsDic.Keys.Contains("value"))resultL.Add("'"+commentsDic["value"]+"'");
+                    }
                 }
-
-                if ((otArr != null) && (otArr.Count() >= 2))
-                {
-
-                    if (oldType.Contains("enum"))
-                    {
-                        newType = "[char](1)";
-                    }
-                    else if (oldType.Contains("int"))
-                    {
-                        newType = "[int]";
-                    }
-                    else if (oldType.Contains("bit"))
-                    {
-                        newType = "[bit]";
-                    }
-                    else
-                    {
-                        newType = "[" + oldType + "](" + otArr[1] + ")";
-                    }
-                }
+                result = resultL.ToArray();
             }
-            else
-            {
-                switch (oldType)
-                {
-                    case "longtext":
-                        oldType = "text";
-                        break;
-                    default:
-                        break;
-                }
-                newType = "[" + oldType + "]";
-            }
-            return newType;
+            return result;
         }
 
     }

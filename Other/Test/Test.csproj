@@ -71,7 +71,8 @@
   <ItemGroup>
     <Compile Include="TestBetterlifeNetUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestUtilEncrypt.cs" />
+    <Compile Include="Util\TestUtilEncrypt.cs" />
+    <Compile Include="Util\TestUtilPinyin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
