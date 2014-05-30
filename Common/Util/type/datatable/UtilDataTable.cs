@@ -33,7 +33,7 @@ namespace Util.DataType.Datatable
             Array.ForEach<PropertyInfo>(
                 type.GetProperties(), 
                 p => {
-                    if (p.ToString().Contains("System."))
+                    if (p.ToString().Contains("System.")||p.ToString().Contains("Int32"))
                     {
                         pList.Add(p);
 
@@ -52,10 +52,10 @@ namespace Util.DataType.Datatable
                 //给row 赋值
                 pList.ForEach(
                     p => {
-                        if (p.ToString().Contains("System."))
+                        if (p.ToString().Contains("System.") || p.ToString().Contains("Int32"))
                         {
                             Type colType = p.PropertyType;
-                            if (p.ToString().Contains("System."))
+                            if (p.ToString().Contains("System.") || p.ToString().Contains("Int32"))
                             {
                                 row[p.Name] = p.GetValue(item, null) == null ? DBNull.Value : p.GetValue(item, null);
                             }

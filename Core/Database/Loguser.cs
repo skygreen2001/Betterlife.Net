@@ -14,11 +14,11 @@ namespace Database
     
     public partial class Loguser
     {
-        public decimal ID { get; set; }
-        public decimal User_ID { get; set; }
-        public string Usertype { get; set; }
+        public int ID { get; set; }
+        public int User_ID { get; set; }
+        public string UserType { get; set; }
         public string Log_Content { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
     
         public virtual User User { get; set; }
     }

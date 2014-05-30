@@ -14,20 +14,12 @@ namespace Database
     
     public partial class Region
     {
-        public Region()
-        {
-            this.Region1 = new HashSet<Region>();
-        }
-    
-        public decimal ID { get; set; }
-        public decimal Parent_ID { get; set; }
+        public int ID { get; set; }
+        public int Parent_ID { get; set; }
         public string Region_Name { get; set; }
         public string Region_Type { get; set; }
         public Nullable<int> Level { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
-    
-        public virtual ICollection<Region> Region1 { get; set; }
-        public virtual Region Region2 { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     }
 }

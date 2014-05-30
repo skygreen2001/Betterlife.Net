@@ -14,14 +14,14 @@ namespace Database
     
     public partial class Msg
     {
-        public decimal ID { get; set; }
-        public int Senderid { get; set; }
-        public int Receiverid { get; set; }
-        public string Sendername { get; set; }
-        public string Receivername { get; set; }
+        public int ID { get; set; }
+        public int SenderId { get; set; }
+        public int ReceiverId { get; set; }
+        public string SenderName { get; set; }
+        public string ReceiverName { get; set; }
         public string Content { get; set; }
         public string Status { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     }
 }

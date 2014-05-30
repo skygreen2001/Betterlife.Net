@@ -61,8 +61,8 @@ namespace Test.Util.Excel
                 dic.Add("RoletypeShow", "扮演角色");
                 dic.Add("SeescopeShow", "视野");
                 dic.Add("LoginTimes", "登录次数");
-                dic.Add("Committime", "创建时间");
-                dic.Add("Updatetime", "更新时间");
+                dic.Add("CommitTime", "创建时间");
+                dic.Add("UpdateTime", "更新时间");
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
                 string fileName = UtilDateTime.NowS() + ".xls";

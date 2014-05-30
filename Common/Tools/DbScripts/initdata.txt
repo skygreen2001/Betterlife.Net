@@ -3465,10 +3465,3 @@ INSERT INTO [dbo].[Region] ([ID],[Parent_ID],[Region_Name],[Region_Type],[Level]
 INSERT INTO [dbo].[Region] ([ID],[Parent_ID],[Region_Name],[Region_Type],[Level],[CommitTime],[UpdateTime])VALUES ('3408', '3401', '肥西县', '3', '4', '2014-04-27 22:44:35', '2014-04-27 10:02:29');
 SET IDENTITY_INSERT [dbo].[Region] OFF
 
-ALTER TABLE [dbo].[Region]  WITH CHECK ADD CONSTRAINT [FK_Region_Region] FOREIGN KEY([Parent_ID])
-REFERENCES [dbo].[Region] ([ID])
-GO
-
-ALTER TABLE [dbo].[Region] CHECK CONSTRAINT [FK_Region_Region]
-GO
-

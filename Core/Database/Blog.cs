@@ -19,12 +19,12 @@ namespace Database
             this.Comment = new HashSet<Comment>();
         }
     
-        public decimal ID { get; set; }
-        public decimal User_ID { get; set; }
+        public int ID { get; set; }
+        public int User_ID { get; set; }
         public string Blog_Name { get; set; }
         public string Blog_Content { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual User User { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }

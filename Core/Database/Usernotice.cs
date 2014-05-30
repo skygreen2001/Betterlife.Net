@@ -14,11 +14,11 @@ namespace Database
     
     public partial class Usernotice
     {
-        public decimal ID { get; set; }
-        public decimal User_ID { get; set; }
-        public decimal Notice_ID { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public int ID { get; set; }
+        public int User_ID { get; set; }
+        public int Notice_ID { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual Notice Notice { get; set; }
         public virtual User User { get; set; }

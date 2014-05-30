@@ -14,9 +14,9 @@ namespace Database
     
     public partial class Userrole
     {
-        public decimal ID { get; set; }
-        public decimal User_ID { get; set; }
-        public decimal Role_ID { get; set; }
+        public int ID { get; set; }
+        public int User_ID { get; set; }
+        public int Role_ID { get; set; }
     
         public virtual Role Role { get; set; }
         public virtual User User { get; set; }

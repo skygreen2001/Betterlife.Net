@@ -19,15 +19,15 @@ namespace Database
             this.Admin = new HashSet<Admin>();
         }
     
-        public decimal ID { get; set; }
+        public int ID { get; set; }
         public string Department_Name { get; set; }
         public string Manager { get; set; }
         public Nullable<int> Budget { get; set; }
         public Nullable<int> Actualexpenses { get; set; }
         public Nullable<int> Estsalary { get; set; }
         public Nullable<int> Actualsalary { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual ICollection<Admin> Admin { get; set; }
     }

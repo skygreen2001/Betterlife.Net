@@ -42,9 +42,9 @@ namespace Business.Core.Service
                 user.Password = Password;
                 user.Email = Email;
                 user.Cellphone = Cellphone;
-                user.Logintimes = 1;
-                user.Committime = DateTime.Now;
-                user.Updatetime = DateTime.Now;
+                user.LoginTimes = 1;
+                user.CommitTime = DateTime.Now;
+                user.UpdateTime = DateTime.Now;
                 db.User.Add(user);
                 db.SaveChanges();
             }

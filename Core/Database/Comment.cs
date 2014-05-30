@@ -14,12 +14,12 @@ namespace Database
     
     public partial class Comment
     {
-        public System.Guid ID { get; set; }
-        public decimal User_ID { get; set; }
+        public int ID { get; set; }
+        public int User_ID { get; set; }
         public string Comment1 { get; set; }
-        public decimal Blog_ID { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public int Blog_ID { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual Blog Blog { get; set; }
         public virtual User User { get; set; }

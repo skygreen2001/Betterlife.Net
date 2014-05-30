@@ -14,8 +14,8 @@ namespace Database
     
     public partial class Userdetail
     {
-        public decimal ID { get; set; }
-        public decimal User_ID { get; set; }
+        public int ID { get; set; }
+        public int User_ID { get; set; }
         public string Realname { get; set; }
         public string Profile { get; set; }
         public Nullable<int> Country { get; set; }
@@ -26,8 +26,8 @@ namespace Database
         public string Qq { get; set; }
         public string Sex { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual User User { get; set; }
     }

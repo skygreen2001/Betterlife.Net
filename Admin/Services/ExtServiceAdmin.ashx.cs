@@ -58,9 +58,9 @@ namespace Admin.Services
                     base.copyProperties(admin, adminForm);
                     try
                     {
-                        admin.Logintimes = 1;
-                        admin.Committime = DateTime.Now;
-                        admin.Updatetime = DateTime.Now;
+                        admin.LoginTimes = 1;
+                        admin.CommitTime = DateTime.Now;
+                        admin.UpdateTime = DateTime.Now;
                         db.Admin.Add(admin); 
                         db.SaveChanges();
                         msg = "保存成功!";
@@ -105,7 +105,7 @@ namespace Admin.Services
                         int id = UtilNumber.Parse(id_str);
                         Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
                         base.copyProperties(admin, adminForm);
-                        admin.Updatetime = DateTime.Now;
+                        admin.UpdateTime = DateTime.Now;
                         db.SaveChanges();
                         msg = "保存成功!";
                         result = true;
@@ -246,8 +246,8 @@ namespace Admin.Services
                 dic.Add("RoletypeShow", "扮演角色");
                 dic.Add("SeescopeShow", "视野");
                 dic.Add("LoginTimes", "登录次数");
-                dic.Add("Committime", "创建时间");
-                dic.Add("Updatetime", "更新时间");
+                dic.Add("CommitTime", "创建时间");
+                dic.Add("UpdateTime", "更新时间");
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
                 string fileName = UtilDateTime.NowS()+".xls";

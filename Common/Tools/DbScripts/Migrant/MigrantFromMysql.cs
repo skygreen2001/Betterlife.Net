@@ -181,7 +181,7 @@ GO
                         }
                         else
                         {
-                            columnDefine += "[ID][numeric](11, 0) IDENTITY(1,1) NOT NULL,";
+                            columnDefine += "[ID][int] IDENTITY(1,1) NOT NULL,";
                             resetSeed += "DBCC CHECKIDENT ('" + tablename + "', RESEED, 1)\r\n";
                         }
                     }
@@ -207,7 +207,7 @@ GO
                             }
                             else
                             {
-                                column_type = "[numeric](11, 0)";
+                                column_type = "[int]";
                             }
                             column_null = "NOT NULL";
                         }

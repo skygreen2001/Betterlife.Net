@@ -19,7 +19,7 @@ namespace Test.Dao
         private const string AdminOriginal = "skygreen";
         private const string AdminNameUpdated = "pupu";
         private const string Password = "4008001666";
-        private const int AdminID = 2;
+        private const int AdminID = 1;
         private const int DeletedID = 8;
 
         /// <summary>
@@ -47,12 +47,13 @@ namespace Test.Dao
         {
             Admin admin = new Admin();
             admin.Username = AdminOriginal;
+            admin.Realname = AdminOriginal;
             admin.Department_ID = 1;
             admin.Password = Password;
             admin.Seescope = EnumSeescope.All.ToString();
             admin.Roletype = EnumRoleType.Superadmin.ToString();
-            admin.Committime = DateTime.Now;
-            admin.Updatetime = DateTime.Now;
+            admin.CommitTime = DateTime.Now;
+            admin.UpdateTime = DateTime.Now;
             int ID=adminService.Save(admin);
             Console.WriteLine(admin.ID+","+ID);
 
@@ -87,6 +88,7 @@ namespace Test.Dao
         {
             Admin admin = new Admin();
             admin.Username = AdminOriginal;
+            admin.Realname = AdminOriginal;
             admin.Department_ID = 1;
             admin.Password = Password;
             bool IsSaved = adminService.SaveOrUpdate(admin);
@@ -111,14 +113,15 @@ namespace Test.Dao
             for (int i = 0; i < 1000; i++)
             {
                 admin = new Admin();
-                admin.Username = AdminOriginal+i;
+                admin.Username = AdminOriginal + i;
+                admin.Realname = AdminOriginal + i;
                 admin.Department_ID = 1;
                 admin.Password = Password;
-                admin.Logintimes = i;
+                admin.LoginTimes = i;
                 admin.Seescope = EnumSeescope.All.ToString();
                 admin.Roletype = EnumRoleType.Superadmin.ToString();
-                admin.Committime = DateTime.Now;
-                admin.Updatetime = DateTime.Now;
+                admin.CommitTime = DateTime.Now;
+                admin.UpdateTime = DateTime.Now;
                 ID = adminService.Save(admin);
             }
             admin=adminService.GetByID(ID - 2);

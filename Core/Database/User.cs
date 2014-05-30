@@ -24,14 +24,14 @@ namespace Database
             this.Userrole = new HashSet<Userrole>();
         }
     
-        public decimal ID { get; set; }
+        public int ID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
         public string Cellphone { get; set; }
-        public Nullable<int> Logintimes { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<int> LoginTimes { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual ICollection<Blog> Blog { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }

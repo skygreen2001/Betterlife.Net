@@ -14,16 +14,16 @@ namespace Database
     
     public partial class Admin
     {
-        public decimal ID { get; set; }
-        public decimal Department_ID { get; set; }
+        public int ID { get; set; }
+        public int Department_ID { get; set; }
         public string Username { get; set; }
         public string Realname { get; set; }
         public string Password { get; set; }
         public string Roletype { get; set; }
         public string Seescope { get; set; }
-        public Nullable<int> Logintimes { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<int> LoginTimes { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual Department Department { get; set; }
     }

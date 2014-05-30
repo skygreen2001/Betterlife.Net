@@ -229,6 +229,7 @@ SET FOREIGN_KEY_CHECKS=0;
                                 }
                             }
                         }
+                        column_comment = column_comment.Replace("'", "\"");
                         column_comment = column_comment.Replace("\r","\\r");
                         column_comment = column_comment.Replace("\n", "\\n");
                         column_comment = "COMMENT '" + column_comment + "'";

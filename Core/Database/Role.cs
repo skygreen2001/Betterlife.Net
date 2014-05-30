@@ -20,10 +20,10 @@ namespace Database
             this.Userrole = new HashSet<Userrole>();
         }
     
-        public decimal ID { get; set; }
+        public int ID { get; set; }
         public string Role_Name { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual ICollection<Rolefunctions> Rolefunctions { get; set; }
         public virtual ICollection<Userrole> Userrole { get; set; }

@@ -19,10 +19,10 @@ namespace Database
             this.Rolefunctions = new HashSet<Rolefunctions>();
         }
     
-        public decimal ID { get; set; }
+        public int ID { get; set; }
         public string Url { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual ICollection<Rolefunctions> Rolefunctions { get; set; }
     }

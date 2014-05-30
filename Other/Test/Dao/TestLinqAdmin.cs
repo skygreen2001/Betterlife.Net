@@ -20,7 +20,7 @@ namespace Test.Dao
         private const string AdminNameUpdated = "fly";
         private const string Password = "4008001666";
         private const int AdminID = 1;
-        private const int DeletedID = 16;
+        private const int DeletedID = 8;
 
         private static BetterlifeNetEntities db;
 
@@ -43,12 +43,13 @@ namespace Test.Dao
         {
             Admin admin = new Admin();
             admin.Username = AdminOriginal;
+            admin.Realname = AdminOriginal;
             admin.Department_ID = 1;
             admin.Password = Password;
             admin.Seescope = EnumSeescope.All.ToString();
             admin.Roletype = EnumRoleType.Superadmin.ToString();
-            admin.Committime = DateTime.Now;
-            admin.Updatetime = DateTime.Now;
+            admin.CommitTime = DateTime.Now;
+            admin.UpdateTime = DateTime.Now;
             //admin.ID = Guid.NewGuid();
             db.Admin.Add(admin);
             db.SaveChanges();
@@ -99,13 +100,14 @@ namespace Test.Dao
             {
                 admin = new Admin();
                 admin.Username = AdminOriginal + i;
+                admin.Realname = AdminOriginal + i;
                 admin.Department_ID = 1;
                 admin.Password = Password;
-                admin.Logintimes = i;
+                admin.LoginTimes = i;
                 admin.Seescope = EnumSeescope.All.ToString();
                 admin.Roletype = EnumRoleType.Superadmin.ToString();
-                admin.Committime = DateTime.Now;
-                admin.Updatetime = DateTime.Now;
+                admin.CommitTime = DateTime.Now;
+                admin.UpdateTime = DateTime.Now;
                 db.Admin.Add(admin);
             }
             db.SaveChanges();
@@ -161,7 +163,7 @@ namespace Test.Dao
             {
                 int iID = UtilNumber.Parse(ID);
                 Admin toDelete = db.Admin.Single(e => e.ID.Equals(iID));
-                Console.WriteLine(toDelete.ID + toDelete.Username + ":" + toDelete.Updatetime);
+                Console.WriteLine(toDelete.ID + toDelete.Username + ":" + toDelete.UpdateTime);
                 db.Admin.Remove(toDelete);
             }
             db.SaveChanges();
@@ -339,7 +341,7 @@ namespace Test.Dao
         [TestMethod]
         public void min()
         {
-            int? min = db.Admin.Min(a => a.Logintimes);
+            int? min = db.Admin.Min(a => a.LoginTimes);
             Console.WriteLine(min);
             Assert.IsTrue(min == 0);
         }
@@ -350,7 +352,7 @@ namespace Test.Dao
         [TestMethod]
         public void max()
         {
-            int? max = db.Admin.Max(a => a.Logintimes);
+            int? max = db.Admin.Max(a => a.LoginTimes);
             Console.WriteLine(max);
             Assert.IsTrue(max > 0);
         }
@@ -361,7 +363,7 @@ namespace Test.Dao
         [TestMethod]
         public void sum()
         {
-            int? sum = db.Admin.Where(e=>e.ID<100).Sum(a => a.Logintimes);
+            int? sum = db.Admin.Where(e=>e.ID<100).Sum(a => a.LoginTimes);
             Console.WriteLine(sum);
             Assert.IsTrue(sum > 0);
         }

@@ -19,12 +19,12 @@ namespace Database
             this.Usernotice = new HashSet<Usernotice>();
         }
     
-        public decimal ID { get; set; }
-        public Nullable<int> Noticetype { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> NoticeType { get; set; }
         public string Title { get; set; }
         public string Notice_Content { get; set; }
-        public Nullable<System.DateTime> Committime { get; set; }
-        public Nullable<System.DateTime> Updatetime { get; set; }
+        public Nullable<System.DateTime> CommitTime { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
     
         public virtual ICollection<Usernotice> Usernotice { get; set; }
     }
