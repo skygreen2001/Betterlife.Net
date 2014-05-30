@@ -10,7 +10,7 @@ using System.IO;
 namespace Util.Common
 {
     /// <summary>
-    /// 采用OleDb方式读写Excel
+    /// 工具类:采用OleDb方式读写Excel
     /// 
     /// 这种方法读取Excel速度还是非常的快的，但这种方式读取数据的时候不太灵活
     /// 不过可以在 DataTable 中对数据进行一些删减修改

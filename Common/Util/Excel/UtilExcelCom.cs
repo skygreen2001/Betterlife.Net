@@ -2,7 +2,7 @@
 //参考第二种方式:http://blog.csdn.net/zhaoyu008/article/details/6294454
 #define IS_USE_EXCEL_COM
 //不使用Excel的Com组件
-#undef IS_USE_EXCEL_COM
+//#undef IS_USE_EXCEL_COM
 using System;
 using System.Collections.Generic;
 using System.Data;

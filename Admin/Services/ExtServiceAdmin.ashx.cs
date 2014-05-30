@@ -229,8 +229,8 @@ namespace Admin.Services
 
                 foreach (Administrator row in query)
                 {
-                    row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
-                    row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
+                    if (row.Roletype != null) row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
+                    if (row.Seescope != null) row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
                     row.Department_Name = row.Department.Department_Name;
                 }
 

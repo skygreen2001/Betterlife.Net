@@ -44,6 +44,7 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\Library\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
@@ -53,6 +54,8 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -62,26 +65,30 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="TestBetterlifeNetUnit.cs" />
+    <Compile Include="Dao\TestGuidLogsystem.cs" />
+    <Compile Include="Dao\TestServiceAdmin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Dao\TestLinqAdmin.cs" />
+    <Compile Include="Util\Excel\TestUtilExcelOle.cs" />
     <Compile Include="Util\TestUtilEncrypt.cs" />
     <Compile Include="Util\TestUtilPinyin.cs" />
+    <Compile Include="Util\Excel\TestUtilExcelNpoi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.Config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Util\Util.csproj">
       <Project>{a52e0ee4-d761-4a0b-9ae7-7c4751aaa416}</Project>
       <Name>Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Business\Service.csproj">
+      <Project>{112a9a1a-7de7-4b74-b3ee-6b1468154539}</Project>
+      <Name>Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Database\Database.csproj">
       <Project>{e7ca231a-c788-4dc1-b3af-ec4fbb9cc4d6}</Project>

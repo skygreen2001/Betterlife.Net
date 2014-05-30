@@ -44,10 +44,10 @@ namespace Database.Domain.System
         /// 获取当前应用配置
         /// </summary>
         /// <returns></returns>
-        public Configuration getCurrentConfig()
+        public Configuration getCurrentConfig(char AppType = EnumAppType.Web)
         {
             if (currentConfig==null){
-                currentConfig = UtilSystem.getCurrentConfig();
+                currentConfig = UtilSystem.getCurrentConfig(AppType);
             }
             return currentConfig;
         }

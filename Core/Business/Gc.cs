@@ -79,17 +79,17 @@ namespace Business
         /// <summary>
         /// 将配置文件App.config里的所有系统配置信息注入到全局变量中供应用使用
         /// </summary>
-        public static void init()
+        public static void init(char AppType = EnumAppType.Web)
         {
-            initAppSettings();
+            initAppSettings(AppType);
         }
 
         /// <summary>
         /// 将配置文件App.config里的AppSetting配置信息注入到全局变量中供应用使用
         /// </summary>
-        private static void initAppSettings()
+        private static void initAppSettings(char AppType = EnumAppType.Web)
         {
-            Configuration config = AppConfig.Instance().getCurrentConfig();
+            Configuration config = AppConfig.Instance().getCurrentConfig(AppType);
             
             // Get the KeyValueConfigurationCollection from the configuration.
             KeyValueConfigurationCollection settings = config.AppSettings.Settings;

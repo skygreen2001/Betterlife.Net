@@ -1,6 +1,21 @@
 ﻿//using System.Drawing;
 using System.Configuration;
 using System.Web.Configuration;
+
+/// <summary>
+///应用程序类型
+/// </summary>
+public class EnumAppType
+{
+    /// <summary>
+    /// 应用程序Exe：如Windows Form
+    /// </summary>
+    public const char AppExe = '0';
+    /// <summary>
+    /// Web网站
+    /// </summary>
+    public const char Web = '1';
+}
 namespace Util.Common
 {
     /// <summary>
@@ -12,13 +27,20 @@ namespace Util.Common
         /// 获取当前应用配置
         /// </summary>
         /// <returns></returns>
-        public static Configuration getCurrentConfig()
+        public static Configuration getCurrentConfig(char AppType = EnumAppType.Web)
         {
-            return WebConfigurationManager.OpenWebConfiguration("/");
-
-            ///如果是Windows Form
-            //return ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            Configuration result;
+            if (AppType == EnumAppType.Web)
+            {
+                result = WebConfigurationManager.OpenWebConfiguration("/");
+            }
+            else
+            {
+                result = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            }
+            return result;
         }
+
 
     }
 }

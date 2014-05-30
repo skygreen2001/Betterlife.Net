@@ -2110,8 +2110,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\uploads\attachment\" />
-    <Folder Include="App_Data\uploads\images\" />
     <Folder Include="HttpData\Import\" />
     <Folder Include="Uploads\attachment\admin\" />
     <Folder Include="Uploads\images\" />
