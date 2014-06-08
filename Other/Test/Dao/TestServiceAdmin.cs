@@ -50,6 +50,7 @@ namespace Test.Dao
             admin.Realname = AdminOriginal;
             admin.Department_ID = 1;
             admin.Password = Password;
+            admin.LoginTimes = 0;
             admin.Seescope = EnumSeescope.All.ToString();
             admin.Roletype = EnumRoleType.Superadmin.ToString();
             admin.CommitTime = DateTime.Now;
@@ -74,6 +75,7 @@ namespace Test.Dao
         {
             var adminToUpdate = adminService.GetByID(AdminID);
             if (adminToUpdate != null) adminToUpdate.Username = AdminNameUpdated;
+            adminToUpdate.LoginTimes += 1;
             bool IsUpdated=adminService.Update(adminToUpdate);
             Assert.IsTrue(IsUpdated);
         }
@@ -91,10 +93,12 @@ namespace Test.Dao
             admin.Realname = AdminOriginal;
             admin.Department_ID = 1;
             admin.Password = Password;
+            admin.LoginTimes = 0;
             bool IsSaved = adminService.SaveOrUpdate(admin);
             Assert.IsTrue(IsSaved);
 
             if (admin != null) admin.Username = AdminNameUpdated;
+            admin.LoginTimes += 1;
             bool IsUpdated = adminService.SaveOrUpdate(admin);
             Assert.IsTrue(IsUpdated);
         }

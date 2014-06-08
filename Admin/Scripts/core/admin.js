@@ -403,12 +403,12 @@ Bn.Admin.View = {
                                 closable: true, progress: true, progressText: '', width: 300
                             });
                             this.uploadForm.getForm().submit({
-                                url: 'index.php?go=admin.upload.uploadAdmin',
+                                url: '/Upload/uploadAdmin',
                                 success: function (form, response) {
                                     Ext.Msg.alert('成功', '上传成功');
                                     uploadWindow.hide();
                                     uploadWindow.uploadForm.upload_file.setValue('');
-                                    Bn.Admin.View.Running.AdminGrid.doSelectAdmin();
+                                    Bn.Admin.View.Running.adminGrid.doSelectAdmin();
                                 },
                                 failure: function (form, response) {
                                     Ext.Msg.alert('错误', response.result.data);

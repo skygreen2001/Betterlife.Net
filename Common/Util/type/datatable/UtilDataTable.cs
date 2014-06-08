@@ -16,6 +16,7 @@ namespace Util.DataType.Datatable
     {
         public const string COLUMNNAME_POPULATE="polulate";
 
+        #region 初始化:从其他类型转换成DataTable
         /// <summary>
         /// 转换成DataTable
         /// </summary>
@@ -71,35 +72,6 @@ namespace Util.DataType.Datatable
             if (dt.Columns.Contains("UpdateTime"))
                 dt.Columns["UpdateTime"].SetOrdinal(dt.Columns.Count - 1);
             return dt;
-        }
-
-        /// <summary>
-        /// 将DataTable删除不需要显示的列
-        /// DataTable 修改列名 删除列 
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="column_names">需要删除的列名</param>
-        /// <see cref="http://blog.csdn.net/liehuo123/article/details/6924644"/>
-        /// <returns></returns>
-        public static void DeleteColumns(DataTable dt,params string[] column_names)
-        {
-            foreach (string column_name in column_names)
-            {
-                if (dt.Columns.Contains(column_name))dt.Columns.Remove(column_name);
-            }
-        }
-
-        /// <summary>
-        /// 替换名称
-        /// </summary>
-        /// <param name="dt">数据源</param>
-        /// <param name="columnNames">映射key为原列名，value为新列名</param>
-        public static void ReplaceColumnName(DataTable dt, Dictionary<string, string> columnNames)
-        {
-            foreach (KeyValuePair<string, string> item in columnNames)
-            {
-                dt.Columns[item.Key].ColumnName = item.Value;
-            }
         }
 
         /// <summary>
@@ -239,9 +211,15 @@ namespace Util.DataType.Datatable
                 PropertyInfo[] propertys = list[0].GetType().GetProperties();
                 foreach (PropertyInfo pi in propertys)
                 {
-                    if (propertyNameList.Count == 0)
-                    {
-                        result.Columns.Add(pi.Name, pi.PropertyType);
+                    if (propertyNameList.Count == 0){
+                        if (pi.PropertyType.FullName.Contains("System.Nullable"))
+                        {
+                            result.Columns.Add(pi.Name, Type.GetType("System.String"));
+                        }
+                        else
+                        {
+                            result.Columns.Add(pi.Name, pi.PropertyType);
+                        }
                     }
                     else
                     {
@@ -275,6 +253,110 @@ namespace Util.DataType.Datatable
             }
             return result;
         }
-     
+        #endregion
+
+        #region 基本功能: 删除不需要显示的列|替换名称
+        /// <summary>
+        /// 将Datatable每行根据列名和对象的属性名关系对应一一赋值
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="row"></param>
+        /// <param name="cols"></param>
+        public static void ToObject(Object obj,DataRow row,DataColumnCollection cols)
+        {
+            List<string> props=UtilReflection.GetPropertNames(obj);
+            foreach (string prop in props)
+            {
+                if (cols.Contains(prop))
+                {
+                    UtilReflection.SetValue(obj, prop, row[prop].ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将DataTable删除不需要显示的列
+        /// DataTable 修改列名 删除列 
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="column_names">需要删除的列名</param>
+        /// <see cref="http://blog.csdn.net/liehuo123/article/details/6924644"/>
+        /// <returns></returns>
+        public static void DeleteColumns(DataTable dt, params string[] column_names)
+        {
+            foreach (string column_name in column_names)
+            {
+                if (dt.Columns.Contains(column_name)) dt.Columns.Remove(column_name);
+            }
+        }
+
+        /// <summary>
+        /// 替换名称
+        /// </summary>
+        /// <param name="dt">数据源</param>
+        /// <param name="columnNames">映射key为原列名，value为新列名</param>
+        public static void ReplaceColumnName(DataTable dt, Dictionary<string, string> columnNames)
+        {
+            foreach (KeyValuePair<string, string> item in columnNames)
+            {
+                dt.Columns[item.Key].ColumnName = item.Value;
+            }
+        }
+        #endregion
+
+        #region 校验功能:去除重复数据|检验是否存在重复数据
+        /// <summary>
+        /// 返回去除重复数据的DataTable
+        /// </summary>
+        /// <param name="tableIn"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public static DataTable DataTableDistinct(DataTable tableIn, string columnName)
+        {
+            DataView dv = new DataView(tableIn);//虚拟视图
+            DataTable tableOut = dv.ToTable(true, columnName);
+            return tableOut;
+        }
+
+        /// <summary>
+        /// 检测是否存在重复数据
+        /// </summary>
+        /// <param name="tableIn"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public static bool HasRepeat(DataTable tableIn, string columnName)
+        {
+            bool b = false;
+            DataTable tableOut = DataTableDistinct(tableIn, columnName);
+            if (tableOut.Rows.Count != tableIn.Rows.Count)
+            {
+                b = true;
+            }
+            return b;
+        }
+
+        /// <summary>
+        /// 比较两个DataTable是否有重复数据
+        /// </summary>
+        /// <param name="tableOne"></param>
+        /// <param name="tableTwo"></param>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        public static bool HasRepeat(DataTable tableOne, DataTable tableTwo, string columnName)
+        {
+            bool b = false;
+            for (int i = 0; i < tableOne.Rows.Count; i++)
+            {
+                for (int j = 0; j < tableTwo.Rows.Count; j++)
+                {
+                    if (tableOne.Rows[i][columnName].ToString() == tableTwo.Rows[j][columnName].ToString())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return b;
+        }
+        #endregion
     }
 }

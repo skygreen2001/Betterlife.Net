@@ -23,7 +23,7 @@ namespace Tools.DbScripts.Migrant
         /**
          * 所有需要定义表主键是GUID类型的表名称列表
          */
-        private static String[] tablesIDTypeGuid = { "" };//{ "Cart", "Comment", "Company", "Coupon", "Couponitems", "Couponlog", "Delivery", "Deliveryitem", "Deliverylog", "Goodslog", "Helpcenter", "Invoice", "Jifenlog", "Member", "Ocouponlog", "Ordergoods", "Orderlog", "Orders", "Paylog", "Payments", "Pcouponlog", "Prefcoupon", "Preferentialrule", "Prefproduct", "Promotionlog", "Pwdreset", "Rankjifenlog", "Seeproduct", "Voucher", "Vouchergoods", "Voucheritems", "Voucheritemslog", "Workfloworder" };
+        private static String[] tablesIDTypeGuid = { "Logsystem","Loguser" };
         /**
          * 所有的表名列表
          */

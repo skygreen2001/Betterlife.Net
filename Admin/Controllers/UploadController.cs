@@ -1,4 +1,5 @@
 ﻿using Admin.Services;
+using Business;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Util.Common;
 
 namespace Admin.Controllers
 {
@@ -24,39 +26,21 @@ namespace Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult uploadAdmin(HttpPostedFileBase file)
+        public ActionResult uploadAdmin(FormCollection form)
         {
-            JObject resultImport = ExtServiceAdminHandler.importAdmin();
-            // Verify that the user selected a file
-            if (file != null && file.ContentLength > 0)
-            {
-                // extract only the fielname
-                var fileName = Path.GetFileName(file.FileName);
-                // store the file inside ~/App_Data/uploads folder
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
-                file.SaveAs(path);
-            }
-            string result = "";
-            try
-            {
-                var serializerSettings = new JsonSerializerSettings
-                {
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                };
+            if (Request.Files.Count > 0){
+                HttpPostedFileBase file = Request.Files[0];
+                string fileName = Path.Combine(Gc.UploadPath, "attachment", "admin", "admin" + UtilDateTime.NowS() + ".xls");
+                file.SaveAs(fileName);
 
+                JObject resultJ = ExtServiceAdminHandler.importAdmin(fileName);
+                string result = JsonConvert.SerializeObject(resultJ);
+                Response.Write(result);
+            }else{
+                Response.Write("{'success':false,'data':'上传文件不能为空'}");
+            }
 
-                //执行序列化
-                result = JsonConvert.SerializeObject(resultImport, Formatting.Indented, serializerSettings);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            Response.Write(result);
-            Response.End();
             return null;
-            //return View();
         }
 
     }

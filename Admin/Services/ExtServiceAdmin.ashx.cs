@@ -201,15 +201,56 @@ namespace Admin.Services
             );
         }
 
-        //TODO:导入:系统管理员
         /// <summary>
         /// 导入:系统管理员
         /// </summary>
-        public static JObject importAdmin()
+        public static JObject importAdmin(string fileName)
         {
+            //Excel导出入到DataTable
+            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName,"Admin");
+            if (dt != null)
+            {
+                Dictionary<string, string> dic = new Dictionary<string, string>()
+                {
+                    {"编号","ID"},
+                    {"部门名称","Department_Name"},
+                    {"用户名称","Username"},
+                    {"密码","Password"},
+                    {"真实姓名","Realname"},
+                    {"扮演角色","RoletypeShow"},
+                    {"视野","SeescopeShow"},
+                    {"登录次数","LoginTimes"},
+                    {"创建时间","CommitTime"},
+                    {"更新时间","UpdateTime"}
+                };
 
+                UtilDataTable.ReplaceColumnName(dt, dic);
+
+                //检查Excel中是否有用户名重复数据
+                if (UtilDataTable.HasRepeat(dt, "Username"))
+                {
+                    Console.WriteLine("Excel中有重复用户名");
+                    return new JObject(
+                        new JProperty("success", true),
+                        new JProperty("data", false)
+                    );
+                }
+                //循环插入数据
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Administrator admin = new Administrator();
+                    UtilDataTable.ToObject(admin, dt.Rows[i], dt.Columns);
+                    Department dep = db.Department.Where(e => e.Department_Name.Equals(admin.Department_Name)).SingleOrDefault();
+                    admin.Department_ID = dep.ID;
+                    admin.Seescope = EnumSeescope.SeescopeByShow(admin.SeescopeShow);
+                    admin.Roletype = EnumRoleType.RoletypeByShow(admin.RoletypeShow);
+                    db.Admin.Add(admin);
+                }
+                db.SaveChanges();
+            }
             return new JObject(
-                new JProperty("success", true)
+                new JProperty("success", true),
+                new JProperty("data",true)
             );
         }
 
@@ -250,10 +291,10 @@ namespace Admin.Services
                 dic.Add("UpdateTime", "更新时间");
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
-                string fileName = UtilDateTime.NowS()+".xls";
+                string fileName = "admin"+UtilDateTime.NowS()+".xls";
                 attachment_url=Gc.UploadUrl+"/attachment/admin/"+fileName;
                 fileName=Path.Combine(Gc.UploadPath,"attachment", "admin", fileName);
-                UtilExcelOle.DataTable2Sheet(fileName, dt);
+                UtilExcelOle.DataTableToExcel(fileName, dt);
             }
            
             return new JObject(

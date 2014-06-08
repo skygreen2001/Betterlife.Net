@@ -46,7 +46,7 @@ namespace Business.Core.Service
         /// <returns>是否保存或更新成功</returns>
         public bool SaveOrUpdate(Admin admin)
         {
-            if ((admin.ID==null)||(admin.ID==0))
+            if (admin.ID==0)
             {
                 db.Admin.Add(admin);
             }

@@ -315,11 +315,11 @@ namespace Util.Common
         /// <param name="SheetName">SheetName</param>
         /// <param name="no_HDR">第一行不是标题：true;第一行是标题：false;</param>
         /// <returns>DataTable</returns>
-        public static DataTable GetExcelToDataTableBySheet(string FileFullPath, string SheetName, bool no_HDR)
+        public static DataTable ExcelToDataTableBySheet(string FileFullPath, string SheetName, bool no_HDR)
         {
             try
             {
-                return GetExcelToDataSet(FileFullPath, no_HDR, SheetName).Tables[SheetName];
+                return ExcelToDataSet(FileFullPath, no_HDR, SheetName).Tables[SheetName];
             }
             catch (Exception ee)
             {
@@ -332,11 +332,11 @@ namespace Util.Common
         /// <param name="FileFullPath">Excel物理路径</param>
         /// <param name="SheetName">SheetName</param>
         /// <returns>DataTable</returns>
-        public static DataTable GetExcelToDataTableBySheet(string FileFullPath, string SheetName)
+        public static DataTable ExcelToDataTableBySheet(string FileFullPath, string SheetName)
         {
             try
             {
-                return GetExcelToDataTableBySheet(FileFullPath, SheetName, false);
+                return ExcelToDataTableBySheet(FileFullPath, SheetName, false);
             }
             catch (Exception ee)
             {
@@ -352,7 +352,7 @@ namespace Util.Common
         /// <param name="FileFullPath">Excel物理路径</param>
         /// <param name="no_HDR">第一行不是标题：true;第一行是标题：false;</param>
         /// <returns>DataSet</returns>
-        public static DataSet GetExcelToDataSet(string FileFullPath, bool no_HDR)
+        public static DataSet ExcelToDataSet(string FileFullPath, bool no_HDR)
         {
             try
             {
@@ -380,7 +380,7 @@ namespace Util.Common
         /// <param name="no_HDR">第一行不是标题：true;第一行是标题：false;</param>
         /// <param name="SheetName">第一行不是标题：true;第一行是标题：false;</param>
         /// <returns>DataSet</returns>
-        public static DataSet GetExcelToDataSet(string FileFullPath, bool no_HDR, string SheetName)
+        public static DataSet ExcelToDataSet(string FileFullPath, bool no_HDR, string SheetName)
         {
             try
             {
@@ -472,14 +472,14 @@ namespace Util.Common
         }
         #endregion
 
-        #region DataTable2Sheet,把一个DataTable写入Excel中的表,Excel物理路径,如果文件不是一个已存在的文件，会自动创建文件
+        #region DataTableToExcel,把一个DataTable写入Excel中的表,Excel物理路径,如果文件不是一个已存在的文件，会自动创建文件
         /// <summary>
         /// 把一个DataTable写入到一个或多个Sheet中
         /// </summary>
         /// <param name="servepath">Excel物理路径,如果文件不是一个已存在的文件，会自动创建文件</param>
         /// <param name="dt">DataTable</param>
         /// <returns>bool</returns>
-        public static bool DataTable2Sheet(string servepath, DataTable dt)
+        public static bool DataTableToExcel(string servepath, DataTable dt)
         {
             try
             {

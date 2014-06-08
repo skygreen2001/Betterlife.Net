@@ -48,6 +48,7 @@ namespace Test.Dao
             admin.Password = Password;
             admin.Seescope = EnumSeescope.All.ToString();
             admin.Roletype = EnumRoleType.Superadmin.ToString();
+            admin.LoginTimes = 0;
             admin.CommitTime = DateTime.Now;
             admin.UpdateTime = DateTime.Now;
             //admin.ID = Guid.NewGuid();
@@ -71,6 +72,7 @@ namespace Test.Dao
         {
             //获取需修改的系统管理员
             var adminToUpdate = db.Admin.FirstOrDefault(admin => admin.Username == AdminOriginal);
+            adminToUpdate.LoginTimes += 1;
             if (adminToUpdate != null) adminToUpdate.Username = AdminNameUpdated;
             db.SaveChanges();
 

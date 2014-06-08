@@ -23,17 +23,7 @@ namespace Util.Reflection
             BindingFlags.FlattenHierarchy |
             BindingFlags.CreateInstance;
 
-        /// <summary>
-        /// 根据类路径获取Type
-        /// </summary>
-        /// <param name="classFullName"></param>
-        /// <returns></returns>
-        public static Type GetTypeByClassFullName(string classFullName){
-            //获取当前运行的程序集
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            return assembly.GetType(classFullName);
-        }
-
+        #region 静态变量
         /// <summary>
         /// 获取指定类所有的全局静态变量
         /// </summary>
@@ -191,8 +181,22 @@ namespace Util.Reflection
 
             }
         }
-        
-        //// <summary>
+        #endregion
+
+
+        /// <summary>
+        /// 根据类路径获取Type
+        /// </summary>
+        /// <param name="classFullName"></param>
+        /// <returns></returns>
+        public static Type GetTypeByClassFullName(string classFullName)
+        {
+            //获取当前运行的程序集
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetType(classFullName);
+        }
+
+        /// <summary>
         /// 用于设置对象的属性值
         /// </summary>
         /// <param name="dest">目标对象</param>
@@ -208,7 +212,6 @@ namespace Util.Reflection
             FieldInfo f = t.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             f.SetValue(dest, value);
         }
-
 
         /// <summary>
         /// 设置相应属性的值
@@ -235,7 +238,7 @@ namespace Util.Reflection
             if (IsType(propertyInfo.PropertyType, "System.Boolean"))
             {
                 propertyInfo.SetValue(entity, Boolean.Parse(fieldValue), null);
-
+                return;
             }
 
             if (IsType(propertyInfo.PropertyType, "System.Int32"))
@@ -244,7 +247,7 @@ namespace Util.Reflection
                     propertyInfo.SetValue(entity, int.Parse(fieldValue), null);
                 else
                     propertyInfo.SetValue(entity, 0, null);
-
+                return;
             }
 
             if (IsType(propertyInfo.PropertyType, "System.Nullable`1[System.Decimal]"))
@@ -253,7 +256,7 @@ namespace Util.Reflection
                     propertyInfo.SetValue(entity, Decimal.Parse(fieldValue), null);
                 else
                     propertyInfo.SetValue(entity, new Decimal(0), null);
-
+                return;
             }
 
             if (IsType(propertyInfo.PropertyType, "System.Nullable`1[System.DateTime]"))
@@ -262,18 +265,54 @@ namespace Util.Reflection
                 {
                     try
                     {
-                        propertyInfo.SetValue(
-                            entity,
-                            (DateTime?)DateTime.ParseExact(fieldValue, "yyyy-MM-dd HH:mm:ss", null), null);
+                        string fStyle = "yyyy-MM-dd HH:mm:ss";
+                        if (UtilString.substr_count(fieldValue, "-") == 2)
+                        {
+                            string[] fv = fieldValue.Split('-');
+                            if (UtilString.substr_count(fieldValue, ":") == 2)
+                            {
+                                if (fv[1].Length == 1) fStyle = "yyyy-M-dd HH:mm:ss";
+                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
+                            }
+                            else
+                            {
+                                fStyle = "yyyy-MM-dd";
+                                if (fv[1].Length == 1) fStyle = "yyyy-M-dd";
+                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
+                            }
+                        }
+                        else if (UtilString.substr_count(fieldValue, "/") == 2)
+                        {
+                            fStyle = "yyyy/MM/dd HH:mm:ss";
+                            string[] fv = fieldValue.Split('/');
+                            if (UtilString.substr_count(fieldValue, ":") == 2)
+                            {
+                                if (fv[1].Length == 1) fStyle = "yyyy/M/dd HH:mm:ss";
+                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
+                            }
+                            else
+                            {
+                                fStyle = "yyyy/MM/dd";
+                                if (fv[1].Length == 1) fStyle = "yyyy/M/dd";
+                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
+                            }
+
+
+                        }else{
+                            if (UtilString.substr_count(fieldValue, ":") == 2)
+                            {
+                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, "HH:mm:ss", null), null);
+                            }
+                        }
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, "yyyy-MM-dd", null), null);
+                        Console.WriteLine(ex.Message);
                     }
                 }
                 else
                     propertyInfo.SetValue(entity, null, null);
-
+                return;
             }
 
         }
@@ -353,6 +392,22 @@ namespace Util.Reflection
         }
 
         /// <summary>
+        /// 获取对象的所有属性名
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static List<string> GetPropertNames(this object target)
+        {
+            PropertyInfo[] pis=target.GetType().GetProperties();
+            List<string> result = new List<string>();
+            foreach (PropertyInfo pi in pis)
+            {
+                result.Add(pi.Name);
+            }
+            return result;
+        }
+
+        /// <summary>
         ///  触发运行对象指定方法值
         /// </summary>
         /// <param name="target"></param>
@@ -392,6 +447,11 @@ namespace Util.Reflection
             return methodInfo.Invoke(target, parameters);
         }
 
+        /// <summary>
+        /// 打印对象信息
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static String print_r(Object obj)
         {
             String result = "";

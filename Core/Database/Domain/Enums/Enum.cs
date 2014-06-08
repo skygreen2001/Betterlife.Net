@@ -22,7 +22,7 @@ namespace Database.Domain.Enums
         public const char Manager = '1';
 
         /// <summary>
-        /// 显示同步行为
+        /// 显示系统管理员扮演角色
         /// </summary>
         public static String RoletypeShow(char Type)
         {
@@ -34,6 +34,26 @@ namespace Database.Domain.Enums
                     return "普通管理员";
             }
             return "未知";
+        }
+
+
+        /// <summary>
+        /// 根据系统管理员扮演角色显示文字获取系统管理员扮演角色
+        /// </summary>
+        public static string RoletypeByShow(string Content)
+        {
+            char result=char.MinValue;
+            switch (Content)
+            {
+                case "超级管理员":
+                    result= Superadmin;
+                    break;
+                case "普通管理员":
+                    result= Manager;
+                    break;
+            }
+            
+            return result.ToString();
         }
     }
 
@@ -52,7 +72,7 @@ namespace Database.Domain.Enums
         public const char All = '1';
 
         /// <summary>
-        /// 显示同步行为
+        /// 显示视野
         /// </summary>
         public static String SeescopeShow(char Type)
         {
@@ -64,6 +84,24 @@ namespace Database.Domain.Enums
                     return "查看所有的信息";
             }
             return "未知";
+        }
+
+        /// <summary>
+        /// 根据视野显示文字获取视野
+        /// </summary>
+        public static string SeescopeByShow(string Content)
+        {
+            char result = char.MinValue;
+            switch (Content)
+            {
+                case "只能查看自己的信息":
+                    result= Self;
+                    break;
+                case "查看所有的信息":
+                    result= All;
+                    break;
+            }
+            return result.ToString();
         }
     }
 }
