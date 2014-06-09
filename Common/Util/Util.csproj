@@ -114,6 +114,7 @@
     <Compile Include="Type\Datatable\IDataTableConverter.cs" />
     <Compile Include="Type\Datatable\MyList.cs" />
     <Compile Include="Type\Datatable\UtilDataTable.cs" />
+    <Compile Include="View\OnlineEditor\UtilCKEeditor.cs" />
     <Compile Include="View\OnlineEditor\UtilUEditor.cs" />
     <Compile Include="Xml\NamespaceIgnorantXmlTextReader.cs" />
     <Compile Include="Xml\UtilXmlConvertor.cs" />

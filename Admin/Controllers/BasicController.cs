@@ -11,7 +11,7 @@ namespace Admin.Controllers
 {
     public class BasicController : Controller
     {
-        public int Online_Editor = EnumOnlineEditor.UEDITOR;
+        public int Online_Editor = EnumOnlineEditor.CKEDITOR;
         /// <summary>
         /// 加载在线编辑器初始化语句
         /// </summary>
@@ -22,41 +22,18 @@ namespace Admin.Controllers
             switch (Online_Editor)
             {
                 case EnumOnlineEditor.UEDITOR:
-                    if (Gc.IsDebug)
-                    {
-                        result = @"
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/ueditor.config.js""></script>
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/ueditor.all.js""></script>
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/ueditor.parse.js""></script>
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/lang/zh-cn/zh-cn.js""></script>
-                        ";
-                    }
-                    else
-                    {
-                        result = @"
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/ueditor.config.js""></script>
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/ueditor.all.min.js""></script>
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/ueditor.parse.min.js""></script>
-    <script type=""text/javascript"" src=""/Content/common/js/onlineditor/ueditor/lang/zh-cn/zh-cn.js""></script>
-                        ";
-
-                    }
+                    result=UtilUEditor.Init(Gc.IsDebug);
                     foreach (string Textarea_ID in Textarea_IDs)
                     {
                         result+=UtilUEditor.Init_Function(Textarea_ID);
                     }
                     break;
-
                 case EnumOnlineEditor.CKEDITOR:
-                    result = @"
-
-    <script type=""text/javascript"">
-        function ckeditor_replace_Feature()
-        {
-            CKFinder.setupCKEditor(null, ""../Content/common/js/onlineditor/ckfinder/"");
-        }
-    </script>
-                    ";
+                    result = UtilCKEeditor.Init();
+                    foreach (string Textarea_ID in Textarea_IDs)
+                    {
+                        result += UtilCKEeditor.LoadReplace(Textarea_ID);
+                    }
                     break;
 
                 case EnumOnlineEditor.KINDEDITOR:
