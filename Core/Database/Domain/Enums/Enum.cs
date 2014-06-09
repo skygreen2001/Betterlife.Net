@@ -8,6 +8,33 @@ using System.Threading.Tasks;
 namespace Database.Domain.Enums
 {
     /// <summary>
+    /// 在线编辑器的类型
+    /// </summary>
+    public struct EnumOnlineEditor
+    {
+        /// <summary>
+        /// CKEditor
+        /// </summary>
+        /// <see cref="http://ckeditor.com/"/>
+        public const int CKEDITOR = 1;
+        /// <summary>
+        /// Kind Editor
+        /// </summary>
+        /// <see cref="http://www.kindsoft.net/"/>
+        public const int KINDEDITOR = 2;
+        /// <summary>
+        /// XHEDITOR
+        /// </summary>
+        /// <see cref="http://xheditor.com/"/>
+        public const int XHEDITOR = 3;
+        /// <summary>
+        /// UEDITOR
+        /// </summary>
+        /// <see cref="http://ueditor.baidu.com/"/>
+        public const int UEDITOR = 4;
+    }
+
+    /// <summary>
     /// 系统管理员扮演角色
     /// </summary>
     public class EnumRoleType

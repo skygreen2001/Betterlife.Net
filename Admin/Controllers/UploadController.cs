@@ -26,7 +26,7 @@ namespace Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult uploadAdmin(FormCollection form)
+        public ActionResult UploadAdmin(FormCollection form)
         {
             if (Request.Files.Count > 0){
                 HttpPostedFileBase file = Request.Files[0];

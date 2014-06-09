@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "博客";
+}
+
+@section HeadInclude{
+    @Html.Raw(ViewBag.OnlineEditorHtml)
+
+    <script type="text/javascript" src="@Url.Content("~/Services/ExtServiceBlog.ashx")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Services/ExtServiceComment.ashx")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/core/blog.js")"></script>
+}
+

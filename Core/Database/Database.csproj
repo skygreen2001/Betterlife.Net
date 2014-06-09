@@ -80,7 +80,10 @@
       <DependentUpon>BetterlifeNetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Domain\Core\Admin.cs" />
+    <Compile Include="Domain\Core\Blog.cs" />
+    <Compile Include="Domain\Core\Comment.cs" />
     <Compile Include="Domain\Core\Department.cs" />
+    <Compile Include="Domain\Core\User.cs" />
     <Compile Include="Domain\Enums\Enum.cs" />
     <Compile Include="Domain\Enums\Error\CommonError.cs" />
     <Compile Include="Domain\Enums\Error\MessageError.cs" />

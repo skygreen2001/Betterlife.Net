@@ -403,7 +403,7 @@ Bn.Admin.View = {
                                 closable: true, progress: true, progressText: '', width: 300
                             });
                             this.uploadForm.getForm().submit({
-                                url: '/Upload/uploadAdmin',
+                                url: '/Upload/UploadAdmin',
                                 success: function (form, response) {
                                     Ext.Msg.alert('成功', '上传成功');
                                     uploadWindow.hide();

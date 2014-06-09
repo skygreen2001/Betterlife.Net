@@ -108,6 +108,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionBase.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\Config.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\ConfigHandler.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\CrawlerHandler.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\Handler.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\ListFileHandler.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\NotSupportedHandler.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\PathFormater.cs" />
+    <Compile Include="Content\common\js\onlineditor\ueditor\net\core\UploadHandler.cs" />
+    <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -119,6 +128,9 @@
     </Compile>
     <Compile Include="HttpData\Core\Department.ashx.cs">
       <DependentUpon>Department.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="HttpData\Core\User.ashx.cs">
+      <DependentUpon>User.ashx</DependentUpon>
     </Compile>
     <Compile Include="HttpData\SwfUpload.ashx.cs">
       <DependentUpon>SwfUpload.ashx</DependentUpon>
@@ -132,6 +144,12 @@
       <DependentUpon>ExtServiceAdmin.ashx</DependentUpon>
     </Compile>
     <Compile Include="Services\ExtServiceBasic.cs" />
+    <Compile Include="Services\ExtServiceBlog.ashx.cs">
+      <DependentUpon>ExtServiceBlog.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ExtServiceComment.ashx.cs">
+      <DependentUpon>ExtServiceComment.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\common\js\ajax\ext\adapter\ext\ext-base-debug.js" />
@@ -1836,11 +1854,6 @@
     <Content Include="Content\common\js\onlineditor\ueditor\lang\zh-cn\images\music.png" />
     <Content Include="Content\common\js\onlineditor\ueditor\lang\zh-cn\images\upload.png" />
     <Content Include="Content\common\js\onlineditor\ueditor\lang\zh-cn\zh-cn.js" />
-    <Content Include="Content\common\js\onlineditor\ueditor\php\action_crawler.php" />
-    <Content Include="Content\common\js\onlineditor\ueditor\php\action_list.php" />
-    <Content Include="Content\common\js\onlineditor\ueditor\php\action_upload.php" />
-    <Content Include="Content\common\js\onlineditor\ueditor\php\controller.php" />
-    <Content Include="Content\common\js\onlineditor\ueditor\php\Uploader.class.php" />
     <Content Include="Content\common\js\onlineditor\ueditor\themes\default\css\ueditor.css" />
     <Content Include="Content\common\js\onlineditor\ueditor\themes\default\css\ueditor.min.css" />
     <Content Include="Content\common\js\onlineditor\ueditor\themes\default\dialogbase.css" />
@@ -2300,6 +2313,7 @@
     <Content Include="Scripts\components\ComboBoxTree.js" />
     <Content Include="Scripts\components\FileUploadField.js" />
     <Content Include="Scripts\core\admin.js" />
+    <Content Include="Scripts\core\blog.js" />
     <Content Include="Scripts\index\index.js" />
     <Content Include="Scripts\index\layout.js" />
     <Content Include="Scripts\index\navigation.js" />
@@ -2390,11 +2404,27 @@
     <Content Include="HttpData\Core\BasicHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\common\js\onlineditor\ueditor\php\config.json" />
     <Content Include="Content\common\js\onlineditor\ueditor\third-party\jquery-1.10.2.min.map" />
     <Content Include="Content\common\js\onlineditor\ueditor\third-party\video-js\font\vjs.eot" />
     <Content Include="Content\common\js\onlineditor\ueditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="Content\common\js\onlineditor\ueditor\third-party\video-js\font\vjs.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Blog.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Services\ExtServiceBlog.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Services\ExtServiceComment.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\common\js\onlineditor\ueditor\net\config.json" />
+    <Content Include="Content\common\js\onlineditor\ueditor\net\controller.ashx" />
+    <Content Include="Content\common\js\onlineditor\ueditor\net\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HttpData\Core\User.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

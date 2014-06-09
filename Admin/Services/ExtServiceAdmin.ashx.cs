@@ -16,6 +16,9 @@ using Util.DataType.Datatable;
 
 namespace Admin.Services
 {
+    /// <summary>
+    /// 服务类:系统管理人员
+    /// </summary>
     [DirectAction("ExtServiceAdmin")]
     public class ExtServiceAdminHandler : ExtServiceBasic
     {
@@ -278,17 +281,19 @@ namespace Admin.Services
                 DataTable dt = UtilDataTable.ToDataTable(query); 
                 dt.TableName = "Admin";
                 UtilDataTable.DeleteColumns(dt, "Seescope", "Roletype", "Department_ID");
-                Dictionary<string,string> dic=new Dictionary<string,string>();
-                dic.Add("ID", "编号");
-                dic.Add("Department_Name", "部门名称");
-                dic.Add("Username", "用户名称");
-                dic.Add("Password", "密码");
-                dic.Add("Realname", "真实姓名");
-                dic.Add("RoletypeShow", "扮演角色");
-                dic.Add("SeescopeShow", "视野");
-                dic.Add("LoginTimes", "登录次数");
-                dic.Add("CommitTime", "创建时间");
-                dic.Add("UpdateTime", "更新时间");
+                Dictionary<string, string> dic = new Dictionary<string, string>()
+                {
+                    {"ID","编号"},
+                    {"Department_Name","部门名称"},
+                    {"Username","用户名称"},
+                    {"Password","密码"},
+                    {"Realname","真实姓名"},
+                    {"RoletypeShow","扮演角色"},
+                    {"SeescopeShow","视野"},
+                    {"LoginTimes","登录次数"},
+                    {"CommitTime","创建时间"},
+                    {"UpdateTime","更新时间"}
+                };
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
                 string fileName = "admin"+UtilDateTime.NowS()+".xls";

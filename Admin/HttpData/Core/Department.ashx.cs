@@ -20,12 +20,6 @@ namespace Admin.HttpData.Core
 
             int start = 0;
             if (context.Request["start"]!=null) start = int.Parse(context.Request["start"]);
-            //int limit = pageSize;
-            //if (context.Request["limit"] != null)
-            //{
-            //    limit = int.Parse(context.Request["limit"]);
-            //    limit = start + limit - 1;
-            //}
             Dictionary<string, object> departmentDic = new Dictionary<string, object>();
             int totalCount = db.Department.Where(e => e.Department_Name.Contains(query)).Count();
             var departments = db.Department.Where(e => e.Department_Name.Contains(query)).
@@ -38,21 +32,17 @@ namespace Admin.HttpData.Core
                     department.Department_ID = department.ID;
                 }
 
-                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-
-                departmentDic.Add("totalCount", totalCount);
-                departmentDic.Add("departments", departments);
                 try
                 {
-                    var serializerSettings = new JsonSerializerSettings { 
-                        PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                        ReferenceLoopHandling=ReferenceLoopHandling.Ignore
-                    };
-
-                    
-                    //执行序列化
-                    result = JsonConvert.SerializeObject(departmentDic, Formatting.Indented, serializerSettings);
-                }catch(Exception ex){
+                    departmentDic.Add("totalCount", totalCount);
+                    departmentDic.Add("departments", departments);
+                    result = JsonConvert.SerializeObject(departmentDic, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.Message);
                 }
             }

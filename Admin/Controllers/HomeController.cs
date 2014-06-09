@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Admin.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BasicController
     {
         // 控制器:系统管理人员
         // GET: /Home/Admin
@@ -14,6 +14,15 @@ namespace Admin.Controllers
         {
             return View();
         }
+
+        // 控制器:博客
+        // GET: /Home/Blog
+        public ActionResult Blog()
+        {
+            this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor("Blog_Content", "Comment");
+            return View();
+        }
+
 
     }
 }
