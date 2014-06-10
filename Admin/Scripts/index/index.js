@@ -15,8 +15,8 @@ Bn.Config = {
 	Operator: '',
     /**
      * 在线编辑器类型。
-     * 1:CkEditor,2:KindEditor,3:xhEditor,4:UEditor
-     * 配合Action的变量配置$online_editor
+     * 1:CkEditor,4:UEditor【默认】
+     * 配合Action的变量配置Online_Editor
      */
 	OnlineEditor: 4,
 	/**

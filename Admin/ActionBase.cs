@@ -1,9 +1,12 @@
-﻿using Business;
+﻿using Admin.Controllers;
+using Business;
+using Database.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Util.Common;
 
 namespace Admin
 {
@@ -34,6 +37,9 @@ namespace Admin
         {
             filterContext.Controller.ViewBag.Title = Gc.SiteName;
             filterContext.Controller.ViewBag.SiteName = Gc.SiteName;
+            HttpCookie OnlineEditorCookie=filterContext.RequestContext.HttpContext.Request.Cookies["OnlineEditor"];
+
+            BasicController.Online_Editor = UtilNumber.Parse(OnlineEditorCookie.Value, EnumOnlineEditor.UEDITOR);
             //在Action执行前执行
             //filterContext.HttpContext.Response.Write(@"<br />Before Action execute" + "\t " + Message);
             base.OnActionExecuting(filterContext);

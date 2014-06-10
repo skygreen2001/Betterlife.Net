@@ -83,16 +83,6 @@ Bn.Layout =
                                                 checked: true, value: "1",
                                                 group: 'onlineditor',
                                                 checkHandler: function (item, checked) { Bn.Layout.Function.onOnlineditorCheck(item, checked); }
-                                            }, {
-                                                text: 'KindEditor',
-                                                checked: false, value: "2",
-                                                group: 'onlineditor',
-                                                checkHandler: function (item, checked) { Bn.Layout.Function.onOnlineditorCheck(item, checked); }
-                                            }, {
-                                                text: 'xHeditor',
-                                                checked: false, value: "3",
-                                                group: 'onlineditor',
-                                                checkHandler: function (item, checked) { Bn.Layout.Function.onOnlineditorCheck(item, checked); }
                                             }]
                                         }
                                     },

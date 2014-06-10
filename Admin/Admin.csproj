@@ -568,6 +568,8 @@
     <Content Include="Content\common\js\ajax\ext\resources\images\vista\toolbar\tb-btn-sprite.gif" />
     <Content Include="Content\common\js\ajax\ext\shared\AddTabButton.js" />
     <Content Include="Content\common\js\ajax\ext\shared\App.js" />
+    <Content Include="Content\common\js\ajax\ext\shared\components\ComboBoxTree.js" />
+    <Content Include="Content\common\js\ajax\ext\shared\components\FileUploadField.js" />
     <Content Include="Content\common\js\ajax\ext\shared\css\fileuploadfield.css" />
     <Content Include="Content\common\js\ajax\ext\shared\css\MultiSelect.css" />
     <Content Include="Content\common\js\ajax\ext\shared\css\RowEditor.css" />
@@ -2328,8 +2330,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="readme.txt" />
-    <Content Include="Scripts\components\ComboBoxTree.js" />
-    <Content Include="Scripts\components\FileUploadField.js" />
     <Content Include="Scripts\core\admin.js" />
     <Content Include="Scripts\core\blog.js" />
     <Content Include="Scripts\index\index.js" />

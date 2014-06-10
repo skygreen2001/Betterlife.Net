@@ -11,7 +11,6 @@ namespace Util.View.OnlineEditor
     /// </summary>
     public static class UtilCKEeditor
     {
-        
         /// <summary>
         /// 初始化加载JS文件
         /// </summary>
