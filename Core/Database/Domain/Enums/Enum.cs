@@ -18,16 +18,6 @@ namespace Database.Domain.Enums
         /// <see cref="http://ckeditor.com/"/>
         public const int CKEDITOR = 1;
         /// <summary>
-        /// Kind Editor
-        /// </summary>
-        /// <see cref="http://www.kindsoft.net/"/>
-        public const int KINDEDITOR = 2;
-        /// <summary>
-        /// XHEDITOR
-        /// </summary>
-        /// <see cref="http://xheditor.com/"/>
-        public const int XHEDITOR = 3;
-        /// <summary>
         /// UEDITOR
         /// </summary>
         /// <see cref="http://ueditor.baidu.com/"/>
@@ -62,7 +52,6 @@ namespace Database.Domain.Enums
             }
             return "未知";
         }
-
 
         /// <summary>
         /// 根据系统管理员扮演角色显示文字获取系统管理员扮演角色

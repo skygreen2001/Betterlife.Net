@@ -35,12 +35,6 @@ namespace Admin.Controllers
                         result += UtilCKEeditor.LoadReplace(Textarea_ID);
                     }
                     break;
-
-                case EnumOnlineEditor.KINDEDITOR:
-                    break;
-
-                case EnumOnlineEditor.XHEDITOR:
-                    break;
             }
             return result;
         }
