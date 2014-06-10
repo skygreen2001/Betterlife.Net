@@ -30,8 +30,6 @@ namespace Database
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Department> Department { get; set; }
         public DbSet<Functions> Functions { get; set; }
-        public DbSet<Logsystem> Logsystem { get; set; }
-        public DbSet<Loguser> Loguser { get; set; }
         public DbSet<Msg> Msg { get; set; }
         public DbSet<Notice> Notice { get; set; }
         public DbSet<Region> Region { get; set; }
@@ -41,5 +39,7 @@ namespace Database
         public DbSet<Userdetail> Userdetail { get; set; }
         public DbSet<Usernotice> Usernotice { get; set; }
         public DbSet<Userrole> Userrole { get; set; }
+        public DbSet<Logsystem> Logsystem { get; set; }
+        public DbSet<Loguser> Loguser { get; set; }
     }
 }

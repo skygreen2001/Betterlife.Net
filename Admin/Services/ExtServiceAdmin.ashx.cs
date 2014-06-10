@@ -1,18 +1,19 @@
-﻿using Ext.Direct;
+﻿using Business;
+using Business.Core.Service;
+using Database;
+using Database.Domain.Enums;
+using Ext.Direct;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
-using System.Web;
 using System.Collections.Generic;
 using System.Data;
-using Administrator=Database.Admin;
-using Util.Common;
-using Database.Domain.Enums;
-using Database;
-using System.Reflection;
 using System.IO;
-using Business;
+using System.Linq;
+using System.Reflection;
+using System.Web;
+using Util.Common;
 using Util.DataType.Datatable;
+using Administrator = Database.Admin;
 
 namespace Admin.Services
 {
@@ -20,8 +21,13 @@ namespace Admin.Services
     /// 服务类:系统管理人员
     /// </summary>
     [DirectAction("ExtServiceAdmin")]
-    public class ExtServiceAdminHandler : ExtServiceBasic
+    public class ExtServiceAdmin : ExtServiceBasic
     {
+        /// <summary>
+        /// 系统管理员服务
+        /// </summary>
+        private static IServiceAdmin adminService;
+
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
         /// </summary>
@@ -47,23 +53,22 @@ namespace Admin.Services
             {
                 string Username = adminForm["Username"];
                 string admin_id = null;
-                bool Flag = this.IsUsernameExist(Username, admin_id);
+                bool Flag = IsUsernameExist(Username, admin_id);
                 if (Flag)
                 {
                     msg = "该用户名已存在,请重新输入!";
                 }
                 else
                 {
-
                     Administrator admin = new Administrator();
                     byte Roletype = Convert.ToByte(adminForm["Roletype"]);
                     byte Seescope = Convert.ToByte(adminForm["Seescope"]);
                     base.copyProperties(admin, adminForm);
                     try
                     {
-                        admin.LoginTimes = 1;
                         admin.CommitTime = DateTime.Now;
                         admin.UpdateTime = DateTime.Now;
+                        admin.LoginTimes = 1;
                         db.Admin.Add(admin); 
                         db.SaveChanges();
                         msg = "保存成功!";
@@ -93,19 +98,18 @@ namespace Admin.Services
             string msg  = "";
             if (adminForm != null)
             {
-                string id_str = adminForm["ID"];
+                string admin_id = adminForm["ID"];
                 string Username = adminForm["Username"];
-                bool Flag = this.IsUsernameExist(Username, id_str);
+                bool Flag = this.IsUsernameExist(Username, admin_id);
                 if (Flag)
                 {
                     msg = "该用户名已存在,请重新输入!";
                 }
                 else
                 {
-                    
                     try
                     {
-                        int id = UtilNumber.Parse(id_str);
+                        int id = UtilNumber.Parse(admin_id);
                         Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
                         base.copyProperties(admin, adminForm);
                         admin.UpdateTime = DateTime.Now;
@@ -123,57 +127,6 @@ namespace Admin.Services
                 new JProperty("success", result),
                 new JProperty("msg", msg)
             );
-        }
-
-        /// <summary>
-        /// 分页方法:系统管理员
-        /// </summary>
-        /// <see cref="http://diaosbook.com/Post/2012/9/21/linq-paging-in-entity-framework"/>
-        /// <param name="condition">
-        /// 查询条件对象:
-        ///     必须传递分页参数：start:分页开始数，默认从0开始
-        ///     limit:分页查询数，默认10个。
-        /// </param>
-        /// <returns></returns>
-        [DirectMethod]
-        public ExtServiceAdminHandler queryPageAdmin(Dictionary<String, object> condition)
-        {
-            int currentPage = 0;
-            int start = 0, limit = 10;
-
-            if (condition.ContainsKey("limit")) limit = Convert.ToInt16(condition["limit"]);
-            if (condition.ContainsKey("start")) start = Convert.ToInt16(condition["start"]);
-            UtilDictionary.Removes(condition, "start", "limit");
-
-            pageCount = limit;
-            currentPage = start / pageCount;
-            this.Stores = new List<Object>();
-            //this.Stores.Clear();
-
-            string Username = "", Realname = "";
-            if (condition.ContainsKey("Username")) Username = Convert.ToString(condition["Username"]);
-            if (condition.ContainsKey("Realname")) Realname = Convert.ToString(condition["Realname"]);
-            int rowCount = 0;//总行记录数
-            rowCount = db.Admin.Where(e => e.Username.Contains(Username) &&
-                                             e.Realname.Contains(Realname)).Count();
-
-            var admins = db.Admin.Where(e => e.Username.Contains(Username) &&
-                                             e.Realname.Contains(Realname)).
-                OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
-
-            List<Administrator> listAdmins=admins.ToList<Administrator>();
-            int i=1;
-            foreach (Administrator row in listAdmins)
-            {
-                row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
-                row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
-                row.Department_Name = row.Department.Department_Name;
-                this.Stores.Add(row);
-                i++;
-            }
-            this.TotalCount = rowCount;
-            this.Success = true;
-            return this;
         }
 
         /// <summary>
@@ -202,6 +155,58 @@ namespace Admin.Services
             return new JObject(
                 new JProperty("success", true)
             );
+        }
+
+        /// <summary>
+        /// 分页方法:系统管理员
+        /// </summary>
+        /// <see cref="http://diaosbook.com/Post/2012/9/21/linq-paging-in-entity-framework"/>
+        /// <param name="condition">
+        /// 查询条件对象:
+        ///     必须传递分页参数：start:分页开始数，默认从0开始
+        ///     limit:分页查询数，默认10个。
+        /// </param>
+        /// <returns></returns>
+        [DirectMethod]
+        public ExtServiceAdmin queryPageAdmin(Dictionary<String, object> condition)
+        {
+            int currentPage = 0;
+            int start = 0, limit = 10;
+
+            if (condition.ContainsKey("limit")) limit = Convert.ToInt16(condition["limit"]);
+            if (condition.ContainsKey("start")) start = Convert.ToInt16(condition["start"]);
+            UtilDictionary.Removes(condition, "start", "limit");
+
+            pageCount = limit;
+            currentPage = start / pageCount;
+            this.Stores = new List<Object>();
+
+            string Username = "", Realname = "";
+            if (condition.ContainsKey("Username")) Username = Convert.ToString(condition["Username"]);
+            if (condition.ContainsKey("Realname")) Realname = Convert.ToString(condition["Realname"]);
+            int rowCount = 0;//总行记录数
+            if (adminService == null) adminService = new ServiceAdmin();
+            adminService.Count()
+            rowCount = db.Admin.Where(e => e.Username.Contains(Username) &&
+                                             e.Realname.Contains(Realname)).Count();
+
+            var admins = db.Admin.Where(e => e.Username.Contains(Username) &&
+                                             e.Realname.Contains(Realname)).
+                OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
+
+            List<Administrator> listAdmins=admins.ToList<Administrator>();
+            int i=1;
+            foreach (Administrator row in listAdmins)
+            {
+                row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
+                row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
+                row.Department_Name = row.Department.Department_Name;
+                this.Stores.Add(row);
+                i++;
+            }
+            this.TotalCount = rowCount;
+            this.Success = true;
+            return this;
         }
 
         /// <summary>

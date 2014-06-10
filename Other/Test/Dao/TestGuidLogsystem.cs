@@ -17,8 +17,8 @@ namespace Test.Dao
     [TestClass]
     public class TestGuidLogsystem
     {
-        private static H1ZCEntities db;
-        private const string originalMessage = "aaa";
+        private static BetterlifeNetEntities db;
+        private const string originalMessage = "error for test";
         private const string updateMessage = "111";
         private const string originalLogID = "98A67262-22C7-4615-9907-000BD6D03819";
 
@@ -40,7 +40,7 @@ namespace Test.Dao
         [TestInitialize]
         public void init()
         {
-            db = new H1ZCEntities();
+            db = new BetterlifeNetEntities();
         }
 
 
@@ -153,7 +153,7 @@ namespace Test.Dao
         [TestMethod]
         public void DeleteByIDs()
         {
-            //获取第2，3,4,5条数据的GUID
+            //获取第1，2,3,4条数据的GUID
             string IDs = originalLogIDs[1] + "," + originalLogIDs[2] + ","
                 + originalLogIDs[3] + "," + originalLogIDs[4];
             string[] ID_Arr = IDs.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -169,15 +169,22 @@ namespace Test.Dao
             }
             int Count = db.Database.ExecuteSqlCommand("DELETE FROM Logsystem WHERE " + Condition);
             Assert.IsTrue(Count > 0);
+        }
 
+        
+        /// <summary>
+        /// 删除系统日志
+        /// </summary>
+        [TestMethod]
+        public void DeleteLogSystem()
+        {
             //测试 2 获取第7，8条数据的GUID
-            IDs = originalLogIDs[7] + "," + originalLogIDs[8];
-            Count = db.Logsystem.Count();
-            ID_Arr = IDs.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string IDs = originalLogIDs[7] + "," + originalLogIDs[8];
+            int Count = db.Logsystem.Count();
+            string[] ID_Arr = IDs.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var ID in ID_Arr)
             {
-                string iID = ID;
-                Logsystem toDelete = db.Logsystem.Single(e => e.ID.ToString().Equals(iID));
+                Logsystem toDelete = db.Logsystem.Single(e => e.ID.ToString().Equals(ID));
                 Console.WriteLine(toDelete.ID + toDelete.Message + ":" + toDelete.Logtime);
                 db.Logsystem.Remove(toDelete);
             }
@@ -193,7 +200,7 @@ namespace Test.Dao
         [TestMethod]
         public void ExistByID()
         {
-            Guid logID = new Guid(originalLogID);
+            Guid logID = new Guid(originalLogIDs[9]);
             int Count = db.Logsystem.Count(e => e.ID.Equals(logID));
             Assert.IsTrue(Count > 0);
         }

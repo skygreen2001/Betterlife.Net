@@ -18,10 +18,10 @@ namespace Database
         {
             this.Blog = new HashSet<Blog>();
             this.Comment = new HashSet<Comment>();
-            this.Loguser = new HashSet<Loguser>();
             this.Userdetail = new HashSet<Userdetail>();
             this.Usernotice = new HashSet<Usernotice>();
             this.Userrole = new HashSet<Userrole>();
+            this.Loguser = new HashSet<Loguser>();
         }
     
         public int ID { get; set; }
@@ -35,9 +35,9 @@ namespace Database
     
         public virtual ICollection<Blog> Blog { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Loguser> Loguser { get; set; }
         public virtual ICollection<Userdetail> Userdetail { get; set; }
         public virtual ICollection<Usernotice> Usernotice { get; set; }
         public virtual ICollection<Userrole> Userrole { get; set; }
+        public virtual ICollection<Loguser> Loguser { get; set; }
     }
 }

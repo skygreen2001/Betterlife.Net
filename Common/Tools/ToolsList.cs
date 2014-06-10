@@ -11,19 +11,10 @@ namespace Tools
 {
     public partial class ToolsList : Form
     {
-        private ToolModifyFileForm modifyFileForm;
         private ToolDbScriptsForm dbScriptForm;
         public ToolsList()
         {
             InitializeComponent();
-        }
-
-        private void btnModifyFile_Click(object sender, EventArgs e)
-        {
-             modifyFileForm = new ToolModifyFileForm();
-             modifyFileForm.Show();
-             this.Hide();
-
         }
 
         private void showDbInfo_Click(object sender, EventArgs e)

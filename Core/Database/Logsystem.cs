@@ -14,7 +14,7 @@ namespace Database
     
     public partial class Logsystem
     {
-        public int ID { get; set; }
+        public System.Guid ID { get; set; }
         public Nullable<System.DateTime> Logtime { get; set; }
         public string Ident { get; set; }
         public string Priority { get; set; }

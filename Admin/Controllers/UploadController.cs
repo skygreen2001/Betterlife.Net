@@ -33,7 +33,7 @@ namespace Admin.Controllers
                 string fileName = Path.Combine(Gc.UploadPath, "attachment", "admin", "admin" + UtilDateTime.NowS() + ".xls");
                 file.SaveAs(fileName);
 
-                JObject resultJ = ExtServiceAdminHandler.importAdmin(fileName);
+                JObject resultJ = ExtServiceAdmin.importAdmin(fileName);
                 string result = JsonConvert.SerializeObject(resultJ);
                 Response.Write(result);
             }else{

@@ -4,35 +4,35 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3ec18840bb54461ba110e793f7a905c5" Name="Diagram" ZoomLevel="63">
-        <EntityTypeShape EntityType="BetterlifeNetModel.Admin" Width="1.5" PointX="13" PointY="1.25" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Blog" Width="1.5" PointX="3" PointY="4.75" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Comment" Width="1.5" PointX="5.25" PointY="6.875" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Department" Width="1.5" PointX="10.75" PointY="1.375" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Functions" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Logsystem" Width="1.5" PointX="0.75" PointY="1.125" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Loguser" Width="1.5" PointX="3" PointY="8" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Msg" Width="1.5" PointX="2.75" PointY="1.125" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Notice" Width="1.5" PointX="3.75" PointY="15.625" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Region" Width="1.5" PointX="10.75" PointY="6.125" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Role" Width="1.5" PointX="5.75" PointY="3.625" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Rolefunctions" Width="1.5" PointX="8" PointY="3.75" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.User" Width="1.5" PointX="0.75" PointY="7.875" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Userdetail" Width="1.5" PointX="3" PointY="10.875" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Usernotice" Width="1.5" PointX="6" PointY="10.625" />
-        <EntityTypeShape EntityType="BetterlifeNetModel.Userrole" Width="1.5" PointX="8" PointY="7.75" />
+      <Diagram DiagramId="3ec18840bb54461ba110e793f7a905c5" Name="Diagram" ZoomLevel="100">
+        <EntityTypeShape EntityType="BetterlifeNetModel.Admin" Width="1.5" PointX="11" PointY="1" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Blog" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Comment" Width="1.5" PointX="5.25" PointY="6.625" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Department" Width="1.5" PointX="8.75" PointY="1.125" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Functions" Width="1.5" PointX="3.75" PointY="21.375" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Msg" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Notice" Width="1.5" PointX="3.75" PointY="1.25" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Region" Width="1.5" PointX="7.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Role" Width="1.5" PointX="0.75" PointY="4.375" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Rolefunctions" Width="1.5" PointX="6" PointY="3.375" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.User" Width="1.5" PointX="0.75" PointY="7.625" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Userdetail" Width="1.5" PointX="3" PointY="13.375" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Usernotice" Width="1.5" PointX="6" PointY="10.25" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Userrole" Width="1.5" PointX="3" PointY="8.375" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Admin_Department" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Blog_User" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Comment_Blog" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Comment_User" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Rolefunctions_Functions" />
-        <AssociationConnector Association="BetterlifeNetModel.FK_Loguser_User" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Usernotice_Notice" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Rolefunctions_Role" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Userrole_Role" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Userdetail_User" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Usernotice_User" />
         <AssociationConnector Association="BetterlifeNetModel.FK_Userrole_User" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Logsystem" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BetterlifeNetModel.Loguser" Width="1.5" PointX="3" PointY="17.875" />
+        <AssociationConnector Association="BetterlifeNetModel.FK_Loguser_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

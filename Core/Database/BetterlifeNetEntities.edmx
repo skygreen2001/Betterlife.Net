@@ -135,7 +135,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Logtime" Type="datetime" />
           <Property Name="Ident" Type="char" MaxLength="1" />
           <Property Name="Priority" Type="char" MaxLength="1" />
@@ -145,7 +145,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="User_ID" Type="int" Nullable="false" />
           <Property Name="UserType" Type="char" MaxLength="1" />
           <Property Name="Log_Content" Type="nvarchar" MaxLength="200" />
@@ -409,8 +409,6 @@
           <EntitySet Name="Comment" EntityType="BetterlifeNetModel.Comment" />
           <EntitySet Name="Department" EntityType="BetterlifeNetModel.Department" />
           <EntitySet Name="Functions" EntityType="BetterlifeNetModel.Functions" />
-          <EntitySet Name="Logsystem" EntityType="BetterlifeNetModel.Logsystem" />
-          <EntitySet Name="Loguser" EntityType="BetterlifeNetModel.Loguser" />
           <EntitySet Name="Msg" EntityType="BetterlifeNetModel.Msg" />
           <EntitySet Name="Notice" EntityType="BetterlifeNetModel.Notice" />
           <EntitySet Name="Region" EntityType="BetterlifeNetModel.Region" />
@@ -440,10 +438,6 @@
             <End Role="Functions" EntitySet="Functions" />
             <End Role="Rolefunctions" EntitySet="Rolefunctions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Loguser_User" Association="BetterlifeNetModel.FK_Loguser_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Loguser" EntitySet="Loguser" />
-          </AssociationSet>
           <AssociationSet Name="FK_Usernotice_Notice" Association="BetterlifeNetModel.FK_Usernotice_Notice">
             <End Role="Notice" EntitySet="Notice" />
             <End Role="Usernotice" EntitySet="Usernotice" />
@@ -467,6 +461,12 @@
           <AssociationSet Name="FK_Userrole_User" Association="BetterlifeNetModel.FK_Userrole_User">
             <End Role="User" EntitySet="User" />
             <End Role="Userrole" EntitySet="Userrole" />
+          </AssociationSet>
+          <EntitySet Name="Logsystem" EntityType="BetterlifeNetModel.Logsystem" />
+          <EntitySet Name="Loguser" EntityType="BetterlifeNetModel.Loguser" />
+          <AssociationSet Name="FK_Loguser_User" Association="BetterlifeNetModel.FK_Loguser_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Loguser" EntitySet="Loguser" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Admin">
@@ -535,27 +535,6 @@
           <Property Type="DateTime" Name="CommitTime" Precision="3" />
           <Property Type="DateTime" Name="UpdateTime" Precision="3" />
           <NavigationProperty Name="Rolefunctions" Relationship="BetterlifeNetModel.FK_Rolefunctions_Functions" FromRole="Functions" ToRole="Rolefunctions" />
-        </EntityType>
-        <EntityType Name="Logsystem">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="Logtime" Precision="3" />
-          <Property Type="String" Name="Ident" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="Priority" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="Message" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Loguser">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="User_ID" Nullable="false" />
-          <Property Type="String" Name="UserType" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="Log_Content" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="CommitTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="Loguser" ToRole="User" />
         </EntityType>
         <EntityType Name="Msg">
           <Key>
@@ -630,10 +609,10 @@
           <Property Type="DateTime" Name="UpdateTime" Precision="3" />
           <NavigationProperty Name="Blog" Relationship="BetterlifeNetModel.FK_Blog_User" FromRole="User" ToRole="Blog" />
           <NavigationProperty Name="Comment" Relationship="BetterlifeNetModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
-          <NavigationProperty Name="Loguser" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="User" ToRole="Loguser" />
           <NavigationProperty Name="Userdetail" Relationship="BetterlifeNetModel.FK_Userdetail_User" FromRole="User" ToRole="Userdetail" />
           <NavigationProperty Name="Usernotice" Relationship="BetterlifeNetModel.FK_Usernotice_User" FromRole="User" ToRole="Usernotice" />
           <NavigationProperty Name="Userrole" Relationship="BetterlifeNetModel.FK_Userrole_User" FromRole="User" ToRole="Userrole" />
+          <NavigationProperty Name="Loguser" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="User" ToRole="Loguser" />
         </EntityType>
         <EntityType Name="Userdetail">
           <Key>
@@ -737,18 +716,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Loguser_User">
-          <End Type="BetterlifeNetModel.User" Role="User" Multiplicity="1" />
-          <End Type="BetterlifeNetModel.Loguser" Role="Loguser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Loguser">
-              <PropertyRef Name="User_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Usernotice_Notice">
           <End Type="BetterlifeNetModel.Notice" Role="Notice" Multiplicity="1" />
           <End Type="BetterlifeNetModel.Usernotice" Role="Usernotice" Multiplicity="*" />
@@ -821,6 +788,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Logsystem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Logtime" Precision="3" />
+          <Property Type="String" Name="Ident" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Priority" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Message" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Loguser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="User_ID" Nullable="false" />
+          <Property Type="String" Name="UserType" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Log_Content" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CommitTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="BetterlifeNetModel.FK_Loguser_User" FromRole="Loguser" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Loguser_User">
+          <End Type="BetterlifeNetModel.User" Role="User" Multiplicity="1" />
+          <End Type="BetterlifeNetModel.Loguser" Role="Loguser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Loguser">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -888,28 +888,6 @@
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="CommitTime" ColumnName="CommitTime" />
                 <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Logsystem">
-            <EntityTypeMapping TypeName="BetterlifeNetModel.Logsystem">
-              <MappingFragment StoreEntitySet="Logsystem">
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="Ident" ColumnName="Ident" />
-                <ScalarProperty Name="Logtime" ColumnName="Logtime" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Loguser">
-            <EntityTypeMapping TypeName="BetterlifeNetModel.Loguser">
-              <MappingFragment StoreEntitySet="Loguser">
-                <ScalarProperty Name="CommitTime" ColumnName="CommitTime" />
-                <ScalarProperty Name="Log_Content" ColumnName="Log_Content" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1022,6 +1000,28 @@
             <EntityTypeMapping TypeName="BetterlifeNetModel.Userrole">
               <MappingFragment StoreEntitySet="Userrole">
                 <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logsystem">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Logsystem">
+              <MappingFragment StoreEntitySet="Logsystem">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Ident" ColumnName="Ident" />
+                <ScalarProperty Name="Logtime" ColumnName="Logtime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Loguser">
+            <EntityTypeMapping TypeName="BetterlifeNetModel.Loguser">
+              <MappingFragment StoreEntitySet="Loguser">
+                <ScalarProperty Name="CommitTime" ColumnName="CommitTime" />
+                <ScalarProperty Name="Log_Content" ColumnName="Log_Content" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

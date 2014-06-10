@@ -21,6 +21,7 @@ namespace Test.Dao
         private const string Password = "4008001666";
         private const int AdminID = 1;
         private const int DeletedID = 8;
+        private const int ExistedID = 80;
 
         /// <summary>
         /// 系统管理员服务
@@ -103,16 +104,16 @@ namespace Test.Dao
             Assert.IsTrue(IsUpdated);
         }
 
+
+
         /// <summary>
-        /// 删除系统管理员
+        /// 插入测试数据
         /// </summary>
-        /// <param name="admin">需要删除的系统管理员信息</param>
-        /// <returns>是否删除成功</returns>
         [TestMethod]
-        public void Delete()
+        public void InsertAdmin()
         {
             //先默认插入10条Admin记录
-            int ID=4;
+            int ID = 4;
             Admin admin;
             for (int i = 0; i < 1000; i++)
             {
@@ -128,7 +129,20 @@ namespace Test.Dao
                 admin.UpdateTime = DateTime.Now;
                 ID = adminService.Save(admin);
             }
-            admin=adminService.GetByID(ID - 2);
+            Assert.IsTrue(ID>999);
+
+        }
+
+        /// <summary>
+        /// 删除系统管理员
+        /// </summary>
+        /// <param name="admin">需要删除的系统管理员信息</param>
+        /// <returns>是否删除成功</returns>
+        [TestMethod]
+        public void Delete()
+        {
+            int ID = adminService.Count();
+            Admin admin=adminService.GetByID(ID - 2);
             bool IsDeleted = adminService.Delete(admin);
             Assert.IsTrue(IsDeleted);
             admin = adminService.GetByID(ID - 2);
@@ -172,7 +186,7 @@ namespace Test.Dao
         [TestMethod]
         public void ExistByID()
         {
-            bool IsExist = adminService.ExistByID(DeletedID);
+            bool IsExist = adminService.ExistByID(ExistedID);
             Assert.IsTrue(IsExist);
         }
 

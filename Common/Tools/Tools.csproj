@@ -95,12 +95,6 @@
     <Compile Include="ToolDbScriptsForm.Designer.cs">
       <DependentUpon>ToolDbScriptsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ToolModifyFileForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ToolModifyFileForm.Designer.cs">
-      <DependentUpon>ToolModifyFileForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolsList.cs">
       <SubType>Form</SubType>
@@ -113,9 +107,6 @@
     <Compile Include="Util\Db\UtilSqlserver.cs" />
     <EmbeddedResource Include="ToolDbScriptsForm.resx">
       <DependentUpon>ToolDbScriptsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ToolModifyFileForm.resx">
-      <DependentUpon>ToolModifyFileForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -149,6 +140,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AutoCode\Model\extservice.txt" />
     <Content Include="DbScripts\initdata.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

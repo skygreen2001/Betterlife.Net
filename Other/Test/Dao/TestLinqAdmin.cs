@@ -21,6 +21,7 @@ namespace Test.Dao
         private const string Password = "4008001666";
         private const int AdminID = 1;
         private const int DeletedID = 8;
+        private const int ExistedID = 80;
 
         private static BetterlifeNetEntities db;
 
@@ -88,17 +89,18 @@ namespace Test.Dao
             db.SaveChanges();
 
         }
-
+        
         /// <summary>
-        /// 删除管理员
+        /// 插入测试数据
         /// </summary>
         [TestMethod]
-        public void DeleteAdmin()
-        {            
-            //先默认插入10条Admin记录
-            Admin admin=new Admin();
+        public void InsertAdmin()
+        {
+            int CountInsert = 1000;
+            //先默认插入CountInsert条Admin记录
+            Admin admin = new Admin();
             int Count = db.Admin.Count();
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < CountInsert; i++)
             {
                 admin = new Admin();
                 admin.Username = AdminOriginal + i;
@@ -113,7 +115,29 @@ namespace Test.Dao
                 db.Admin.Add(admin);
             }
             db.SaveChanges();
-            Assert.IsTrue(Count == db.Admin.Count()-1000);
+            Assert.IsTrue(Count == db.Admin.Count() - CountInsert);
+        }
+
+        /// <summary>
+        /// 删除管理员
+        /// </summary>
+        [TestMethod]
+        public void DeleteAdmin()
+        {
+
+            //测试 2 获取第77，88条数据的GUID
+            string IDs = "77,88";
+            int Count = db.Admin.Count();
+            string[] ID_Arr = IDs.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var ID in ID_Arr)
+            {
+                int iID = UtilNumber.Parse(ID);
+                Admin toDelete = db.Admin.Single(e => e.ID == iID);
+                Console.WriteLine(toDelete.ID + toDelete.Username + ":" + toDelete.Realname);
+                db.Admin.Remove(toDelete);
+            }
+            db.SaveChanges();
+            Assert.IsTrue(Count == db.Admin.Count() + 2);
         }
 
 
@@ -180,7 +204,7 @@ namespace Test.Dao
         [TestMethod]
         public void ExistByID()
         {
-            int Count=db.Admin.Count(e => e.ID.Equals(DeletedID));
+            int Count = db.Admin.Count(e => e.ID.Equals(ExistedID));
             Assert.IsTrue(Count > 0);
         }
 

@@ -14,7 +14,7 @@ namespace Database
     
     public partial class Loguser
     {
-        public int ID { get; set; }
+        public System.Guid ID { get; set; }
         public int User_ID { get; set; }
         public string UserType { get; set; }
         public string Log_Content { get; set; }
