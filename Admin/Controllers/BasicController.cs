@@ -11,7 +11,7 @@ namespace Admin.Controllers
 {
     public class BasicController : Controller
     {
-        public static int Online_Editor = EnumOnlineEditor.CKEDITOR;
+        public static int Online_Editor = EnumOnlineEditor.UEDITOR;
         /// <summary>
         /// 加载在线编辑器初始化语句
         /// </summary>

@@ -77,6 +77,7 @@ Bn.Blog.Store = {
                 { name: 'Blog_Name', type: 'string' },
                 { name: 'Blog_Content', type: 'string' },
                 { name: 'Blog_ContentShow', type: 'string' }
+
             ]
         }
 		),
@@ -124,6 +125,7 @@ Bn.Blog.Store = {
                 { name: 'User_ID', type: 'int' },
                 { name: 'Username', type: 'string' },
                 { name: 'Comment', type: 'string' },
+                { name: 'Content', type: 'string' },
                 { name: 'Blog_ID', type: 'int' },
                 { name: 'Blog_Name', type: 'string' }
             ]
@@ -178,12 +180,6 @@ Bn.Blog.View = {
                         {
                             case 1:
                                 ckeditor_replace_Blog_Content();
-                                break
-                            case 2:
-                                Bn.Blog.View.EditWindow.KindEditor_Blog_Content = KindEditor.create('textarea[name="Blog_Content"]', { width: '98%', minHeith: '350px', filterMode: true });
-                                break
-                            case 3:
-                                pageInit_Blog_Content();
                                 break
                             default:
                                 this.editForm.Blog_Content.setWidth("98%");
@@ -241,12 +237,6 @@ Bn.Blog.View = {
                         {
                             case 1:
                                 if (CKEDITOR.instances.Blog_Content) this.editForm.Blog_Content.setValue(CKEDITOR.instances.Blog_Content.getData());
-                                break
-                            case 2:
-                                if (Bn.Blog.View.EditWindow.KindEditor_Blog_Content) this.editForm.Blog_Content.setValue(Bn.Blog.View.EditWindow.KindEditor_Blog_Content.html());
-                                break
-                            case 3:
-                                if (xhEditor_Blog_Content) this.editForm.Blog_Content.setValue(xhEditor_Blog_Content.getSource());
                                 break
                             default:
                                 if (ue_Blog_Content) this.editForm.Blog_Content.setValue(ue_Blog_Content.getContent());
@@ -311,12 +301,6 @@ Bn.Blog.View = {
                         {
                             case 1:
                                 if (CKEDITOR.instances.Blog_Content) CKEDITOR.instances.Blog_Content.setData(Bn.Blog.View.Running.blogGrid.getSelectionModel().getSelected().data.Blog_Content);
-                                break
-                            case 2:
-                                if (Bn.Blog.View.EditWindow.KindEditor_Blog_Content) Bn.Blog.View.EditWindow.KindEditor_Blog_Content.html(Bn.Blog.View.Running.blogGrid.getSelectionModel().getSelected().data.Blog_Content);
-                                break
-                            case 3:
-                                if (xhEditor_Blog_Content) xhEditor_Blog_Content.setSource(Bn.Blog.View.Running.blogGrid.getSelectionModel().getSelected().data.Blog_Content);
                                 break
                             default:
                                 if (ue_Blog_Content) ue_Blog_Content.setContent(Bn.Blog.View.Running.blogGrid.getSelectionModel().getSelected().data.Blog_Content);
@@ -482,12 +466,6 @@ Bn.Blog.View = {
                                 case 1:
                                     ckeditor_replace_Comment();
                                     break
-                                case 2:
-                                    Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment = KindEditor.create('textarea[name="Comment"]', { width: '98%', minHeith: '350px', filterMode: true });
-                                    break
-                                case 3:
-                                    pageInit_Comment();
-                                    break
                                 default:
                                     this.editForm.Comment.setWidth("98%");
                                     pageInit_ue_Comment();
@@ -531,7 +509,7 @@ Bn.Blog.View = {
                                         }
                                     }
                                 },
-                                { fieldLabel: '评论', name: 'Comment', xtype: 'textarea', id: 'Comment', ref: 'Comment' },
+                                { fieldLabel: '评论', name: 'Content', xtype: 'textarea', id: 'Content', ref: 'Content' },
                                 { xtype: 'hidden', name: 'Blog_ID', ref: '../Blog_ID' }
 						    ]
 						})
@@ -543,16 +521,10 @@ Bn.Blog.View = {
                             switch (Bn.Blog.Config.OnlineEditor)
                             {
                                 case 1:
-                                    if (CKEDITOR.instances.Comment) this.editForm.Comment.setValue(CKEDITOR.instances.Comment.getData());
-                                    break
-                                case 2:
-                                    if (Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment) this.editForm.Comment.setValue(Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment.html());
-                                    break
-                                case 3:
-                                    if (xhEditor_Comment) this.editForm.Comment.setValue(xhEditor_Comment.getSource());
+                                    if (CKEDITOR.instances.Content) this.editForm.Content.setValue(CKEDITOR.instances.Content.getData());
                                     break
                                 default:
-                                    if (ue_Comment) this.editForm.Comment.setValue(ue_Comment.getContent());
+                                    if (ue_Content) this.editForm.Content.setValue(ue_Content.getContent());
                             }
 
                             if (!this.editForm.getForm().isValid())
@@ -612,16 +584,10 @@ Bn.Blog.View = {
                             switch (Bn.Blog.Config.OnlineEditor)
                             {
                                 case 1:
-                                    if (CKEDITOR.instances.Comment) CKEDITOR.instances.Comment.setData(Bn.Blog.View.Running.commentGrid.getSelectionModel().getSelected().data.Comment);
-                                    break
-                                case 2:
-                                    if (Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment) Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment.html(Bn.Blog.View.Running.commentGrid.getSelectionModel().getSelected().data.Comment);
-                                    break
-                                case 3:
-                                    if (xhEditor_Comment) xhEditor_Comment.setSource(Bn.Blog.View.Running.commentGrid.getSelectionModel().getSelected().data.Comment);
+                                    if (CKEDITOR.instances.Content) CKEDITOR.instances.Content.setData(Bn.Blog.View.Running.commentGrid.getSelectionModel().getSelected().data.Content);
                                     break
                                 default:
-                                    if (ue_Comment) ue_Comment.setContent(Bn.Blog.View.Running.commentGrid.getSelectionModel().getSelected().data.Comment);
+                                    if (ue_Content) ue_Content.setContent(Bn.Blog.View.Running.commentGrid.getSelectionModel().getSelected().data.Content);
                             }
 
                         }
@@ -653,7 +619,7 @@ Bn.Blog.View = {
                             this.sm,
                             { header: '标识', dataIndex: 'ID', hidden: true },
                             { header: '评论者', dataIndex: 'Username' },
-                            { header: '评论', dataIndex: 'Comment' },
+                            { header: '评论', dataIndex: 'Content' },
                             { header: '博客', dataIndex: 'Blog_Name' }
                         ]
                     }),
@@ -829,15 +795,10 @@ Bn.Blog.View = {
                 switch (Bn.Blog.Config.OnlineEditor)
                 {
                     case 1:
-                        if (CKEDITOR.instances.Comment) CKEDITOR.instances.Comment.setData("");
-                        break
-                    case 2:
-                        if (Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment) Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment.html("");
-                        break
-                    case 3:
+                        if (CKEDITOR.instances.Content) CKEDITOR.instances.Content.setData("");
                         break
                     default:
-                        if (ue_Comment) ue_Comment.setContent("");
+                        if (ue_Comment) ue_Content.setContent("");
                 }
 
                 Bn.Blog.View.CommentView.edit_window.show();
@@ -862,16 +823,10 @@ Bn.Blog.View = {
                 switch (Bn.Blog.Config.OnlineEditor)
                 {
                     case 1:
-                        if (CKEDITOR.instances.Comment) CKEDITOR.instances.Comment.setData(this.getSelectionModel().getSelected().data.Comment);
-                        break
-                    case 2:
-                        if (Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment) Bn.Blog.View.CommentView.EditWindow.KindEditor_Comment.html(this.getSelectionModel().getSelected().data.Comment);
-                        break
-                    case 3:
-                        if (xhEditor_Comment) xhEditor_Comment.setSource(this.getSelectionModel().getSelected().data.Comment);
+                        if (CKEDITOR.instances.Content) CKEDITOR.instances.Content.setData(this.getSelectionModel().getSelected().data.Content);
                         break
                     default:
-                        if (ue_Comment) ue_Comment.setContent(this.getSelectionModel().getSelected().data.Comment);
+                        if (ue_Comment) ue_Content.setContent(this.getSelectionModel().getSelected().data.Content);
                 }
 
                 Bn.Blog.View.CommentView.edit_window.show();

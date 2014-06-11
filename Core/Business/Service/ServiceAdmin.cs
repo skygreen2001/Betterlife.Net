@@ -149,6 +149,7 @@ namespace Business.Core.Service
         public List<Admin> Get(string WhereClause=null, string OrderBy="ID DESC", int RowCount=10)
         {
             List<Admin> result = null;
+            if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             var admins = db.Admin.SqlQuery("SELECT TOP " + RowCount + " * FROM Admin " + WhereClause + " ORDER BY " + OrderBy);
             result = admins.ToList<Admin>();
             return result;
@@ -164,6 +165,7 @@ namespace Business.Core.Service
         public Admin GetOne(string WhereClause = null, string OrderBy = "ID DESC")
         {
             Admin result = null;
+            if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             var admins = db.Admin.SqlQuery("SELECT TOP 1 * FROM Admin " + WhereClause + " ORDER BY " + OrderBy);
             result = admins.FirstOrDefault();
             return result;
@@ -176,6 +178,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public int Count(string WhereClause=null)
         {
+            if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) FROM Admin " + WhereClause).First();
             return result;
         }

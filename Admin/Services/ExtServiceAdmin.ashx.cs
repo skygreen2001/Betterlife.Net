@@ -63,7 +63,7 @@ namespace Admin.Services
                     Administrator admin = new Administrator();
                     byte Roletype = Convert.ToByte(adminForm["Roletype"]);
                     byte Seescope = Convert.ToByte(adminForm["Seescope"]);
-                    base.copyProperties(admin, adminForm);
+                    base.CopyProperties(admin, adminForm);
                     try
                     {
                         admin.CommitTime = DateTime.Now;
@@ -77,6 +77,7 @@ namespace Admin.Services
                     catch (Exception error)
                     {
                         msg = "操作失败:"+error.Message+",请重试!";
+                        result = true;
                     }
                 }
             }
@@ -111,7 +112,7 @@ namespace Admin.Services
                     {
                         int id = UtilNumber.Parse(admin_id);
                         Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
-                        base.copyProperties(admin, adminForm);
+                        base.CopyProperties(admin, adminForm);
                         admin.UpdateTime = DateTime.Now;
                         db.SaveChanges();
                         msg = "保存成功!";
@@ -170,41 +171,34 @@ namespace Admin.Services
         [DirectMethod]
         public ExtServiceAdmin queryPageAdmin(Dictionary<String, object> condition)
         {
-            int currentPage = 0;
-            int start = 0, limit = 10;
+            int StartPoint = 1, EndPoint = 15;
 
-            if (condition.ContainsKey("limit")) limit = Convert.ToInt16(condition["limit"]);
-            if (condition.ContainsKey("start")) start = Convert.ToInt16(condition["start"]);
+            if (condition.ContainsKey("start")) StartPoint = Convert.ToInt16(condition["start"])+1;
+            if (condition.ContainsKey("limit"))
+            {
+                EndPoint = Convert.ToInt16(condition["limit"]);
+                EndPoint = StartPoint + EndPoint - 1;
+            }
             UtilDictionary.Removes(condition, "start", "limit");
 
-            pageCount = limit;
-            currentPage = start / pageCount;
-            this.Stores = new List<Object>();
-
-            string Username = "", Realname = "";
-            if (condition.ContainsKey("Username")) Username = Convert.ToString(condition["Username"]);
-            if (condition.ContainsKey("Realname")) Realname = Convert.ToString(condition["Realname"]);
-            int rowCount = 0;//总行记录数
             if (adminService == null) adminService = new ServiceAdmin();
-            adminService.Count()
-            rowCount = db.Admin.Where(e => e.Username.Contains(Username) &&
-                                             e.Realname.Contains(Realname)).Count();
-
-            var admins = db.Admin.Where(e => e.Username.Contains(Username) &&
-                                             e.Realname.Contains(Realname)).
-                OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
-
-            List<Administrator> listAdmins=admins.ToList<Administrator>();
-            int i=1;
-            foreach (Administrator row in listAdmins)
+            string WhereClause = FiltertoCondition(condition);
+            int RowCount = adminService.Count(WhereClause);//总行记录数
+            if (RowCount > 0)
             {
-                row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
-                row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
-                row.Department_Name = row.Department.Department_Name;
-                this.Stores.Add(row);
-                i++;
+
+                List<Administrator> listAdmins = adminService.QueryPage(StartPoint, EndPoint, WhereClause).ToList<Administrator>();
+                if (EndPoint > RowCount) EndPoint = RowCount;
+                this.Stores = new List<Object>();
+                foreach (Administrator row in listAdmins)
+                {
+                    row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
+                    row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
+                    row.Department_Name = row.Department.Department_Name;
+                    this.Stores.Add(row);
+                }
             }
-            this.TotalCount = rowCount;
+            this.TotalCount = RowCount;
             this.Success = true;
             return this;
         }

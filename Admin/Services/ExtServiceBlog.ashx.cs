@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using Util.Common;
 using Util.DataType.Datatable;
@@ -43,7 +44,7 @@ namespace Admin.Services
             if (blogForm != null)
             {
                 Blog blog = new Blog();
-                base.copyProperties(blog, blogForm);
+                base.CopyProperties(blog, blogForm);
                 try
                 {
                     blog.CommitTime = DateTime.Now;
@@ -83,7 +84,7 @@ namespace Admin.Services
                 {
                     int id = UtilNumber.Parse(id_str);
                     Blog blog = db.Blog.Single(e => e.ID.Equals(id));
-                    base.copyProperties(blog, blogForm);
+                    base.CopyProperties(blog, blogForm);
                     blog.UpdateTime = DateTime.Now;
                     db.SaveChanges();
                     msg = "保存成功!";
@@ -127,7 +128,7 @@ namespace Admin.Services
 
             int User_ID = 0; 
             string Blog_Name = "";
-            if (condition.ContainsKey("User_ID")) User_ID = Convert.ToInt16(condition["User_ID"]);
+            if (condition.ContainsKey("User_ID")) if (condition["User_ID"].ToString().Trim().Length>0) User_ID = Convert.ToInt16(condition["User_ID"]);
             if (condition.ContainsKey("Blog_Name")) Blog_Name = Convert.ToString(condition["Blog_Name"]);
             int rowCount = 0;//总行记录数
             rowCount = db.Blog.Where(e=>e.Blog_Name.Contains(Blog_Name)).Count();
@@ -141,6 +142,8 @@ namespace Admin.Services
             {
                 User user = db.User.Where(e => e.ID==blog.User_ID).SingleOrDefault();
                 blog.Username = user.Username;
+                blog.Blog_ContentShow = Regex.Replace(blog.Blog_Content, "<\\s*img\\s+[^>]*?src\\s*=\\s*(\'|\")(.*?)\\1[^>]*?\\/?\\s*>", "<a href='${2}' target='_blank'>${0}</a>");
+                blog.Blog_ContentShow = blog.Blog_ContentShow.Replace("\\\"", "");
                 this.Stores.Add(blog);
                 i++;
             }
@@ -183,7 +186,7 @@ namespace Admin.Services
         public static JObject importBlog(string fileName)
         {
             //Excel导出入到DataTable
-            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName, "Admin");
+            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName, "Blog");
             if (dt != null)
             {
                 Dictionary<string, string> dic = new Dictionary<string, string>()
@@ -228,14 +231,14 @@ namespace Admin.Services
             if (blogs != null)
             {
                 var query = blogs.AsEnumerable();
-
                 foreach (Blog blog in query)
                 {
                     blog.Username = blog.User.Username;
                 }
 
                 DataTable dt = UtilDataTable.ToDataTable(query);
-                dt.TableName = "Admin";
+                dt.TableName = "Blog";
+                UtilDataTable.DeleteColumns(dt, "User_ID");
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
                     {"ID", "标识"},
@@ -247,9 +250,9 @@ namespace Admin.Services
                 };
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
-                string fileName = "admin" + UtilDateTime.NowS() + ".xls";
-                attachment_url = Gc.UploadUrl + "/attachment/admin/" + fileName;
-                fileName = Path.Combine(Gc.UploadPath, "attachment", "admin", fileName);
+                string fileName = "blog" + UtilDateTime.NowS() + ".xls";
+                attachment_url = Gc.UploadUrl + "/attachment/blog/" + fileName;
+                fileName = Path.Combine(Gc.UploadPath, "attachment", "blog", fileName);
                 UtilExcelOle.DataTableToExcel(fileName, dt);
             }
 

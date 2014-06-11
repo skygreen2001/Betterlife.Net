@@ -19,7 +19,7 @@ namespace Admin.Controllers
         // GET: /Home/Blog
         public ActionResult Blog()
         {
-            this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor("Blog_Content", "Comment");
+            this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor("Blog_Content", "Content");
             return View();
         }
 

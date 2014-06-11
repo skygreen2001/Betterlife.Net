@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Reflection;
 using System.Web;
 using System.Web.SessionState;
@@ -44,15 +43,15 @@ namespace Admin.Services
         }
 
         /// <summary>
-        /// 基本的保存动作
+        /// 基本的复制同名的属性从数组到对象
         /// </summary>
         /// <param name="enti"></param>
-        protected void copyProperties(object entityObject, HttpRequest condition)
+        protected void CopyProperties(object entityObject, HttpRequest condition)
         {
             NameValueCollection conForm = condition.Form;
             String[] keys = conForm.AllKeys;
             LinkedList<string> keysList = new LinkedList<string>(keys);
-            this.clearValuelessData(keysList);
+            this.ClearValuelessData(keysList);
             String value;
             PropertyInfo propertyInfo;
             foreach (string key in keysList)
@@ -69,12 +68,33 @@ namespace Admin.Services
 
         }
 
+        /// <summary>
+        /// 将过滤条件转换成需查询的模糊条件
+        /// </summary>
+        /// <param name="condition">过滤条件</param>
+        /// <returns></returns>
+        protected string FiltertoCondition(Dictionary<String, object> condition)
+        {
+            string result="";
+            List<string> conditionL=new List<string>();
+            foreach (KeyValuePair<String,object> entry in condition)
+            {
+                Console.WriteLine(entry.Key + entry.Value);
+                string value = entry.Value.ToString();
+                if ((value != null) && (!string.IsNullOrEmpty(value)))
+                {
+                    conditionL.Add(entry.Key+" LIKE '%"+value+"%' "); 
+                }
+            }
+            if (condition.Count>0)result=string.Join(" AND ",conditionL.ToArray());
+            return result;
+        }
 
         /// <summary>
         /// 去除Ext通用的变量
         /// 
         /// </summary>
-        protected void clearValuelessData(LinkedList<string> keysList)
+        protected void ClearValuelessData(LinkedList<string> keysList)
         {
             keysList.Remove("extAction");
             keysList.Remove("extMethod");
@@ -104,49 +124,5 @@ namespace Admin.Services
             set;
         }
 
-        /// <summary>
-        /// 门店ID
-        /// </summary>
-        protected Guid Store_ID
-        {
-            get
-            {
-                HttpContext context = HttpContext.Current;
-                string store_ID = "";
-                try
-                {
-                    store_ID = context.Session["Store_ID"].ToString();
-                }
-                catch 
-                {
-
-                    HttpCookie getCookie = context.Request.Cookies["JjShop_Store_ID"];
-                    store_ID = getCookie.Value;
-                }
-                return new Guid(store_ID);
-            }
-        }
-
-        /// <summary>
-        /// 管理员权限
-        /// </summary>
-        protected int Roletype
-        {
-            get
-            {
-                HttpContext context = HttpContext.Current;
-                int roletype = 1;
-                try
-                {
-                    roletype = Convert.ToByte(context.Session["Roletype"]);
-                }
-                catch 
-                {
-                    HttpCookie getCookie = context.Request.Cookies["JjShop_Roletype"];
-                    roletype = Convert.ToByte(getCookie.Value);
-                }
-                return roletype;
-            }
-        }
     }
 }

@@ -14,6 +14,11 @@ namespace Database
             set;
         }
 
+        public String Blog_ContentShow
+        {
+            get;
+            set;
+        }
 
     }
 }

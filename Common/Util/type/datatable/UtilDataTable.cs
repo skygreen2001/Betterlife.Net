@@ -34,10 +34,10 @@ namespace Util.DataType.Datatable
             Array.ForEach<PropertyInfo>(
                 type.GetProperties(), 
                 p => {
-                    if (p.ToString().Contains("System.")||p.ToString().Contains("Int32"))
+                    if ((p.ToString().Contains("System.")||p.ToString().Contains("Int32"))&&(!p.ToString().Contains("System.Collections.Generic")))
                     {
+                        
                         pList.Add(p);
-
                         Type colType = p.PropertyType;
                         if ((colType.IsGenericType) && (colType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                         {
@@ -53,13 +53,10 @@ namespace Util.DataType.Datatable
                 //给row 赋值
                 pList.ForEach(
                     p => {
-                        if (p.ToString().Contains("System.") || p.ToString().Contains("Int32"))
+                        if ((p.ToString().Contains("System.") || p.ToString().Contains("Int32")) && (!p.ToString().Contains("System.Collections.Generic")))
                         {
                             Type colType = p.PropertyType;
-                            if (p.ToString().Contains("System.") || p.ToString().Contains("Int32"))
-                            {
-                                row[p.Name] = p.GetValue(item, null) == null ? DBNull.Value : p.GetValue(item, null);
-                            }
+                            row[p.Name] = p.GetValue(item, null) == null ? DBNull.Value : p.GetValue(item, null);
                         }
                     }
                 );

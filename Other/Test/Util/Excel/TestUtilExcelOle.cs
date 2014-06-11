@@ -79,7 +79,7 @@ namespace Test.Util.Excel
         [TestMethod]
         public void importAdmin()
         {
-            string fileName = "20140607220229.xls";
+            string fileName = "admin20140611084350.xls";
             fileName = Path.Combine(Gc.UploadPath, "attachment", "admin", fileName);
             //Excel导出入到DataTable
             DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName,"Admin");

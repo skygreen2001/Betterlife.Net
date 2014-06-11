@@ -43,9 +43,10 @@ namespace Admin.Services
             if (commentForm != null)
             {
                 Comment comment = new Comment();
-                base.copyProperties(comment, commentForm);
+                base.CopyProperties(comment, commentForm);
                 try
                 {
+                    comment.Comment1 = comment.Content;
                     comment.CommitTime = DateTime.Now;
                     comment.UpdateTime = DateTime.Now;
                     db.Comment.Add(comment);
@@ -83,7 +84,8 @@ namespace Admin.Services
                 {
                     int id = UtilNumber.Parse(id_str);
                     Comment comment = db.Comment.Single(e => e.ID.Equals(id));
-                    base.copyProperties(comment, commentForm);
+                    base.CopyProperties(comment, commentForm);
+                    comment.Comment1 = comment.Content;
                     comment.UpdateTime = DateTime.Now;
                     db.SaveChanges();
                     msg = "保存成功!";
@@ -182,7 +184,7 @@ namespace Admin.Services
         public static JObject importComment(string fileName)
         {
             //Excel导出入到DataTable
-            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName, "Admin");
+            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName, "Comment");
             if (dt != null)
             {
                 Dictionary<string, string> dic = new Dictionary<string, string>()
@@ -239,7 +241,7 @@ namespace Admin.Services
                 }
 
                 DataTable dt = UtilDataTable.ToDataTable(query);
-                dt.TableName = "Admin";
+                dt.TableName = "Comment";
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
                     {"ID", "标识"},

@@ -88,7 +88,7 @@ namespace Test.Util
         [TestMethod]
         public void importAdmin()
         {
-            string fileName = "20140606174003.xls";
+            string fileName = "admin20140611084350.xls";
             fileName = Path.Combine(Gc.UploadPath, "attachment", "admin", fileName);
             //Excel导出入到DataTable
             DataTable dt = UtilExcelNpoi.ExcelToDataTable(fileName);

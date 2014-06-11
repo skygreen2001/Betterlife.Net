@@ -323,7 +323,9 @@ namespace Util.Common
             }
             catch (Exception ee)
             {
-                throw new Exception(ee.Message);
+                //throw new Exception(ee.Message);
+                Console.WriteLine(ee.Message);
+                return null;
             }
         }
         /// <summary>
@@ -340,7 +342,9 @@ namespace Util.Common
             }
             catch (Exception ee)
             {
-                throw new Exception(ee.Message);
+                //throw new Exception(ee.Message);
+                Console.WriteLine(ee.Message);
+                return null;
             }
         }
         #endregion
@@ -362,7 +366,7 @@ namespace Util.Common
                 DataSet ds = new DataSet();
                 foreach (string colName in GetExcelSheetNames(FileFullPath))
                 {
-                    OleDbDataAdapter odda = new OleDbDataAdapter(string.Format("SELECT * FROM [{0}]", colName), conn);                    //("select * from [Sheet1$]", conn);
+                    OleDbDataAdapter odda = new OleDbDataAdapter(string.Format("SELECT * FROM [{0}$]", colName), conn);                    //("select * from [Sheet1$]", conn);
                     odda.Fill(ds, colName);
                 }
                 conn.Close();
@@ -388,14 +392,16 @@ namespace Util.Common
                 OleDbConnection conn = new OleDbConnection(strConn);
                 conn.Open();
                 DataSet ds = new DataSet();
-                OleDbDataAdapter odda = new OleDbDataAdapter(string.Format("SELECT * FROM [{0}]", SheetName), conn);                    //("select * from [Sheet1$]", conn);
+                OleDbDataAdapter odda = new OleDbDataAdapter(string.Format("SELECT * FROM [{0}$]", SheetName), conn);                    //("select * from [Sheet1$]", conn);
                 odda.Fill(ds, SheetName);
                 conn.Close();
                 return ds;
             }
             catch (Exception ee)
             {
-                throw new Exception(ee.Message);
+                //throw new Exception(ee.Message);
+                Console.WriteLine(ee.Message);
+                return null;
             }
         }
         #endregion
