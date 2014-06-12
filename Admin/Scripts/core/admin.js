@@ -171,7 +171,7 @@ Bn.Admin.View = {
                                 },
                                 onSelect: function (record, index) {
                                     if (this.fireEvent('beforeselect', this, record, index) !== false) {
-                                        this.grid.Department_ID.setValue(record.data.ID);
+                                        this.grid.Department_ID.setValue(record.data.Department_ID);
                                         this.grid.Department_Name.setValue(record.data.Department_Name);
                                         this.collapse();
                                     }

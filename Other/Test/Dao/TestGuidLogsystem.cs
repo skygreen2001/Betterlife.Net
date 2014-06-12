@@ -40,7 +40,7 @@ namespace Test.Dao
         [TestInitialize]
         public void init()
         {
-            db = new BetterlifeNetEntities();
+            db = DatabaseCenter.Instance();
         }
 
 
