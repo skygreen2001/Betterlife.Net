@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="ExtServiceBlog.ashx.cs" Class="Admin.Services.ExtServiceBlogHandler" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="ExtServiceBlog.ashx.cs" Class="AdminManage.Services.ExtServiceBlog" %>

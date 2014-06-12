@@ -1,4 +1,4 @@
-﻿using Admin.Models;
+﻿using AdminManage.Models;
 using Database;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Administrator = Database.Admin;
 
-namespace Admin.Controllers
+namespace AdminManage.Controllers
 {
     public class IndexController : Controller
     {

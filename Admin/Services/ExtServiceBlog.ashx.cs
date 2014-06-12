@@ -12,13 +12,13 @@ using System.Web;
 using Util.Common;
 using Util.DataType.Datatable;
 
-namespace Admin.Services
+namespace AdminManage.Services
 {
     /// <summary>
     /// 服务类:博客
     /// </summary>
     [DirectAction("ExtServiceBlog")]
-    public class ExtServiceBlogHandler : ExtServiceBasic
+    public class ExtServiceBlog : ExtServiceBasic
     {
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
@@ -112,7 +112,7 @@ namespace Admin.Services
         /// </param>
         /// <returns></returns>
         [DirectMethod]
-        public ExtServiceBlogHandler queryPageBlog(Dictionary<String, object> condition)
+        public ExtServiceBlog queryPageBlog(Dictionary<String, object> condition)
         {
             int currentPage = 0;
             int start = 0, limit = 10;
@@ -121,8 +121,8 @@ namespace Admin.Services
             if (condition.ContainsKey("start")) start = Convert.ToInt16(condition["start"]);
             UtilDictionary.Removes(condition, "start", "limit");
 
-            pageCount = limit;
-            currentPage = start / pageCount;
+            int PageCount = limit;
+            currentPage = start / PageCount;
             this.Stores = new List<Object>();
             //this.Stores.Clear();
 
@@ -134,7 +134,7 @@ namespace Admin.Services
             rowCount = db.Blog.Where(e=>e.Blog_Name.Contains(Blog_Name)).Count();
 
             var blogs = db.Blog.Where(e=>e.Blog_Name.Contains(Blog_Name)).
-                OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
+                OrderByDescending(p => p.ID).Skip(start).Take(PageCount);
 
             List<Blog> listBlogs = blogs.ToList<Blog>();
             int i = 1;

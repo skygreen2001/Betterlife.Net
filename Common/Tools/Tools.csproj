@@ -84,6 +84,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCode\AutoCode.cs" />
+    <Compile Include="AutoCode\AutoCodeOneKey.cs" />
+    <Compile Include="AutoCode\AutoCodeService.cs" />
     <Compile Include="Config\ToolModifyFile.cs" />
     <Compile Include="DbScripts\Migrant\MigrantFromMysql.cs" />
     <Compile Include="DbScripts\Migrant\MigrantFromSqlserver.cs" />

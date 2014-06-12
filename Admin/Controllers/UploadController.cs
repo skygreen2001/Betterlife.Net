@@ -1,4 +1,4 @@
-﻿using Admin.Services;
+﻿using AdminManage.Services;
 using Business;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using Util.Common;
 
-namespace Admin.Controllers
+namespace AdminManage.Controllers
 {
     public class UploadController : Controller
     {

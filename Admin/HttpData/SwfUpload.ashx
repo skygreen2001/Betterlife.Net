@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="SwfUpload.ashx.cs" Class="JJAdmin.HttpData.SwfUpload" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="SwfUpload.ashx.cs" Class="AdminManage.HttpData.SwfUpload" %>

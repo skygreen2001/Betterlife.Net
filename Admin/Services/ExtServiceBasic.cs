@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.SessionState;
 using Util.Reflection;
 
-namespace Admin.Services
+namespace AdminManage.Services
 {
     /// <summary>
     /// BUILD ASP.NET WEB APPS FASTE:http://www.ext.net/
@@ -17,9 +17,8 @@ namespace Admin.Services
     /// <see cref="https://github.com/evantrimboli"/>
     public class ExtServiceBasic : DirectHandler, IRequiresSessionState
     {
-        protected static BetterlifeNetEntities db = new BetterlifeNetEntities();
+        protected static BetterlifeNetEntities db = DatabaseCenter.Instance();
 
-        public int pageCount=15;
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
         /// </summary>

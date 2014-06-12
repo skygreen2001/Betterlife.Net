@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Util.View.OnlineEditor;
 
-namespace Admin.Controllers
+namespace AdminManage.Controllers
 {
     public class BasicController : Controller
     {

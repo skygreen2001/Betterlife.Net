@@ -5,7 +5,7 @@ using System.Web;
 using Util.Common;
 using System.Web.SessionState;
 
-namespace Admin.HttpData
+namespace AdminManage.HttpData
 {
     /// <summary>
     /// 生成后台的图形验证码

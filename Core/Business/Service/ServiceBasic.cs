@@ -10,10 +10,8 @@ namespace Business.Core.Service
     public class ServiceBasic
     {
         protected static BetterlifeNetEntities db;
-
-
         public ServiceBasic(){
-            if (db==null) db = new BetterlifeNetEntities();
+            if (db == null) db = DatabaseCenter.Instance();
         }
 
     }

@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="Department.ashx.cs" Class="Admin.HttpData.Core.DepartmentHandler" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="Department.ashx.cs" Class="AdminManage.HttpData.Core.DepartmentHandler" %>

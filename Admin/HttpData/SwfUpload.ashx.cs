@@ -3,7 +3,7 @@ using System.Web;
 using System.IO;
 using Business;
 
-namespace JJAdmin.HttpData
+namespace AdminManage.HttpData
 {
     /// <summary>
     /// 处理上传图片

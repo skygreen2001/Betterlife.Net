@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
 
-namespace Admin.HttpData.Core
+namespace AdminManage.HttpData.Core
 {
     /// <summary>
     /// Summary description for User

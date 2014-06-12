@@ -1,4 +1,4 @@
-﻿using Admin.Controllers;
+﻿using AdminManage.Controllers;
 using Business;
 using Database.Domain.Enums;
 using System;
@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Util.Common;
 
-namespace Admin
+namespace AdminManage
 {
     /// <summary>
     /// 所有Controller的拦截器:在Controller的action方法执行前和执行后执行的方法

@@ -13,9 +13,8 @@ using System.Reflection;
 using System.Web;
 using Util.Common;
 using Util.DataType.Datatable;
-using Administrator = Database.Admin;
 
-namespace Admin.Services
+namespace AdminManage.Services
 {
     /// <summary>
     /// 服务类:系统管理人员
@@ -60,7 +59,7 @@ namespace Admin.Services
                 }
                 else
                 {
-                    Administrator admin = new Administrator();
+                    Admin admin = new Admin();
                     byte Roletype = Convert.ToByte(adminForm["Roletype"]);
                     byte Seescope = Convert.ToByte(adminForm["Seescope"]);
                     base.CopyProperties(admin, adminForm);
@@ -111,7 +110,7 @@ namespace Admin.Services
                     try
                     {
                         int id = UtilNumber.Parse(admin_id);
-                        Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
+                        Admin admin = db.Admin.Single(e => e.ID.Equals(id));
                         base.CopyProperties(admin, adminForm);
                         admin.UpdateTime = DateTime.Now;
                         db.SaveChanges();
@@ -186,11 +185,10 @@ namespace Admin.Services
             int RowCount = adminService.Count(WhereClause);//总行记录数
             if (RowCount > 0)
             {
-
-                List<Administrator> listAdmins = adminService.QueryPage(StartPoint, EndPoint, WhereClause).ToList<Administrator>();
+                List<Admin> listAdmins = adminService.QueryPage(StartPoint, EndPoint, WhereClause).ToList<Admin>();
                 if (EndPoint > RowCount) EndPoint = RowCount;
                 this.Stores = new List<Object>();
-                foreach (Administrator row in listAdmins)
+                foreach (Admin row in listAdmins)
                 {
                     row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
                     row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
@@ -240,7 +238,7 @@ namespace Admin.Services
                 //循环插入数据
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Administrator admin = new Administrator();
+                    Admin admin = new Admin();
                     UtilDataTable.ToObject(admin, dt.Rows[i], dt.Columns);
                     Department dep = db.Department.Where(e => e.Department_Name.Equals(admin.Department_Name)).SingleOrDefault();
                     admin.Department_ID = dep.ID;
@@ -270,7 +268,7 @@ namespace Admin.Services
             {
                 var query=admins.AsEnumerable();
 
-                foreach (Administrator row in query)
+                foreach (Admin row in query)
                 {
                     if (row.Roletype != null) row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
                     if (row.Seescope != null) row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
@@ -317,7 +315,7 @@ namespace Admin.Services
         {
             bool Used = true;
             var adminToUpdate=db.Admin.FirstOrDefault(person => person.Username == Username);
-            if (adminToUpdate != null) 
+            if (adminToUpdate == null) 
             {
                 Used = false;
             }
@@ -326,7 +324,7 @@ namespace Admin.Services
                 if (!String.IsNullOrEmpty(admin_id))
                 {
                     int id = UtilNumber.Parse(admin_id);
-                    Administrator admin = db.Admin.Single(e => e.ID.Equals(id));
+                    Admin admin = db.Admin.Single(e => e.ID.Equals(id));
                     if (admin != null && admin.Username == Username)
                     {
                         Used = false;

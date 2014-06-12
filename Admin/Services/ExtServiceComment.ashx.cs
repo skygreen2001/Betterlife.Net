@@ -11,13 +11,13 @@ using System.Web;
 using Util.Common;
 using Util.DataType.Datatable;
 
-namespace Admin.Services
+namespace AdminManage.Services
 {
     /// <summary>
     /// 服务类:评论
     /// </summary>
    [DirectAction("ExtServiceComment")]
-    public class ExtServiceCommentHandler : ExtServiceBasic
+    public class ExtServiceComment : ExtServiceBasic
     {
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
@@ -113,7 +113,7 @@ namespace Admin.Services
         /// </param>
         /// <returns></returns>
         [DirectMethod]
-        public ExtServiceCommentHandler queryPageComment(Dictionary<String, object> condition)
+        public ExtServiceComment queryPageComment(Dictionary<String, object> condition)
         {
             int currentPage = 0;
             int start = 0, limit = 10;
@@ -122,8 +122,8 @@ namespace Admin.Services
             if (condition.ContainsKey("start")) start = Convert.ToInt16(condition["start"]);
             UtilDictionary.Removes(condition, "start", "limit");
 
-            pageCount = limit;
-            currentPage = start / pageCount;
+            int PageCount = limit;
+            currentPage = start / PageCount;
             this.Stores = new List<Object>();
             //this.Stores.Clear();
 
@@ -133,7 +133,7 @@ namespace Admin.Services
             rowCount = db.Comment.Where(e => e.Blog_ID == Blog_ID).Count();
 
             var comments = db.Comment.Where(e => e.Blog_ID == Blog_ID).
-                OrderByDescending(p => p.ID).Skip(start).Take(pageCount);
+                OrderByDescending(p => p.ID).Skip(start).Take(PageCount);
 
             List<Comment> listComments = comments.ToList<Comment>();
             int i = 1;
