@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,7 +34,7 @@ public class CrawlerHandler : Handler
             {
                 state = x.State,
                 source = x.SourceUrl,
-                url = x.ServerUrl
+                url = Gc.UrlWebsite+x.ServerUrl
             })
         });
     }
@@ -70,7 +71,7 @@ public class Crawler
                 return this;
             }
             ServerUrl = PathFormatter.Format(Path.GetFileName(this.SourceUrl), Config.GetString("catcherPathFormat"));
-            var savePath = Server.MapPath(ServerUrl);
+            var savePath = Server.MapPath("/") + ServerUrl.Replace("/", "\\"); //Server.MapPath(ServerUrl);
             if (!Directory.Exists(Path.GetDirectoryName(savePath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(savePath));
