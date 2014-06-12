@@ -19,6 +19,7 @@ namespace Database
         
         /// <summary>
         /// 单例模式:在所有的应用服务中只使用一个单例进行数据库数据管理
+        /// 解决问题:当存在多个实例的时候，其中一个实例数据发生改变SaveChanges后，其他实例查询到的数据仍然看不到改变。需要重新实例化才能看到改变。
         /// </summary>
         /// <returns></returns>
         public static BetterlifeNetEntities Instance()
