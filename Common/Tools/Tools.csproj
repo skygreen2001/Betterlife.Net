@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -84,9 +85,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ToolAutoCodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToolAutoCodeForm.Designer.cs">
+      <DependentUpon>ToolAutoCodeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoCode\AutoCode.cs" />
+    <Compile Include="AutoCode\AutoCodeDomain.cs" />
     <Compile Include="AutoCode\AutoCodeOneKey.cs" />
     <Compile Include="AutoCode\AutoCodeService.cs" />
+    <Compile Include="AutoCode\AutoCodeAction.cs" />
+    <Compile Include="AutoCode\AutoCodeView.cs" />
     <Compile Include="Config\ToolModifyFile.cs" />
     <Compile Include="DbScripts\Migrant\MigrantFromMysql.cs" />
     <Compile Include="DbScripts\Migrant\MigrantFromSqlserver.cs" />
@@ -108,6 +118,9 @@
     <Compile Include="Util\Db\UtilDb.cs" />
     <Compile Include="Util\Db\UtilMysql.cs" />
     <Compile Include="Util\Db\UtilSqlserver.cs" />
+    <EmbeddedResource Include="ToolAutoCodeForm.resx">
+      <DependentUpon>ToolAutoCodeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ToolDbScriptsForm.resx">
       <DependentUpon>ToolDbScriptsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -143,7 +156,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AutoCode\Model\extservice.txt" />
+    <Content Include="AutoCode\Model\action\homecontroller.txt" />
+    <Content Include="AutoCode\Model\action\uploadcontroller.txt" />
+    <Content Include="AutoCode\Model\domain\context.txt" />
+    <Content Include="AutoCode\Model\domain\domain.txt" />
+    <Content Include="AutoCode\Model\domain\enum.txt" />
+    <Content Include="AutoCode\Model\service\extservice.txt" />
+    <Content Include="AutoCode\Model\domain\httpdata.txt" />
+    <Content Include="AutoCode\Model\service\iservice.txt" />
+    <Content Include="AutoCode\Model\service\service.txt" />
+    <Content Include="AutoCode\Model\view\index.txt" />
+    <Content Include="AutoCode\Model\view\view.txt" />
     <Content Include="DbScripts\initdata.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

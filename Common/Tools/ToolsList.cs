@@ -12,8 +12,14 @@ namespace Tools
 {
     public partial class ToolsList : Form
     {
+        /// <summary>
+        /// 数据库工具窗口
+        /// </summary>
         private ToolDbScriptsForm dbScriptForm;
-        private AutoCodeOneKey autoCode;
+        /// <summary>
+        /// 自动生成代码窗口
+        /// </summary>
+        private ToolAutoCodeForm autoCodeForm;
         public ToolsList()
         {
             InitializeComponent();
@@ -28,7 +34,9 @@ namespace Tools
 
         private void autoCodeOnekey_Click(object sender, EventArgs e)
         {
-            autoCode.Run();
+            autoCodeForm = new ToolAutoCodeForm();
+            autoCodeForm.Show();
+            this.Hide();
         }
     }
 }

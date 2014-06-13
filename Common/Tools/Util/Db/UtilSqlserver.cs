@@ -200,7 +200,7 @@ namespace Tools.Util.Db
             foreach (DataRow item in tables.Rows)
             {
                 tablename = (string)item.ItemArray[0];
-                key = tablename.ToLower();
+                key = tablename;//.ToLower();
                 result[key] = tablename;
             }
             return result;
@@ -232,7 +232,7 @@ namespace Tools.Util.Db
                 {
                     tableInfo["Comment"] = (string)item.ItemArray[0];
                 }
-                key = tablename.ToLower();
+                key = tablename;//.ToLower();
                 result[key] = tableInfo;
             }
             return result;

@@ -1,7 +1,5 @@
 ﻿using Business;
-using Business.Core.Service;
 using Database;
-using Database.Domain.Enums;
 using Ext.Direct;
 using Newtonsoft.Json.Linq;
 using System;
@@ -49,35 +47,23 @@ namespace AdminManage.Services
             string msg  = "";
             if (adminForm != null)
             {
-                string Username = adminForm["Username"];
-                string admin_id = null;
-                bool Flag = IsUsernameExist(Username, admin_id);
-                if (Flag)
+                Admin admin = new Admin();
+                base.CopyProperties(admin, adminForm);
+                try
                 {
-                    msg = "该用户名已存在,请重新输入!";
+                    admin.CommitTime = DateTime.Now;
+                    admin.UpdateTime = DateTime.Now;
+                    db.Admin.Add(admin); 
+                    db.SaveChanges();
+                    msg = "保存成功!";
+                    result = true;
                 }
-                else
+                catch (Exception error)
                 {
-                    Admin admin = new Admin();
-                    byte Roletype = Convert.ToByte(adminForm["Roletype"]);
-                    byte Seescope = Convert.ToByte(adminForm["Seescope"]);
-                    base.CopyProperties(admin, adminForm);
-                    try
-                    {
-                        admin.CommitTime = DateTime.Now;
-                        admin.UpdateTime = DateTime.Now;
-                        admin.LoginTimes = 1;
-                        db.Admin.Add(admin); 
-                        db.SaveChanges();
-                        msg = "保存成功!";
-                        result = true;
-                    }
-                    catch (Exception error)
-                    {
-                        msg = "操作失败:"+error.Message+",请重试!";
-                        result = true;
-                    }
+                    msg = "操作失败:"+error.Message+",请重试!";
+                    result = true;
                 }
+                
             }
             return new JObject(
                 new JProperty("success", result),
@@ -99,27 +85,19 @@ namespace AdminManage.Services
             {
                 string admin_id = adminForm["ID"];
                 string Username = adminForm["Username"];
-                bool Flag = this.IsUsernameExist(Username, admin_id);
-                if (Flag)
+                try
                 {
-                    msg = "该用户名已存在,请重新输入!";
+                    int id = UtilNumber.Parse(admin_id);
+                    Admin admin = db.Admin.Single(e => e.ID.Equals(id));
+                    base.CopyProperties(admin, adminForm);
+                    admin.UpdateTime = DateTime.Now;
+                    db.SaveChanges();
+                    msg = "保存成功!";
+                    result = true;
                 }
-                else
+                catch (Exception error)
                 {
-                    try
-                    {
-                        int id = UtilNumber.Parse(admin_id);
-                        Admin admin = db.Admin.Single(e => e.ID.Equals(id));
-                        base.CopyProperties(admin, adminForm);
-                        admin.UpdateTime = DateTime.Now;
-                        db.SaveChanges();
-                        msg = "保存成功!";
-                        result = true;
-                    }
-                    catch (Exception error)
-                    {
-                        msg = "操作失败:" + error.Message + ",请重试!";
-                    }
+                    msg = "操作失败:" + error.Message + ",请重试!";
                 }
             }
             return new JObject(
@@ -189,9 +167,6 @@ namespace AdminManage.Services
                 this.Stores = new List<Object>();
                 foreach (Admin row in listAdmins)
                 {
-                    row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
-                    row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
-                    row.Department_Name = row.Department.Department_Name;
                     this.Stores.Add(row);
                 }
             }
@@ -225,24 +200,11 @@ namespace AdminManage.Services
 
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
-                //检查Excel中是否有用户名重复数据
-                if (UtilDataTable.HasRepeat(dt, "Username"))
-                {
-                    Console.WriteLine("Excel中有重复用户名");
-                    return new JObject(
-                        new JProperty("success", true),
-                        new JProperty("data", false)
-                    );
-                }
                 //循环插入数据
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Admin admin = new Admin();
                     UtilDataTable.ToObject(admin, dt.Rows[i], dt.Columns);
-                    Department dep = db.Department.Where(e => e.Department_Name.Equals(admin.Department_Name)).SingleOrDefault();
-                    admin.Department_ID = dep.ID;
-                    admin.Seescope = EnumSeescope.SeescopeByShow(admin.SeescopeShow);
-                    admin.Roletype = EnumRoleType.RoletypeByShow(admin.RoletypeShow);
                     db.Admin.Add(admin);
                 }
                 db.SaveChanges();
@@ -269,14 +231,12 @@ namespace AdminManage.Services
 
                 foreach (Admin row in query)
                 {
-                    if (row.Roletype != null) row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
-                    if (row.Seescope != null) row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
-                    row.Department_Name = row.Department.Department_Name;
+
                 }
 
                 DataTable dt = UtilDataTable.ToDataTable(query); 
                 dt.TableName = "Admin";
-                UtilDataTable.DeleteColumns(dt, "Seescope", "Roletype", "Department_ID");
+                UtilDataTable.DeleteColumns(dt, "ID", "CommitTime", "UpdateTime");
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
                     {"ID","编号"},
@@ -302,39 +262,6 @@ namespace AdminManage.Services
                 new JProperty("success", true),
                 new JProperty("data",attachment_url)
             );
-        }
-
-        /// <summary>
-        /// 用户名称是否使用
-        /// </summary>
-        /// <param name="Username">用户名</param>
-        /// <param name="admin_id">用户ID</param>
-        /// <returns>true:已使用 ;false:未使用</returns>
-        private bool IsUsernameExist(string Username, string admin_id)
-        {
-            bool Used = true;
-            var adminToUpdate=db.Admin.FirstOrDefault(person => person.Username == Username);
-            if (adminToUpdate == null) 
-            {
-                Used = false;
-            }
-            else
-            {
-                if (!String.IsNullOrEmpty(admin_id))
-                {
-                    int id = UtilNumber.Parse(admin_id);
-                    Admin admin = db.Admin.Single(e => e.ID.Equals(id));
-                    if (admin != null && admin.Username == Username)
-                    {
-                        Used = false;
-                    }
-                }
-                else
-                {
-                    Used = false;
-                }
-            }
-            return Used;
         }
     }
 }
