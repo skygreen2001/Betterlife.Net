@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace AdminManage.Controllers
 {
+    /// <summary>
+    /// 主控制器:后台主要业务逻辑页面功能
+    /// </summary>
     public class HomeController : BasicController
     {
         // 控制器:系统管理人员
@@ -22,7 +21,5 @@ namespace AdminManage.Controllers
             this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor("Blog_Content", "Content");
             return View();
         }
-
-
     }
 }

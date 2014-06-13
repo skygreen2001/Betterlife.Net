@@ -11,8 +11,10 @@ namespace AdminManage.Controllers
 {
     public class IndexController : Controller
     {
-
-        protected static BetterlifeNetEntities db = new BetterlifeNetEntities();
+        /// <summary>
+        /// 单例:数据管理器
+        /// </summary>
+        protected static BetterlifeNetEntities db = DatabaseCenter.Instance();
 
         //首页
         // GET: /Index/

@@ -2,19 +2,18 @@
 using Business;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Util.Common;
 
 namespace AdminManage.Controllers
 {
+    /// <summary>
+    /// 上传控制器:后台所有业务上传文件功能
+    /// </summary>
     public class UploadController : Controller
     {
-        //
         // GET: /Upload/
         public ActionResult Index()
         {
@@ -25,6 +24,7 @@ namespace AdminManage.Controllers
         /// 上传Excel文件:系统管理员
         /// </summary>
         /// <returns></returns>
+        // POST: /Upload/UploadAdmin/
         [HttpPost]
         public ActionResult UploadAdmin(FormCollection form)
         {

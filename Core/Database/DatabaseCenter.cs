@@ -13,9 +13,9 @@ namespace Database
     public class DatabaseCenter
     {
         /// <summary>
-        /// 
+        /// 单例:数据管理器
         /// </summary>
-        public static BetterlifeNetEntities db;
+        private static BetterlifeNetEntities db;
         
         /// <summary>
         /// 单例模式:在所有的应用服务中只使用一个单例进行数据库数据管理
