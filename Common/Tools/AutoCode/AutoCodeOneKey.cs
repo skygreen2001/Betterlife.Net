@@ -36,7 +36,13 @@ namespace Tools.AutoCode
         {
             base.Init();
             domain.Run();
+            
+            service.ServiceType = 1;
             service.Run();
+
+            service.ServiceType = 2;
+            service.Run();
+
             action.Run();
             view.Run();
         }
