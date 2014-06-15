@@ -161,10 +161,16 @@
     <Content Include="AutoCode\Model\domain\context.txt" />
     <Content Include="AutoCode\Model\domain\domain.txt" />
     <Content Include="AutoCode\Model\domain\enum.txt" />
-    <Content Include="AutoCode\Model\service\extservice.txt" />
+    <Content Include="AutoCode\Model\service\extservice.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AutoCode\Model\domain\httpdata.txt" />
-    <Content Include="AutoCode\Model\service\iservice.txt" />
-    <Content Include="AutoCode\Model\service\service.txt" />
+    <Content Include="AutoCode\Model\service\iservice.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoCode\Model\service\service.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AutoCode\Model\view\index.txt" />
     <Content Include="AutoCode\Model\view\view.txt" />
     <Content Include="DbScripts\initdata.txt">

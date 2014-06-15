@@ -69,6 +69,7 @@
             this.Controls.Add(this.tSaveDir);
             this.Controls.Add(this.btnOneKey);
             this.Name = "ToolAutoCodeForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AutoCodeForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ToolAutoCodeForm_FormClosed);
             this.ResumeLayout(false);

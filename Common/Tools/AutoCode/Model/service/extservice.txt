@@ -11,18 +11,18 @@ using System.Web;
 using Util.Common;
 using Util.DataType.Datatable;
 
-namespace AdminManage.Services
+namespace {$ClassName}Manage.Services
 {
     /// <summary>
-    /// 服务类:系统管理人员
+    /// 服务类:{$Table_Comment}
     /// </summary>
-    [DirectAction("ExtServiceAdmin")]
-    public class ExtServiceAdmin : ExtServiceBasic
+    [DirectAction("ExtService{$ClassName}")]
+    public class ExtService{$ClassName} : ExtServiceBasic
     {
         /// <summary>
-        /// 系统管理员服务
+        /// {$Table_Comment}服务
         /// </summary>
-        private static IServiceAdmin adminService;
+        private static IService{$ClassName} {$InstanceName}Service;
 
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
@@ -31,29 +31,29 @@ namespace AdminManage.Services
         {
             get
             {
-                return "Ext.app.remote_admin";
+                return "Ext.app.remote_{$InstanceName}";
             }
         }
 
         /// <summary>
-        /// 保存系统管理员
+        /// 保存{$Table_Comment}
         /// </summary>
-        /// <param name="adminForm">系统管理员输入表单</param>
+        /// <param name="{$InstanceName}Form">{$Table_Comment}输入表单</param>
         /// <returns></returns>
         [DirectMethodForm]
-        public JObject save(HttpRequest adminForm)
+        public JObject save(HttpRequest {$InstanceName}Form)
         {
             bool result = false;
             string msg  = "";
-            if (adminForm != null)
+            if ({$InstanceName}Form != null)
             {
-                Admin admin = new Admin();
-                base.CopyProperties(admin, adminForm);
+                {$ClassName} {$InstanceName} = new {$ClassName}();
+                base.CopyProperties({$InstanceName}, {$InstanceName}Form);
                 try
                 {
-                    admin.CommitTime = DateTime.Now;
-                    admin.UpdateTime = DateTime.Now;
-                    db.Admin.Add(admin); 
+                    {$InstanceName}.CommitTime = DateTime.Now;
+                    {$InstanceName}.UpdateTime = DateTime.Now;
+                    db.{$ClassName}.Add({$InstanceName}); 
                     db.SaveChanges();
                     msg = "保存成功!";
                     result = true;
@@ -72,25 +72,25 @@ namespace AdminManage.Services
         }
 
         /// <summary>
-        /// 更新系统管理员
+        /// 更新{$Table_Comment}
         /// </summary>
-        /// <param name="adminForm">系统管理员输入表单</param>
+        /// <param name="{$InstanceName}Form">{$Table_Comment}输入表单</param>
         /// <returns></returns>
         [DirectMethodForm]
-        public JObject update(HttpRequest adminForm)
+        public JObject update(HttpRequest {$InstanceName}Form)
         {
             bool result = false;
             string msg  = "";
-            if (adminForm != null)
+            if ({$InstanceName}Form != null)
             {
-                string admin_id = adminForm["ID"];
-                string Username = adminForm["Username"];
+                string {$InstanceName}_id = {$InstanceName}Form["ID"];
+                string Username = {$InstanceName}Form["Username"];
                 try
                 {
-                    int id = UtilNumber.Parse(admin_id);
-                    Admin admin = db.Admin.Single(e => e.ID.Equals(id));
-                    base.CopyProperties(admin, adminForm);
-                    admin.UpdateTime = DateTime.Now;
+                    int id = UtilNumber.Parse({$InstanceName}_id);
+                    {$ClassName} {$InstanceName} = db.{$ClassName}.Single(e => e.ID.Equals(id));
+                    base.CopyProperties({$InstanceName}, {$InstanceName}Form);
+                    {$InstanceName}.UpdateTime = DateTime.Now;
                     db.SaveChanges();
                     msg = "保存成功!";
                     result = true;
@@ -107,7 +107,7 @@ namespace AdminManage.Services
         }
 
         /// <summary>
-        /// 根据主键删除数据对象:系统管理人员的多条数据记录
+        /// 根据主键删除数据对象:{$Table_Comment}的多条数据记录
         /// </summary>
         /// <param name="condition">数据对象编号。形式如下:1,2,3,4</param>
         /// <returns></returns>
@@ -121,10 +121,10 @@ namespace AdminManage.Services
                 {
                     string id_str = pids[i];
                     int ID = UtilNumber.Parse(id_str);
-                    var toDeletes = db.Admin.Where(admin => admin.ID.Equals(ID));
+                    var toDeletes = db.{$ClassName}.Where({$InstanceName} => {$InstanceName}.ID.Equals(ID));
                     foreach (var toDelete in toDeletes)
                     {
-                        db.Admin.Remove(toDelete);
+                        db.{$ClassName}.Remove(toDelete);
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace AdminManage.Services
         }
 
         /// <summary>
-        /// 分页方法:系统管理员
+        /// 分页方法:{$Table_Comment}
         /// </summary>
         /// <see cref="http://diaosbook.com/Post/2012/9/21/linq-paging-in-entity-framework"/>
         /// <param name="condition">
@@ -145,7 +145,7 @@ namespace AdminManage.Services
         /// </param>
         /// <returns></returns>
         [DirectMethod]
-        public ExtServiceAdmin queryPageAdmin(Dictionary<String, object> condition)
+        public ExtService{$ClassName} queryPage{$ClassName}(Dictionary<String, object> condition)
         {
             int StartPoint = 1, EndPoint = 15;
 
@@ -157,15 +157,15 @@ namespace AdminManage.Services
             }
             UtilDictionary.Removes(condition, "start", "limit");
 
-            if (adminService == null) adminService = new ServiceAdmin();
+            if ({$InstanceName}Service == null) {$InstanceName}Service = new Service{$ClassName}();
             string WhereClause = FiltertoCondition(condition);
-            int RowCount = adminService.Count(WhereClause);//总行记录数
+            int RowCount = {$InstanceName}Service.Count(WhereClause);//总行记录数
             if (RowCount > 0)
             {
-                List<Admin> listAdmins = adminService.QueryPage(StartPoint, EndPoint, WhereClause).ToList<Admin>();
+                List<{$ClassName}> list{$ClassName}s = {$InstanceName}Service.QueryPage(StartPoint, EndPoint, WhereClause).ToList<{$ClassName}>();
                 if (EndPoint > RowCount) EndPoint = RowCount;
                 this.Stores = new List<Object>();
-                foreach (Admin row in listAdmins)
+                foreach ({$ClassName} row in list{$ClassName}s)
                 {
                     this.Stores.Add(row);
                 }
@@ -176,26 +176,17 @@ namespace AdminManage.Services
         }
 
         /// <summary>
-        /// 导入:系统管理员
+        /// 导入:{$Table_Comment}
         /// </summary>
-        public static JObject importAdmin(string fileName)
+        public static JObject import{$ClassName}(string fileName)
         {
             //Excel导出入到DataTable
-            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName,"Admin");
+            DataTable dt = UtilExcelOle.ExcelToDataTableBySheet(fileName,"{$ClassName}");
             if (dt != null)
             {
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
-                    {"编号","ID"},
-                    {"部门名称","Department_Name"},
-                    {"用户名称","Username"},
-                    {"密码","Password"},
-                    {"真实姓名","Realname"},
-                    {"扮演角色","RoletypeShow"},
-                    {"视野","SeescopeShow"},
-                    {"登录次数","LoginTimes"},
-                    {"创建时间","CommitTime"},
-                    {"更新时间","UpdateTime"}
+{$ColumnCommentName}
                 };
 
                 UtilDataTable.ReplaceColumnName(dt, dic);
@@ -203,9 +194,9 @@ namespace AdminManage.Services
                 //循环插入数据
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Admin admin = new Admin();
-                    UtilDataTable.ToObject(admin, dt.Rows[i], dt.Columns);
-                    db.Admin.Add(admin);
+                    {$ClassName} {$InstanceName} = new {$ClassName}();
+                    UtilDataTable.ToObject({$InstanceName}, dt.Rows[i], dt.Columns);
+                    db.{$ClassName}.Add({$InstanceName});
                 }
                 db.SaveChanges();
             }
@@ -216,45 +207,36 @@ namespace AdminManage.Services
         }
 
         /// <summary>
-        /// 导出:系统管理员
+        /// 导出:{$Table_Comment}
         /// </summary>
         /// <param name="condition">查询条件对象</param>
         /// <returns></returns>
         [DirectMethod]
-        public JObject exportAdmin(Dictionary<String, object> condition)
+        public JObject export{$ClassName}(Dictionary<String, object> condition)
         {
-            var admins = db.Admin.OrderByDescending(e => e.ID);
+            var {$InstanceName}s = db.{$ClassName}.OrderByDescending(e => e.ID);
             string attachment_url ="";
-            if (admins != null)
+            if ({$InstanceName}s != null)
             {
-                var query=admins.AsEnumerable();
+                var query={$InstanceName}s.AsEnumerable();
 
-                foreach (Admin row in query)
+                foreach ({$ClassName} row in query)
                 {
 
                 }
 
                 DataTable dt = UtilDataTable.ToDataTable(query); 
-                dt.TableName = "Admin";
+                dt.TableName = "{$ClassName}";
                 UtilDataTable.DeleteColumns(dt, "ID", "CommitTime", "UpdateTime");
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
-                    {"ID","编号"},
-                    {"Department_Name","部门名称"},
-                    {"Username","用户名称"},
-                    {"Password","密码"},
-                    {"Realname","真实姓名"},
-                    {"RoletypeShow","扮演角色"},
-                    {"SeescopeShow","视野"},
-                    {"LoginTimes","登录次数"},
-                    {"CommitTime","创建时间"},
-                    {"UpdateTime","更新时间"}
+{$ColumnNameComment}
                 };
                 UtilDataTable.ReplaceColumnName(dt, dic);
 
-                string fileName = "admin"+UtilDateTime.NowS()+".xls";
-                attachment_url=Gc.UploadUrl+"/attachment/admin/"+fileName;
-                fileName=Path.Combine(Gc.UploadPath,"attachment", "admin", fileName);
+                string fileName = "{$InstanceName}"+UtilDateTime.NowS()+".xls";
+                attachment_url=Gc.UploadUrl+"/attachment/{$InstanceName}/"+fileName;
+                fileName=Path.Combine(Gc.UploadPath,"attachment", "{$InstanceName}", fileName);
                 UtilExcelOle.DataTableToExcel(fileName, dt);
             }
            

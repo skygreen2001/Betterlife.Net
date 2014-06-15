@@ -9,59 +9,59 @@ using Util.Common;
 namespace Business.Core.Service
 {
     /// <summary>
-    /// 服务:系统管理员
+    /// 服务:{$Table_Comment}
     /// </summary>
     /// <see cref="http://msdn.microsoft.com/en-us/data/jj592907.aspx" title="Writing SQL queries for entities"/>
     /// <see cref="http://www.entityframeworktutorial.net/EntityFramework4.3/raw-sql-query-in-entity-framework.aspx" title="Execute Native SQL Query"/>
-    public class ServiceAdmin : ServiceBasic,IServiceAdmin
+    public class Service{$ClassName} : ServiceBasic,IService{$ClassName}
     {
         #region 基本函数
         /// <summary>
-        /// 保存系统管理员
+        /// 保存{$Table_Comment}
         /// </summary>
-        /// <param name="admin">需要保存的系统管理员信息</param>
+        /// <param name="{$InstanceName}">需要保存的{$Table_Comment}信息</param>
         /// <returns></returns>
-        public int Save(Admin admin)
+        public int Save({$ClassName} {$InstanceName})
         {
-            db.Admin.Add(admin);
+            db.{$ClassName}.Add({$InstanceName});
             db.SaveChanges();
-            return (int) admin.ID;
+            return (int) {$InstanceName}.ID;
         }
 
         /// <summary>
-        /// 更新系统管理员
+        /// 更新{$Table_Comment}
         /// </summary>
-        /// <param name="admin">需要更新的系统管理员信息</param>
+        /// <param name="{$InstanceName}">需要更新的{$Table_Comment}信息</param>
         /// <returns>是否保存成功</returns>
-        public bool Update(Admin admin)
+        public bool Update({$ClassName} {$InstanceName})
         {
             db.SaveChanges();
             return true;
         }
 
         /// <summary>
-        /// 保存或更新系统管理员
+        /// 保存或更新{$Table_Comment}
         /// </summary>
-        /// <param name="admin">需保存或更新的系统管理员信息</param>
+        /// <param name="{$InstanceName}">需保存或更新的{$Table_Comment}信息</param>
         /// <returns>是否保存或更新成功</returns>
-        public bool SaveOrUpdate(Admin admin)
+        public bool SaveOrUpdate({$ClassName} {$InstanceName})
         {
-            if (admin.ID==0)
+            if ({$InstanceName}.ID==0)
             {
-                db.Admin.Add(admin);
+                db.{$ClassName}.Add({$InstanceName});
             }
             db.SaveChanges();
             return true;
         }
 
         /// <summary>
-        /// 删除系统管理员
+        /// 删除{$Table_Comment}
         /// </summary>
-        /// <param name="admin">需要删除的系统管理员信息</param>
+        /// <param name="{$InstanceName}">需要删除的{$Table_Comment}信息</param>
         /// <returns>是否删除成功</returns>
-        public bool Delete(Admin admin)
+        public bool Delete({$ClassName} {$InstanceName})
         {
-            db.Admin.Remove(admin);
+            db.{$ClassName}.Remove({$InstanceName});
             db.SaveChanges();
             return true;
         }
@@ -69,14 +69,14 @@ namespace Business.Core.Service
         /// <summary>
         /// 由标识删除指定ID数据对象
         /// </summary>
-        /// <param name="ID">系统管理员标识</param>
+        /// <param name="ID">{$Table_Comment}标识</param>
         /// <returns>是否删除成功</returns>
         public bool DeleteByID(int ID)
         {
-            Admin admin = db.Admin.SingleOrDefault(e => e.ID.Equals(ID));
-            if (admin != null)
+            {$ClassName} {$InstanceName} = db.{$ClassName}.SingleOrDefault(e => e.ID.Equals(ID));
+            if ({$InstanceName} != null)
             {
-                db.Admin.Remove(admin);
+                db.{$ClassName}.Remove({$InstanceName});
                 db.SaveChanges();
             }
             return true;
@@ -85,7 +85,7 @@ namespace Business.Core.Service
         /// <summary>
         /// 根据主键删除多条记录
         /// </summary>
-        /// <param name="ids">多个系统管理员标识的字符串:1,2,3,4</param>
+        /// <param name="ids">多个{$Table_Comment}标识的字符串:1,2,3,4</param>
         /// <returns>是否删除成功</returns>
         public bool DeleteByIDs(string IDs)
         {
@@ -99,18 +99,18 @@ namespace Business.Core.Service
 			        Condition+=" OR ID="+ID_Arr[i]+" ";
 			    }
             }
-            db.Database.ExecuteSqlCommand("DELETE FROM Admin WHERE " +Condition);
+            db.Database.ExecuteSqlCommand("DELETE FROM {$ClassName} WHERE " +Condition);
             return true;
         }
 
         /// <summary>
-        /// 由标识判断指定ID系统管理员是否存在
+        /// 由标识判断指定ID{$Table_Comment}是否存在
         /// </summary>
-        /// <param name="ID">系统管理员标识<></param>
+        /// <param name="ID">{$Table_Comment}标识<></param>
         /// <returns></returns>
         public bool ExistByID(int ID)
         {
-            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from Admin WHERE ID=" + ID).First();
+            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from {$ClassName} WHERE ID=" + ID).First();
             return (result > 0);
         }
 
@@ -122,52 +122,52 @@ namespace Business.Core.Service
         public bool ExistBy(string WhereClause = null)
         {
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE "+WhereClause;
-            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from Admin " + WhereClause).First();
+            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from {$ClassName} " + WhereClause).First();
             return (result > 0);
         }
 
         /// <summary>
-        /// 根据表ID主键获取指定的系统管理员[ID对应的表列]
+        /// 根据表ID主键获取指定的{$Table_Comment}[ID对应的表列]
         /// </summary>
         /// <param name="ID">标识</param>
         /// <returns></returns>
-        public Admin GetByID(int ID)
+        public {$ClassName} GetByID(int ID)
         {
-            var admins=db.Admin.Where(e => e.ID.Equals(ID));
-            Admin result = null;
-            if ((admins!=null)&&(admins.Count()>0))result = admins.First();
+            var {$InstanceName}s=db.{$ClassName}.Where(e => e.ID.Equals(ID));
+            {$ClassName} result = null;
+            if (({$InstanceName}s!=null)&&({$InstanceName}s.Count()>0))result = {$InstanceName}s.First();
             return result;
         }
 
         /// <summary>
-        /// 获取系统管理员列表
+        /// 获取{$Table_Comment}列表
         /// </summary>
         /// <param name="WhereClause"></param>
         /// <param name="OrderBy"></param>
         /// <param name="RowCount"></param>
         /// <returns></returns>
-        public List<Admin> Get(string WhereClause=null, string OrderBy="ID DESC", int RowCount=10)
+        public List<{$ClassName}> Get(string WhereClause=null, string OrderBy="ID DESC", int RowCount=10)
         {
-            List<Admin> result = null;
+            List<{$ClassName}> result = null;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
-            var admins = db.Admin.SqlQuery("SELECT TOP " + RowCount + " * FROM Admin " + WhereClause + " ORDER BY " + OrderBy);
-            result = admins.ToList<Admin>();
+            var {$InstanceName}s = db.{$ClassName}.SqlQuery("SELECT TOP " + RowCount + " * FROM {$ClassName} " + WhereClause + " ORDER BY " + OrderBy);
+            result = {$InstanceName}s.ToList<{$ClassName}>();
             return result;
         }
         
         /// <summary>
-        /// 查询得到单个系统管理员
+        /// 查询得到单个{$Table_Comment}
         /// </summary>
         /// <param name="WhereClause"></param>
         /// <param name="OrderBy"></param>
         /// <param name="RowCount"></param>
         /// <returns></returns>
-        public Admin GetOne(string WhereClause = null, string OrderBy = "ID DESC")
+        public {$ClassName} GetOne(string WhereClause = null, string OrderBy = "ID DESC")
         {
-            Admin result = null;
+            {$ClassName} result = null;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
-            var admins = db.Admin.SqlQuery("SELECT TOP 1 * FROM Admin " + WhereClause + " ORDER BY " + OrderBy);
-            result = admins.FirstOrDefault();
+            var {$InstanceName}s = db.{$ClassName}.SqlQuery("SELECT TOP 1 * FROM {$ClassName} " + WhereClause + " ORDER BY " + OrderBy);
+            result = {$InstanceName}s.FirstOrDefault();
             return result;
         }
         
@@ -179,12 +179,12 @@ namespace Business.Core.Service
         public int Count(string WhereClause=null)
         {
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
-            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) FROM Admin " + WhereClause).First();
+            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) FROM {$ClassName} " + WhereClause).First();
             return result;
         }
 
         /// <summary>
-        /// 分页方法:查询系统管理员分页
+        /// 分页方法:查询{$Table_Comment}分页
         /// </summary>
         /// <see cref="http://www.cnblogs.com/ddlink/archive/2013/03/30/2991007.html" comment="采用第五种方法" title="真正高效的SQLSERVER分页查询"/>
         /// <param name="StartPoint">分页开始记录数</param>
@@ -192,54 +192,54 @@ namespace Business.Core.Service
         /// <param name="WhereClause">查询条件</param>
         /// <param name="OrderBy">排序</param>
         /// <returns></returns>
-        public List<Admin> QueryPage(int StartPoint, int EndPoint, string WhereClause=null, string OrderBy="ID DESC")
+        public List<{$ClassName}> QueryPage(int StartPoint, int EndPoint, string WhereClause=null, string OrderBy="ID DESC")
         {
-            List<Admin> result = null;
+            List<{$ClassName}> result = null;
             if (StartPoint >= 1) StartPoint -= 1;
             if (StartPoint > EndPoint) StartPoint = EndPoint;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE "+WhereClause;
-            string sqlStr = "SELECT w1.* FROM Admin w1,"+
-                            "(SELECT TOP " + EndPoint + " row_number() OVER (ORDER BY " + OrderBy + ") n, ID FROM Admin " + WhereClause + ") w2 " +
+            string sqlStr = "SELECT w1.* FROM {$ClassName} w1,"+
+                            "(SELECT TOP " + EndPoint + " row_number() OVER (ORDER BY " + OrderBy + ") n, ID FROM {$ClassName} " + WhereClause + ") w2 " +
                             "WHERE w1.ID = w2.ID AND w2.n > " + StartPoint + " ORDER BY w2.n ASC";
-            var admins = db.Admin.SqlQuery(sqlStr);
-            result = admins.ToList<Admin>();
+            var {$InstanceName}s = db.{$ClassName}.SqlQuery(sqlStr);
+            result = {$InstanceName}s.ToList<{$ClassName}>();
             return result;
         }
 
         /// <summary>
-        /// 分页方法:根据当前页数和每页显示记录数查询系统管理员分页
+        /// 分页方法:根据当前页数和每页显示记录数查询{$Table_Comment}分页
         /// </summary>
         /// <param name="PageNo">当前页数</param>
         /// <param name="EndPoint">每页显示记录数</param>
         /// <param name="WhereClause">查询条件</param>
         /// <param name="OrderBy">排序</param>
         /// <returns></returns>
-        public List<Admin> QueryPageByPageNo(int PageNo, int PageSize, string WhereClause = null, string OrderBy = "ID DESC")
+        public List<{$ClassName}> QueryPageByPageNo(int PageNo, int PageSize, string WhereClause = null, string OrderBy = "ID DESC")
         {
-            List<Admin> result = null;
+            List<{$ClassName}> result = null;
 
             int StartPoint = (PageNo-1)*PageSize;
             int EndPoint = PageNo * PageSize;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
 
-            string sqlStr = "SELECT w1.* FROM Admin w1," +
-                            "(SELECT TOP " + EndPoint + " row_number() OVER (ORDER BY " + OrderBy + ") n, ID FROM Admin " + WhereClause + ") w2 " +
+            string sqlStr = "SELECT w1.* FROM {$ClassName} w1," +
+                            "(SELECT TOP " + EndPoint + " row_number() OVER (ORDER BY " + OrderBy + ") n, ID FROM {$ClassName} " + WhereClause + ") w2 " +
                             "WHERE w1.ID = w2.ID AND w2.n > " + StartPoint + " ORDER BY w2.n ASC";
-            var admins = db.Admin.SqlQuery(sqlStr);
-            result = admins.ToList<Admin>();
+            var {$InstanceName}s = db.{$ClassName}.SqlQuery(sqlStr);
+            result = {$InstanceName}s.ToList<{$ClassName}>();
             return result;
         }
 
         /// <summary>
-        /// 执行SQL语句,返回系统管理员列表
+        /// 执行SQL语句,返回{$Table_Comment}列表
         /// </summary>
         /// <param name="Sqlstr">sql语句</param>
         /// <returns></returns>
-        public List<Admin> SqlExecute(string Sqlstr)
+        public List<{$ClassName}> SqlExecute(string Sqlstr)
         {
-            List<Admin> result = null;
-            var admins = db.Admin.SqlQuery(Sqlstr);
-            result = admins.ToList<Admin>();
+            List<{$ClassName}> result = null;
+            var {$InstanceName}s = db.{$ClassName}.SqlQuery(Sqlstr);
+            result = {$InstanceName}s.ToList<{$ClassName}>();
             return result;
         }
         #endregion

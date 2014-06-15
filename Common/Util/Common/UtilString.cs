@@ -100,6 +100,23 @@ namespace Util.Common
         }
 
         /// <summary>
+        /// 字符串头字母小写
+        /// </summary>
+        /// <see cref="http://www.dotnetperls.com/uppercase-first-letter"/>
+        /// <param name="content">字符串内容</param>
+        public static string LcFirst(string content)
+        {
+            //废弃原因,如commitTime，预期是CommitTime，结果是Committime:content = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(content);
+            if (string.IsNullOrEmpty(content))
+            {
+                return string.Empty;
+            }
+            content = char.ToLower(content[0]) + content.Substring(1);
+
+            return content;
+        }
+
+        /// <summary>
         /// 是否包含指定若干字符串中的一个
         /// </summary>
         /// <returns></returns>
