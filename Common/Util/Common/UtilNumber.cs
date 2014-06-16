@@ -8,6 +8,7 @@ namespace Util.Common
 	public static class UtilNumber
 	{
         /// <summary>
+        /// 判断字符串是否数字型
         /// 据说效率最高
         /// </summary>
         /// <param name="_string"></param>

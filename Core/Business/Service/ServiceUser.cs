@@ -27,8 +27,16 @@ namespace Business.Core.Service
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)) return 0;
 
             //UNDONE:2.用户名是否无效【如含有特殊符号】
+            //if (!IsNormalCharacter(UserName))
+            //{
+            //    return 0;
+            //}
 
-            //UNDONE:3.电子邮件地址是否已存在，如果存在，返回 7
+            //3.电子邮件地址是否已存在，如果存在，返回 7
+            if (IsEmailExist(Email, null))
+            {
+                return 7;
+            }
 
             //4.确认用户名称是否已经使用过，如果已经使用过，返回 6
             if (IsUsernameExist(UserName,null))
@@ -137,5 +145,39 @@ namespace Business.Core.Service
             }
             return Used;
         }
+
+        /// <summary>
+        /// 电子邮件地址是否使用
+        /// </summary>
+        /// <param name="Email">电子邮件地址</param>
+        /// <param name="User_ID">用户ID</param>
+        /// <returns>true:已使用 ;false:未使用</returns>
+        public bool IsEmailExist(string Email, string User_ID)
+        {
+            bool Used = true;
+            var userToUpdate = db.User.FirstOrDefault(person => person.Email == Email);
+            if (userToUpdate != null)
+            {
+                Used = false;
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(User_ID))
+                {
+                    int id = UtilNumber.Parse(User_ID);
+                    User user = db.User.Single(e => e.ID.Equals(id));
+                    if (user != null && user.Email == Email)
+                    {
+                        Used = false;
+                    }
+                }
+                else
+                {
+                    Used = false;
+                }
+            }
+            return Used;
+        }
+
     }
 }

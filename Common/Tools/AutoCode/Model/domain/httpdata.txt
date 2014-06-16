@@ -7,9 +7,9 @@ using System.Web;
 namespace AdminManage.HttpData.Core
 {
     /// <summary>
-    /// Summary description for Department
+    /// Ajax请求:获取{$Table_Comment}列表
     /// </summary>
-    public class DepartmentHandler : BasicHandler,IHttpHandler
+    public class {$ClassName}Handler : BasicHandler,IHttpHandler
     {
         public void ProcessRequest(HttpContext context)
         {
@@ -19,23 +19,23 @@ namespace AdminManage.HttpData.Core
 
             int start = 0;
             if (context.Request["start"]!=null) start = int.Parse(context.Request["start"]);
-            Dictionary<string, object> departmentDic = new Dictionary<string, object>();
-            int totalCount = db.Department.Where(e => e.Department_Name.Contains(query)).Count();
-            var departments = db.Department.Where(e => e.Department_Name.Contains(query)).
+            Dictionary<string, object> {$InstanceName}Dic = new Dictionary<string, object>();
+            int totalCount = db.{$ClassName}.Where(e => e.{$Relation_Column_Name}.Contains(query)).Count();
+            var {$InstanceName}s = db.{$ClassName}.Where(e => e.{$Relation_Column_Name}.Contains(query)).
                  OrderByDescending(p => p.ID).Skip(start).Take(pageSize);
             string result = "";
-            if (departments != null)
+            if ({$InstanceName}s != null)
             {
-                foreach (var department in departments)
+                foreach (var {$InstanceName} in {$InstanceName}s)
                 {
-                    department.Department_ID = department.ID;
+                    {$InstanceName}.{$Column_Name} = {$InstanceName}.ID;
                 }
 
                 try
                 {
-                    departmentDic.Add("totalCount", totalCount);
-                    departmentDic.Add("departments", departments);
-                    result = JsonConvert.SerializeObject(departmentDic, Formatting.Indented, new JsonSerializerSettings
+                    {$InstanceName}Dic.Add("totalCount", totalCount);
+                    {$InstanceName}Dic.Add("{$InstanceName}s", {$InstanceName}s);
+                    result = JsonConvert.SerializeObject({$InstanceName}Dic, Formatting.Indented, new JsonSerializerSettings
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });

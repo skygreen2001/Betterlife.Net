@@ -11,7 +11,7 @@ namespace AdminManage.HttpData.Core
     /// </summary>
     public class BasicHandler
     {
-        protected static BetterlifeNetEntities db = new BetterlifeNetEntities();
+        protected static BetterlifeNetEntities db = DatabaseCenter.Instance();
 
         public bool IsReusable
         {

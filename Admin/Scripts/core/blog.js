@@ -29,7 +29,7 @@ Bn.Blog = {
         },
         /**
          * 在线编辑器类型。
-         * 1:CkEditor,2:KindEditor,3:xhEditor,4:UEditor
+         * 1:CkEditor,4:UEditor
          * 配合Action的变量配置$online_editor
          */
         OnlineEditor: 4
@@ -172,7 +172,7 @@ Bn.Blog.View = {
                 listeners: {
                     beforehide: function ()
                     {
-                        this.editForm.form.getEl().dom.reset();
+                        this.editForm.getForm().reset();
                     },
                     afterrender: function ()
                     {
@@ -224,7 +224,7 @@ Bn.Blog.View = {
                                     }
                                 }
                             },
-                            { fieldLabel: '博客标题', name: 'Blog_Name' },
+                            { fieldLabel: '博客标题', name: 'Blog_Name',allowBlank:false},
                             { fieldLabel: '博客内容', name: 'Blog_Content', xtype: 'textarea', id: 'Blog_Content', ref: 'Blog_Content' }
 					    ]
 					})
@@ -1445,11 +1445,6 @@ Bn.Blog.View = {
                 case 1:
                     if (CKEDITOR.instances.Blog_Content) CKEDITOR.instances.Blog_Content.setData("");
                     break
-                case 2:
-                    if (Bn.Blog.View.EditWindow.KindEditor_Blog_Content) Bn.Blog.View.EditWindow.KindEditor_Blog_Content.html("");
-                    break
-                case 3:
-                    break
                 default:
                     if (ue_Blog_Content) ue_Blog_Content.setContent("");
             }
@@ -1469,25 +1464,22 @@ Bn.Blog.View = {
             Bn.Blog.View.Running.edit_window.saveBtn.setText('修 改');
             Bn.Blog.View.Running.edit_window.resetBtn.setVisible(true);
             Bn.Blog.View.Running.edit_window.setTitle('修改博客');
-            Bn.Blog.View.Running.edit_window.editForm.form.loadRecord(this.getSelectionModel().getSelected());
+
             Bn.Blog.View.Running.edit_window.savetype = 1;
+            Bn.Blog.View.Running.edit_window.show();
+            Bn.Blog.View.Running.edit_window.maximize();
+
+            Bn.Blog.View.Running.edit_window.editForm.form.loadRecord(this.getSelectionModel().getSelected());
+            var data = this.getSelectionModel().getSelected().data;
             switch (Bn.Blog.Config.OnlineEditor)
             {
                 case 1:
-                    if (CKEDITOR.instances.Blog_Content) CKEDITOR.instances.Blog_Content.setData(this.getSelectionModel().getSelected().data.Blog_Content);
-                    break
-                case 2:
-                    if (Bn.Blog.View.EditWindow.KindEditor_Blog_Content) Bn.Blog.View.EditWindow.KindEditor_Blog_Content.html(this.getSelectionModel().getSelected().data.Blog_Content);
-                    break
-                case 3:
-                    if (xhEditor_Blog_Content) xhEditor_Blog_Content.setSource(this.getSelectionModel().getSelected().data.Blog_Content);
+                    if (CKEDITOR.instances.Blog_Content) CKEDITOR.instances.Blog_Content.setData(data.Blog_Content);
                     break
                 default:
-                    if (ue_Blog_Content) ue_Blog_Content.setContent(this.getSelectionModel().getSelected().data.Blog_Content);
+                    ue_Blog_Content.ready(function(){ue_Blog_Content.setContent(data.Blog_Content);});
             }
 
-            Bn.Blog.View.Running.edit_window.show();
-            Bn.Blog.View.Running.edit_window.maximize();
         },
         /**
 		 * 删除博客

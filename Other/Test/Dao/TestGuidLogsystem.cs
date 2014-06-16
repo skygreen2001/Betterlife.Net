@@ -13,7 +13,6 @@ namespace Test.Dao
     /// 【测试】服务:采用Linq获取系统日志数据
     /// 设置：主键ID类型为GUID
     /// </summary>
-    /// TODO 仿照TestLinqAdmin写一套测试用例
     [TestClass]
     public class TestGuidLogsystem
     {

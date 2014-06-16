@@ -135,7 +135,7 @@ namespace Util.Common
         /// <param name="needle">要搜索的字符串</param>
         /// <param name="type">查找方式，默认0:正则表达式方式,这种方式如果子字符串有特殊符号不推荐用；其他:标准的查找子字符串的方式</param>
         /// <returns></returns>
-        public static int substr_count(string haystack, string needle, int type = 0)
+        public static int Substr_Count(string haystack, string needle, int type = 0)
         {
 
             int count = 0;

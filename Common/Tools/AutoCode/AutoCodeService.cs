@@ -26,11 +26,11 @@ namespace Tools.AutoCode
         public void Run()
         {
             base.Init();
-
+            //1.Core/Service服务层所有的服务业务类
             Save_Dir = App_Dir + "Core" + Path.DirectorySeparatorChar + "Business" + Path.DirectorySeparatorChar + "Service" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);            
             if (ServiceType == 1) CreateNormalService();
-
+            //2.Business/Admin后台所有ExtService服务类
             Save_Dir = App_Dir + "Admin" + Path.DirectorySeparatorChar + "Services" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
             if (ServiceType == 2) CreateExtService();

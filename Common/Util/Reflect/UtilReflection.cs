@@ -266,10 +266,10 @@ namespace Util.Reflection
                     try
                     {
                         string fStyle = "yyyy-MM-dd HH:mm:ss";
-                        if (UtilString.substr_count(fieldValue, "-") == 2)
+                        if (UtilString.Substr_Count(fieldValue, "-") == 2)
                         {
                             string[] fv = fieldValue.Split('-');
-                            if (UtilString.substr_count(fieldValue, ":") == 2)
+                            if (UtilString.Substr_Count(fieldValue, ":") == 2)
                             {
                                 if (fv[1].Length == 1) fStyle = "yyyy-M-dd HH:mm:ss";
                                 propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
@@ -281,11 +281,11 @@ namespace Util.Reflection
                                 propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
                             }
                         }
-                        else if (UtilString.substr_count(fieldValue, "/") == 2)
+                        else if (UtilString.Substr_Count(fieldValue, "/") == 2)
                         {
                             fStyle = "yyyy/MM/dd HH:mm:ss";
                             string[] fv = fieldValue.Split('/');
-                            if (UtilString.substr_count(fieldValue, ":") == 2)
+                            if (UtilString.Substr_Count(fieldValue, ":") == 2)
                             {
                                 if (fv[1].Length == 1) fStyle = "yyyy/M/dd HH:mm:ss";
                                 propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
@@ -299,7 +299,7 @@ namespace Util.Reflection
 
 
                         }else{
-                            if (UtilString.substr_count(fieldValue, ":") == 2)
+                            if (UtilString.Substr_Count(fieldValue, ":") == 2)
                             {
                                 propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, "HH:mm:ss", null), null);
                             }

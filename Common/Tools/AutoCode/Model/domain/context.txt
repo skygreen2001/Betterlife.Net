@@ -4,10 +4,10 @@
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BetterlifeNetEntities : DbContext
+    public partial class {$EntitiesName} : DbContext
     {
-        public BetterlifeNetEntities()
-            : base("name=BetterlifeNetEntities")
+        public {$EntitiesName}()
+            : base("name={$EntitiesName}")
         {
         }
     
@@ -15,20 +15,6 @@
         {
             throw new UnintentionalCodeFirstException();
         }
-    
-        /// <summary>
-        /// 系统管理员
-        /// </summary>
-        public DbSet<Admin> Admin { get; set; }
-
-        /// <summary>
-        /// 系统日志
-        /// </summary>
-		public DbSet<Logsystem> Logsystem { get; set; }
-
-		.
-		.
-		.
-
+{$MainContent}
 	}
 }

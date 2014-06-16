@@ -25,6 +25,7 @@ namespace Tools.Util.Db
                                         "Trusted_Connection=yes;" +
                                         "connection timeout=30";//默认超时时间是30秒
         public static string Database_Name = "BetterlifeNet";
+
         #region T-SQL定义
         /// <summary>
         /// 查看所有数据库
