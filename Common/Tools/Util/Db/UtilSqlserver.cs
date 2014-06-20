@@ -284,6 +284,7 @@ namespace Tools.Util.Db
                 DataTable column_comment = UtilSqlserver.SqlExecute(sql);
                 if ((column_comment == null) || (column_comment.Rows.Count == 0))
                 {
+                    columnInfo["Comment"] = column_name;
                     Console.WriteLine("表：" + table_name + "-列:" + column_name+"【无注释】");
                 }
                 foreach (DataRow item_c in column_comment.Rows)
