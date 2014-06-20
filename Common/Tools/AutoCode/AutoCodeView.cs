@@ -13,7 +13,6 @@ namespace Tools.AutoCode
         /// 运行主程序
         /// 1.后台普通的显示cshtml文件
         /// 2.后台首页功能列表显示
-        /// 3.后台extjs文件生成
         /// </summary>
         public void Run()
         {
@@ -26,11 +25,6 @@ namespace Tools.AutoCode
             Save_Dir = App_Dir + "Admin" + Path.DirectorySeparatorChar + "Views" + Path.DirectorySeparatorChar + "Index" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
             CreateIndexView();
-
-            Save_Dir = App_Dir + "Admin" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + "core" + Path.DirectorySeparatorChar;
-            if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
-            CreateExtjsView();
-
         }
 
         /// <summary>
@@ -112,43 +106,5 @@ namespace Tools.AutoCode
 
         }
 
-        /// <summary>
-        /// 3.后台extjs文件生成【多个文件】
-        /// [模板文件]:view/extjs.txt   
-        /// [生成文件名称]:InstanceName
-        /// [生成文件后缀名]:.js
-        /// </summary>
-        private void CreateExtjsView()
-        {
-            string ClassName = "Admin";
-            string InstanceName = "admin";
-            string Table_Comment = "系统管理员";
-            string JsNamespace = "BetterlifeNet";
-            string JsNamespace_Alias = "Bn";
-
-
-            string Template_Name, Content, Content_New;
-            foreach (string Table_Name in TableList)
-            {
-                //读取原文件内容到内存
-                Template_Name = @"AutoCode/Model/view/extjs.txt";
-                Content = UtilFile.ReadFile2String(Template_Name);
-                ClassName = Table_Name;
-                Table_Comment = TableInfoList[Table_Name]["Comment"];
-                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (t_c.Length > 1) Table_Comment = t_c[0];
-                InstanceName = UtilString.LcFirst(ClassName);
-
-                Content_New = Content.Replace("$classname", ClassName);
-                Content_New = Content_New.Replace("{$table_comment}", Table_Comment);
-                Content_New = Content_New.Replace("{$instancename}", InstanceName);
-                Content_New = Content_New.Replace("$appName", JsNamespace);
-                Content_New = Content_New.Replace("$ns_alias", JsNamespace_Alias);
-
-
-                //存入目标文件内容
-                UtilFile.WriteString2File(Save_Dir + InstanceName + ".js", Content_New);
-            }
-        }
     }
 }

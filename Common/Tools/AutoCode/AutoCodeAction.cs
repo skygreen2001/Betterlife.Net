@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Util.Common;
 
@@ -39,6 +40,8 @@ namespace Tools.AutoCode
             string ClassName = "Admin";
             string Table_Comment = "系统管理员";
             string Template_Name, Unit_Template, Content, MainContent, Textarea_Text;
+            string Relation_Table_Name, Relation_Column_Name, Relation_Column_Type, Relation_Column_Length;
+            string Column_Name, Column_Type, Column_Length;
 
             //读取原文件内容到内存
             Template_Name = @"AutoCode/Model/action/homecontroller.txt";
@@ -55,12 +58,31 @@ namespace Tools.AutoCode
         // 控制器:{$Table_Comment}
         // GET: /Home/{$ClassName}
         public ActionResult {$ClassName}()
-        {
+        {{$Textarea_Text}
             return View();
         }
                 ";
-                Textarea_Text = "            this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor(\"Blog_Content\", \"Content\");";
+                Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
+                Textarea_Text = "";
+                foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
+                {
+                    Column_Name = entry.Key;
+                    Column_Type = entry.Value["Type"];
+                    Column_Length = entry.Value["Length"];
+                    int iLength = UtilNumber.Parse(Column_Length);
+                    if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                    {
+                        Textarea_Text += "\"" + Column_Name + "\",";
+                    }
+                }
+                if (!string.IsNullOrEmpty(Textarea_Text)) {
+                    Textarea_Text = Textarea_Text.Substring(0,Textarea_Text.Length-1);
+                    Textarea_Text = @"
+            this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor(" + Textarea_Text + ");";
+                }
                 Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
+                Unit_Template = Unit_Template.Replace("{$Textarea_Text}", Textarea_Text);
+                
                 MainContent += Unit_Template.Replace("{$Table_Comment}", Table_Comment);
             }
             Content = Content.Replace("{$MainContent}", MainContent);

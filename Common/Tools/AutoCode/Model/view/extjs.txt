@@ -66,20 +66,9 @@ $ns_alias.$classname.Store = {
             successProperty: 'success',
             root: 'data', remoteSort: true,
             fields: [
-                { name: 'ID', type: 'int' },
-                { name: 'Department_ID', type: 'int' },
-                { name: 'Department_Name', type: 'string' },
-                { name: 'Username', type: 'string' },
-                { name: 'Realname', type: 'string' },
-                { name: 'Password', type: 'string' },
-                { name: 'RoletypeShow', type: 'string' },
-                { name: 'Roletype', type: 'string' },
-                { name: 'SeescopeShow', type: 'string' },
-                { name: 'Seescope', type: 'string' },
-                { name: 'LoginTimes', type: 'int' }
+$fields
             ]
-        }
-		),
+        }),
         writer: new Ext.data.JsonWriter({
             encode: false
         }),
@@ -91,24 +80,7 @@ $ns_alias.$classname.Store = {
                 }
             }
         }
-    }),
-    /**
-     * 用户所属部门
-     */
-    departmentStoreForCombo:new Ext.data.Store({
-        proxy: new Ext.data.HttpProxy({
-            url: '../HttpData/Core/Department.ashx'
-        }),
-        reader: new Ext.data.JsonReader({
-            root: 'departments',
-            autoLoad: true,
-            totalProperty: 'totalCount',
-            idProperty: 'Department_ID'
-        }, [
-            {name: 'Department_ID', mapping: 'Department_ID'},
-            {name: 'Department_Name', mapping: 'Department_Name'}
-        ])
-    })
+    }),$relationStore
 };
 /**
  * View:{$table_comment}显示组件
@@ -148,53 +120,7 @@ $ns_alias.$classname.View = {
 					        xtype: 'textfield', anchor: '98%'
 					    },
 					    items: [
-                            { xtype: 'hidden', name: 'ID', ref: '../ID' },
-                            { xtype: 'hidden', name: 'Department_ID', ref: '../Department_ID' },
-                            { fieldLabel: '用户名', name: 'Username' },
-                            { fieldLabel: '真实姓名', name: 'Realname' },
-                            { fieldLabel: '密码(<font color=red>*</font>)', name: 'Password', inputType: 'Password', ref: '../Password' },
-                            { xtype: 'hidden', name: 'Password_old', ref: '../Password_old' },
-                            {
-                                fieldLabel: '部门', xtype: 'combo', name: 'Department_Name', ref: '../Department_Name',
-                                store: $ns_alias.$classname.Store.departmentStoreForCombo, emptyText: '请选择部门', itemSelector: 'div.search-item',
-                                loadingText: '查询中...', width: 570, pageSize: $ns_alias.$classname.Config.PageSize,
-                                displayField: 'Department_Name', grid: this,
-                                mode: 'remote', editable: true, minChars: 1, autoSelect: true, typeAhead: false,
-                                forceSelection: true, triggerAction: 'all', resizable: false, selectOnFocus: true,
-                                tpl: new Ext.XTemplate(
-                                    '<tpl for="."><div class="search-item">',
-                                        '<h3>{Department_Name}</h3>',
-                                    '</div></tpl>'
-                                ),
-                                listeners: {
-                                    'beforequery': function (event) { delete event.combo.lastQuery; }
-                                },
-                                onSelect: function (record, index) {
-                                    if (this.fireEvent('beforeselect', this, record, index) !== false) {
-                                        this.grid.Department_ID.setValue(record.data.Department_ID);
-                                        this.grid.Department_Name.setValue(record.data.Department_Name);
-                                        this.collapse();
-                                    }
-                                }
-                            },
-                            {
-                                fieldLabel: '扮演角色', hiddenName: 'Roletype', xtype: 'combo', ref: '../Roletype',
-                                mode: 'local', triggerAction: 'all', lazyRender: true, editable: false, allowBlank: false,
-                                store: new Ext.data.SimpleStore({
-                                    fields: ['value', 'text'],
-                                    data: [['0', '超级管理员'], ['1', '管理人员'], ['2', '运维人员'], ['3', '合作伙伴']]
-                                }), emptyText: '请选择扮演角色',
-                                valueField: 'value', displayField: 'text'
-                            },
-                            {
-                                fieldLabel: '视野', hiddenName: 'Seescope', xtype: 'combo', ref: '../Seescope',
-                                mode: 'local', triggerAction: 'all', lazyRender: true, editable: false, allowBlank: false,
-                                store: new Ext.data.SimpleStore({
-                                    fields: ['value', 'text'],
-                                    data: [['0', '只能查看自己的信息'], ['1', '查看所有的信息']]
-                                }), emptyText: '请选择视野',
-                                valueField: 'value', displayField: 'text'
-                            }
+$fieldLabels
 					    ]
 					})
                 ],
@@ -314,12 +240,7 @@ $ns_alias.$classname.View = {
 					    title: '基本信息', ref: 'tab$classnameDetail', iconCls: 'tabs',
 					    tpl: [
                              '<table class="viewdoblock">',
-                             '    <tr class="entry"><td class="head">部门</td><td class="content">{Department_Name}</td></tr>',
-                             '    <tr class="entry"><td class="head">用户名</td><td class="content">{Username}</td></tr>',
-                             '    <tr class="entry"><td class="head">真实姓名</td><td class="content">{Realname}</td></tr>',
-                             '    <tr class="entry"><td class="head">扮演角色</td><td class="content">{RoletypeShow}</td></tr>',
-                             '    <tr class="entry"><td class="head">视野</td><td class="content">{SeescopeShow}</td></tr>',
-                             '    <tr class="entry"><td class="head">登录次数</td><td class="content">{LoginTimes}</td></tr>',
+$viewdoblock
                              '</table>'
 					    ]
 					}
@@ -452,13 +373,7 @@ $ns_alias.$classname.View = {
                     },
                     columns: [
 						this.sm,
-                        { header: '标识', dataIndex: 'ID', hidden: true },
-                        { header: '部门', dataIndex: 'Department_Name' },
-                        { header: '用户名', dataIndex: 'Username' },
-                        { header: '真实姓名', dataIndex: 'Realname' },
-                        { header: '扮演角色', dataIndex: 'RoletypeShow' },
-                        { header: '视野', dataIndex: 'SeescopeShow' },
-                        { header: '登录次数', dataIndex: 'LoginTimes' }
+$columns
                     ]
                 }),
                 tbar: {

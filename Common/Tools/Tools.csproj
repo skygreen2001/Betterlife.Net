@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCode\AutoCodeViewExt.cs" />
     <Compile Include="ToolAutoCodeForm.cs">
       <SubType>Form</SubType>
     </Compile>

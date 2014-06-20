@@ -86,5 +86,121 @@ namespace Tools.AutoCode
 
         }
 
+        /// <summary>
+        /// 表枚举类型列注释转换成可以处理的数组数据
+        /// 注释风格如下：
+        ///     用户性别
+        ///     0：女-female
+        ///     1：男-mail
+        ///     -1：待确认-unknown
+        ///     默认男
+        /// </summary>
+        /// <param name="Column_Comment">表枚举类型列注释</param>
+        /// <returns></returns>
+        protected List<Dictionary<string, string>> EnumDefines(string Column_Comment)
+        {
+            string C_Comment, Enum_Comment;
+            string[] Part_Arr, Cn_En_Arr;
+            List<Dictionary<string, string>> Result=null;
+            string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            if (c_c.Length > 1)
+            {
+                Result = new List<Dictionary<string, string>>();
+                for (int i = 1; i < c_c.Length; i++)
+                {
+                    C_Comment = c_c[i];
+                    C_Comment = C_Comment.Replace("：", ":");
+                    Part_Arr = C_Comment.Split(':');
+                    if ((Part_Arr != null) && (Part_Arr.Length == 2))
+                    {
+                        Cn_En_Arr = new string[2];
+                        Enum_Comment = Part_Arr[1];
+                        if (UtilNumber.IsDigit(Part_Arr[0]))
+                        {
+                            if (Enum_Comment.Contains("-"))
+                            {
+                                Cn_En_Arr[0] = Enum_Comment.Substring(0, Enum_Comment.IndexOf("-"));
+                                Cn_En_Arr[1] = Enum_Comment.Substring(Enum_Comment.IndexOf("-") + 1);
+                                Result.Add(new Dictionary<string, string>()
+                                            {
+                                                {"Name",Cn_En_Arr[1].ToLower()},
+                                                {"Value",Part_Arr[0]},
+                                                {"Comment",Cn_En_Arr[0]}
+                                            });
+                            }
+                        }
+                        else
+                        {
+                            Result.Add(new Dictionary<string, string>()
+                                        {
+                                            {"Name",Part_Arr[0].ToLower()},
+                                            {"Value",Part_Arr[0].ToLower()},
+                                            {"Comment",Part_Arr[1]}
+                                        });
+                        }
+                    }
+                }
+            }
+            return Result;
+        }
+
+        /// <summary>
+        /// 列是否大量文本输入应该TextArea输入
+        /// </summary>
+        /// <param name="Column_Name">列名称</param>
+        /// <param name="Column_Type">列类型</param>
+        protected bool ColumnIsTextArea(string Column_Name, string Column_Type, int Column_Length)
+        {
+            Column_Name = Column_Name.ToUpper();
+            if (Column_Name.Contains("ID")) return false;
+            if ((Column_Length>=500) && (!UtilString.Contains(Column_Name, "URL","PROFILE", "IMAGES", "LINK", "ICO", "PASSWORD", "EMAIL", "PHONE", "ADDRESS")) ||
+            (UtilString.Contains("INTRO", "MEMO", "CONTENT")) ||
+            (Column_Type.ToUpper().Contains("TEXT")))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 列是否是图片路径
+        /// </summary>
+        /// <param name="Column_Name">列名称</param>
+        /// <param name="Column_Comment">列注释</param>
+        protected bool ColumnIsImage(string Column_Name, string Column_Comment)
+        {
+            Column_Name = Column_Name.ToUpper();
+            if (Column_Name.Contains("ID")) return false;
+            if (UtilString.Contains(Column_Name, "PROFILE", "IMAGE", "IMG", "ICO", "LOGO", "PIC")) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// 列是否是密码
+        /// </summary>
+        /// <param name="Table_Name">表名称</param>
+        /// <param name="Column_Name">列名称</param>
+        protected bool ColumnIsPassword(string Table_Name, string Column_Name)
+        {
+            Table_Name = Table_Name.ToUpper();
+            if (UtilString.Contains(Table_Name, "MEMBER", "ADMIN", "USER"))
+            {
+                Column_Name = Column_Name.ToUpper();
+                if (Column_Name.Contains("PASSWORD")) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 列是否是Email
+        /// </summary>
+        /// <param name="Column_Name">列名称</param>
+        /// <param name="Column_Comment">列注释</param>
+        protected bool ColumnIsEmail(string Column_Name, string Column_Comment)
+        {
+            Column_Name=Column_Name.ToUpper();
+            if (Column_Name.Contains("EMAIL")||(UtilString.Contains(Column_Comment,"邮件","邮箱")&&(!Column_Name.Contains("IS"))))return true;
+		    return false;
+        }
     }
 }

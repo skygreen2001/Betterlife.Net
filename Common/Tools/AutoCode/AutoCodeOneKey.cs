@@ -27,6 +27,10 @@ namespace Tools.AutoCode
         /// 生成表示层类
         /// </summary>
         public AutoCodeView view = new AutoCodeView();
+        /// <summary>
+        /// 生成表示层类:后台Extjs类
+        /// </summary>
+        public AutoCodeViewExt viewExtjs = new AutoCodeViewExt();
 
 
         /// <summary>
@@ -44,7 +48,9 @@ namespace Tools.AutoCode
             service.Run();
 
             action.Run();
+
             view.Run();
+            viewExtjs.Run();
         }
     }
 }
