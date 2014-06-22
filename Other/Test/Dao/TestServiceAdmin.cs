@@ -19,7 +19,7 @@ namespace Test.Dao
         private const string AdminOriginal = "skygreen";
         private const string AdminNameUpdated = "pupu";
         private const string Password = "4008001666";
-        private const int AdminID = 1;
+        private const int AdminID = 10000;
         private const int DeletedID = 8;
         private const int ExistedID = 80;
 

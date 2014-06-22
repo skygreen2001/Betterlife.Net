@@ -132,7 +132,7 @@ namespace Business.Core.Service
                 if (!String.IsNullOrEmpty(User_ID))
                 {
                     int id = UtilNumber.Parse(User_ID);
-                    User user = db.User.Single(e => e.ID.Equals(id));
+                    User user = db.User.Find(id);
                     if (user != null && user.Username == Username)
                     {
                         Used = false;
@@ -165,7 +165,7 @@ namespace Business.Core.Service
                 if (!String.IsNullOrEmpty(User_ID))
                 {
                     int id = UtilNumber.Parse(User_ID);
-                    User user = db.User.Single(e => e.ID.Equals(id));
+                    User user = db.User.Find(id);
                     if (user != null && user.Email == Email)
                     {
                         Used = false;

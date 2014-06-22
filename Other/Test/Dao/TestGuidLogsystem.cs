@@ -19,7 +19,7 @@ namespace Test.Dao
         private static BetterlifeNetEntities db;
         private const string originalMessage = "error for test";
         private const string updateMessage = "111";
-        private const string originalLogID = "98A67262-22C7-4615-9907-000BD6D03819";
+        private const string originalLogID = "1ED0F702-DBE3-4FBB-B762-0A3418D89C67";
 
         private readonly string[] originalLogIDs = new string[]{
             "E63D5EE7-108B-4974-BF91-01013DCAC380",
@@ -63,8 +63,7 @@ namespace Test.Dao
             Assert.IsNotNull(logsystem.ID);
 
             //Test 2
-            var newFound = db.Logsystem.FirstOrDefault(
-                log => log.ID == logsystem.ID);
+            var newFound = db.Logsystem.Find(logsystem.ID);
             Assert.IsNotNull(newFound);
         }
 
@@ -76,17 +75,16 @@ namespace Test.Dao
         {
             Guid logID = new Guid(originalLogID);
             //获取需修改的系统管理员
-            var logToUpdate = db.Logsystem.FirstOrDefault(log => log.ID == logID);
+            var logToUpdate = db.Logsystem.Find(logID);
             if (logToUpdate != null) logToUpdate.Message = updateMessage;
             db.SaveChanges();
 
             // Test 1
-            var updatedLog = db.Logsystem.FirstOrDefault(log => log.ID == logID);
+            var updatedLog = db.Logsystem.Find(logID);
             Assert.IsTrue(updatedLog.Message == updateMessage);
 
             // T还原数据
-            var logToRevert = db.Logsystem.FirstOrDefault(
-                log => log.ID == logID);
+            var logToRevert = db.Logsystem.Find(logID);
 
             if (logToRevert != null) logToRevert.Message = originalMessage;
             db.SaveChanges();
@@ -136,7 +134,7 @@ namespace Test.Dao
         {
             Guid logID = new Guid(originalLogIDs[0]);
 
-            Logsystem log = db.Logsystem.Single(e => e.ID.Equals(logID));
+            Logsystem log = db.Logsystem.Find(logID);
             Assert.IsNotNull(log);
             db.Logsystem.Remove(log);
             db.SaveChanges();
@@ -183,7 +181,7 @@ namespace Test.Dao
             string[] ID_Arr = IDs.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var ID in ID_Arr)
             {
-                Logsystem toDelete = db.Logsystem.Single(e => e.ID.ToString().Equals(ID));
+                Logsystem toDelete = db.Logsystem.Find(ID);
                 Console.WriteLine(toDelete.ID + toDelete.Message + ":" + toDelete.Logtime);
                 db.Logsystem.Remove(toDelete);
             }
@@ -223,7 +221,7 @@ namespace Test.Dao
         public void GetByIDLogSystem()
         {
             Guid logID = new Guid(originalLogID);
-            Logsystem log = db.Logsystem.SingleOrDefault(e => e.ID.Equals(logID));//new Guid(PersonID)
+            Logsystem log = db.Logsystem.Find(logID);
             if (log != null)
             {
                 UtilReflection.print_r(log);

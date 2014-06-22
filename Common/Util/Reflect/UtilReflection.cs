@@ -325,6 +325,7 @@ namespace Util.Reflection
         /// <returns></returns>
         public static bool IsType(Type type, string typeName)
         {
+            if (type == null) return false;
             if (type.ToString() == typeName)
                 return true;
             if (type.ToString() == "System.Object")
@@ -455,11 +456,14 @@ namespace Util.Reflection
         public static String print_r(Object obj)
         {
             String result = "";
-            result = obj.GetType().FullName+":\r\n";
-            PropertyInfo[] ps = obj.GetType().GetProperties();
-            foreach (PropertyInfo property in ps)
+            if (obj != null)
             {
-                result+=property.Name + ":" + property.GetValue(obj)+"\r\n";
+                result = obj.GetType().FullName + ":\r\n";
+                PropertyInfo[] ps = obj.GetType().GetProperties();
+                foreach (PropertyInfo property in ps)
+                {
+                    result += property.Name + ":" + property.GetValue(obj) + "\r\n";
+                }
             }
             Console.WriteLine(result);
             return result;

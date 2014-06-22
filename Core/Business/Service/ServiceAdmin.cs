@@ -73,7 +73,7 @@ namespace Business.Core.Service
         /// <returns>是否删除成功</returns>
         public bool DeleteByID(int ID)
         {
-            Admin admin = db.Admin.SingleOrDefault(e => e.ID.Equals(ID));
+            Admin admin = db.Admin.Find(ID);
             if (admin != null)
             {
                 db.Admin.Remove(admin);
@@ -133,10 +133,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public Admin GetByID(int ID)
         {
-            var admins=db.Admin.Where(e => e.ID.Equals(ID));
-            Admin result = null;
-            if ((admins!=null)&&(admins.Count()>0))result = admins.First();
-            return result;
+            return db.Admin.Find(ID);
         }
 
         /// <summary>

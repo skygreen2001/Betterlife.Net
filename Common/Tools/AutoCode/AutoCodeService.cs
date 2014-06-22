@@ -64,7 +64,7 @@ namespace Tools.AutoCode
                 Dictionary<string, string> entry=FieldInfo["ID"];
                 if (entry["Type"].Equals("uniqueidentifier"))
                 {
-                    ID_Type = "System.Guid";
+                    ID_Type = "Guid";
                     ID_Default_Value = "null";
                 }
                 else

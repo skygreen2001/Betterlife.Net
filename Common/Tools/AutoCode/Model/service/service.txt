@@ -71,9 +71,9 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="ID">{$Table_Comment}标识</param>
         /// <returns>是否删除成功</returns>
-        public bool DeleteByID(int ID)
+        public bool DeleteByID({$ID_Type} ID)
         {
-            {$ClassName} {$InstanceName} = db.{$ClassName}.SingleOrDefault(e => e.ID.Equals(ID));
+            {$ClassName} {$InstanceName} = db.{$ClassName}.Find(ID);
             if ({$InstanceName} != null)
             {
                 db.{$ClassName}.Remove({$InstanceName});
@@ -96,7 +96,7 @@ namespace Business.Core.Service
                 Condition=" ID="+ID_Arr[0]+" ";
                 for (int i = 1; i < ID_Arr.Length; i++)
 			    {
-			        Condition+=" OR ID="+ID_Arr[i]+" ";
+			        Condition+=" OR ID='"+ID_Arr[i]+"' ";
 			    }
             }
             db.Database.ExecuteSqlCommand("DELETE FROM {$ClassName} WHERE " +Condition);
@@ -108,9 +108,9 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="ID">{$Table_Comment}标识<></param>
         /// <returns></returns>
-        public bool ExistByID(int ID)
+        public bool ExistByID({$ID_Type} ID)
         {
-            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from {$ClassName} WHERE ID=" + ID).First();
+            int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from {$ClassName} WHERE ID='" + ID + "'").First();
             return (result > 0);
         }
 
@@ -131,12 +131,9 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="ID">标识</param>
         /// <returns></returns>
-        public {$ClassName} GetByID(int ID)
+        public {$ClassName} GetByID({$ID_Type} ID)
         {
-            var {$InstanceName}s=db.{$ClassName}.Where(e => e.ID.Equals(ID));
-            {$ClassName} result = null;
-            if (({$InstanceName}s!=null)&&({$InstanceName}s.Count()>0))result = {$InstanceName}s.First();
-            return result;
+            return db.{$ClassName}.Find(ID);
         }
 
         /// <summary>

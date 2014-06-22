@@ -1,4 +1,5 @@
 ﻿using Database;
+using System;
 using System.Collections.Generic;
 
 namespace Business.Core.Service
@@ -39,7 +40,7 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="ID">{$Table_Comment}标识</param>
         /// <returns>是否删除成功</returns>
-        bool DeleteByID(int ID);
+        bool DeleteByID({$ID_Type} ID);
         /// <summary>
         /// 根据主键删除多条记录
         /// </summary>
@@ -51,7 +52,7 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="ID">{$Table_Comment}标识<></param>
         /// <returns></returns>
-        bool ExistByID(int ID);
+        bool ExistByID({$ID_Type} ID);
         /// <summary>
         /// 判断符合条件的数据对象是否存在
         /// </summary>
@@ -63,7 +64,7 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="ID">标识</param>
         /// <returns></returns>
-        {$ClassName} GetByID(int ID);
+        {$ClassName} GetByID({$ID_Type} ID);
         /// <summary>
         /// 获取{$Table_Comment}列表
         /// </summary>

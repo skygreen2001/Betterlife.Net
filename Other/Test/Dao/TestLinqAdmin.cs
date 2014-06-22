@@ -132,7 +132,7 @@ namespace Test.Dao
             foreach (var ID in ID_Arr)
             {
                 int iID = UtilNumber.Parse(ID);
-                Admin toDelete = db.Admin.Single(e => e.ID == iID);
+                Admin toDelete = db.Admin.Find(iID);
                 Console.WriteLine(toDelete.ID + toDelete.Username + ":" + toDelete.Realname);
                 db.Admin.Remove(toDelete);
             }
@@ -149,7 +149,7 @@ namespace Test.Dao
         [TestMethod]
         public void DeleteByID()
         {
-            Admin admin = db.Admin.Single(e => e.ID.Equals(DeletedID));
+            Admin admin = db.Admin.Find(DeletedID);
             Assert.IsNotNull(admin);
             db.Admin.Remove(admin);
             db.SaveChanges();
@@ -188,7 +188,7 @@ namespace Test.Dao
             foreach (var ID in ID_Arr)
             {
                 int iID = UtilNumber.Parse(ID);
-                Admin toDelete = db.Admin.Single(e => e.ID.Equals(iID));
+                Admin toDelete = db.Admin.Find(iID);
                 Console.WriteLine(toDelete.ID + toDelete.Username + ":" + toDelete.UpdateTime);
                 db.Admin.Remove(toDelete);
             }
@@ -226,7 +226,7 @@ namespace Test.Dao
         [TestMethod]
         public void GetByIDAdmin()
         {
-            Admin admin = db.Admin.SingleOrDefault(e => e.ID.Equals(AdminID));//new Guid(PersonID)
+            Admin admin = db.Admin.Find(AdminID);//new Guid(PersonID)
             if (admin != null)
             {
                 UtilReflection.print_r(admin);
