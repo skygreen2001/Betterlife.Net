@@ -40,7 +40,6 @@ namespace Tools.AutoCode
             string ClassName = "Admin";
             string Table_Comment = "系统管理员";
             string Template_Name, Unit_Template, Content, MainContent, Textarea_Text;
-            string Relation_Table_Name, Relation_Column_Name, Relation_Column_Type, Relation_Column_Length;
             string Column_Name, Column_Type, Column_Length;
 
             //读取原文件内容到内存

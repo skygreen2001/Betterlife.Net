@@ -48,6 +48,7 @@ namespace Tools.AutoCode
             string InstanceName = "admin";
             string Table_Comment = "系统管理员";
             string Template_Name, Content, Content_New;
+            string ID_Type, ID_Default_Value;
             foreach (string Table_Name in TableList)
             {
                 //读取原文件内容到内存
@@ -59,9 +60,23 @@ namespace Tools.AutoCode
                 if (t_c.Length > 1) Table_Comment = t_c[0];
                 InstanceName = UtilString.LcFirst(ClassName);
 
+                Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
+                Dictionary<string, string> entry=FieldInfo["ID"];
+                if (entry["Type"].Equals("uniqueidentifier"))
+                {
+                    ID_Type = "System.Guid";
+                    ID_Default_Value = "null";
+                }
+                else
+                {
+                    ID_Type = "int";
+                    ID_Default_Value = "0";
+                }
+
                 Content_New = Content.Replace("{$ClassName}", ClassName);
                 Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
                 Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
+                Content_New = Content_New.Replace("{$ID_Type}", ID_Type);
 
                 //存入目标文件内容
                 UtilFile.WriteString2File(Save_Dir + "IService" + ClassName + ".cs", Content_New);
@@ -73,6 +88,8 @@ namespace Tools.AutoCode
                 Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
                 InstanceName = UtilString.LcFirst(ClassName);
                 Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
+                Content_New = Content_New.Replace("{$ID_Type}", ID_Type);
+                Content_New = Content_New.Replace("{$ID_Default_Value}", ID_Default_Value);
 
                 //存入目标文件内容
                 UtilFile.WriteString2File(Save_Dir + "Service" + ClassName + ".cs", Content_New);

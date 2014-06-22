@@ -15,7 +15,7 @@ namespace Business.Core.Service
         /// </summary>
         /// <param name="{$InstanceName}">需要保存的{$Table_Comment}信息</param>
         /// <returns></returns>
-        int Save({$ClassName} {$InstanceName});
+        {$ID_Type} Save({$ClassName} {$InstanceName});
         /// <summary>
         /// 更新{$Table_Comment}
         /// </summary>

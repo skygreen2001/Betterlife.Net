@@ -5,18 +5,18 @@ namespace Database.Domain.Enums
     /// <summary>
     /// 在线编辑器的类型
     /// </summary>
-    public struct EnumOnlineEditor
+    public enum EnumOnlineEditor
     {
         /// <summary>
         /// CKEditor
         /// </summary>
         /// <see cref="http://ckeditor.com/"/>
-        public const int CKEDITOR = 1;
+        CKEDITOR = 1,
         /// <summary>
         /// UEDITOR
         /// </summary>
         /// <see cref="http://ueditor.baidu.com/"/>
-        public const int UEDITOR = 4;
+        UEDITOR = 4
     }
 
     /// <summary>

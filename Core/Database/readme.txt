@@ -1,3 +1,6 @@
+Entity Framework (EF) Documentation
+	http://msdn.microsoft.com/en-us/data/ee712907#using
+
 First Impressions of Code First Development with Entity Framework 5 in Visual Studio 2012
 	http://programmaticponderings.wordpress.com/2012/10/30/first-impressions-of-code-first-development-with-entity-framework-5-in-visual-studio-2012/
 

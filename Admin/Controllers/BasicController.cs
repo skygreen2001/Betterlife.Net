@@ -11,7 +11,7 @@ namespace AdminManage.Controllers
 {
     public class BasicController : Controller
     {
-        public static int Online_Editor = EnumOnlineEditor.UEDITOR;
+        public static EnumOnlineEditor Online_Editor = EnumOnlineEditor.UEDITOR;
         /// <summary>
         /// 加载在线编辑器初始化语句
         /// </summary>

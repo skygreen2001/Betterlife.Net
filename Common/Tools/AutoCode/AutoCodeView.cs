@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Util.Common;
 
@@ -39,7 +40,8 @@ namespace Tools.AutoCode
             string ClassName = "Admin";
             string InstanceName = "admin";
             string Table_Comment = "系统管理员";
-            string Template_Name, Content, Content_New, OnlineEditorHtml;
+            string Template_Name, Content, Content_New, OnlineEditorHtml="";
+            string Column_Name, Column_Type, Column_Length;
 
             foreach (string Table_Name in TableList)
             {
@@ -56,7 +58,19 @@ namespace Tools.AutoCode
                 Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
                 Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
 
-                OnlineEditorHtml = "	@Html.Raw(ViewBag.OnlineEditorHtml)";//TODO:
+                Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
+                foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
+                {
+                    Column_Name = entry.Key;
+                    Column_Type = entry.Value["Type"];
+                    Column_Length = entry.Value["Length"];
+                    int iLength = UtilNumber.Parse(Column_Length);
+                    if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                    {
+                        OnlineEditorHtml = "	@Html.Raw(ViewBag.OnlineEditorHtml)";
+                    }
+                }
+                
                 Content_New = Content_New.Replace("{$OnlineEditorHtml}", OnlineEditorHtml);
 
                 //存入目标文件内容

@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using System;
 
 namespace Util.Common
 {
@@ -10,6 +11,7 @@ namespace Util.Common
     /// 工具类：采用Npoi方式读写Excel
     /// 使用NPOI 2.0进行开发
     /// </summary>
+    /// TODO:完成工具类【采用Npoi方式读写Excel】
     /// <see cref="http://tonyqus.sinaapp.com/" title="《NPOI指南》目录（草稿）"/>
     /// <see cref="https://npoi.codeplex.com/releases" title="下载NPOI"/>
     /// <see cref="http://msdn.microsoft.com/zh-tw/ee818993.aspx" title="在 Server 端存取 Excel 檔案的利器：NPOI Library"/>
@@ -17,58 +19,221 @@ namespace Util.Common
     {
         #region Excel2003 DataTable和Excel导入导出
         /// <summary>
-        /// 将Excel文件中的数据读出到DataTable中(xls)
+        /// 将Excel文件中指定sheet索引的数据读出到DataTable中(xls)
         /// </summary>
-        /// <param name="FileName">Sheet</param>
+        /// <param name="FileName">Excel文件名称</param>
+        /// <param name="SheetIndex">Sheet索引</param>
         /// <returns></returns>
         public static DataTable ExcelToDataTable(string FileName, int SheetIndex=0)
         {
             DataTable dt = new DataTable();
             if (File.Exists(FileName))
             {
-                using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                try
                 {
-                    HSSFWorkbook hssfworkbook = new HSSFWorkbook(fs);
-                    ISheet sheet = hssfworkbook.GetSheetAt(SheetIndex);
+                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook(fs);
+                        ISheet sheet = hssfworkbook.GetSheetAt(SheetIndex);
 
-                    //表头
-                    IRow header = sheet.GetRow(sheet.FirstRowNum);
-                    List<int> columns = new List<int>();
-                    for (int i = 0; i < header.LastCellNum; i++)
-                    {
-                        object obj = GetValueTypeForXLS(header.GetCell(i) as HSSFCell);
-                        if (obj == null || obj.ToString() == string.Empty)
+                        //表头
+                        IRow header = sheet.GetRow(sheet.FirstRowNum);
+                        List<int> columns = new List<int>();
+                        for (int i = 0; i < header.LastCellNum; i++)
                         {
-                            dt.Columns.Add(new DataColumn("Columns" + i.ToString()));
-                            //continue;
-                        }
-                        else
-                            dt.Columns.Add(new DataColumn(obj.ToString()));
-                        columns.Add(i);
-                    }
-                    //数据
-                    for (int i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
-                    {
-                        DataRow dr = dt.NewRow();
-                        bool hasValue = false;
-                        foreach (int j in columns)
-                        {
-                            dr[j] = GetValueTypeForXLS(sheet.GetRow(i).GetCell(j) as HSSFCell);
-                            if (dr[j] != null && dr[j].ToString() != string.Empty)
+                            object obj = GetValueTypeForXLS(header.GetCell(i) as HSSFCell);
+                            if (obj == null || obj.ToString() == string.Empty)
                             {
-                                hasValue = true;
+                                dt.Columns.Add(new DataColumn("Columns" + i.ToString()));
+                                //continue;
+                            }
+                            else
+                                dt.Columns.Add(new DataColumn(obj.ToString()));
+                            columns.Add(i);
+                        }
+                        //数据
+                        for (int i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
+                        {
+                            DataRow dr = dt.NewRow();
+                            bool hasValue = false;
+                            foreach (int j in columns)
+                            {
+                                dr[j] = GetValueTypeForXLS(sheet.GetRow(i).GetCell(j) as HSSFCell);
+                                if (dr[j] != null && dr[j].ToString() != string.Empty)
+                                {
+                                    hasValue = true;
+                                }
+                            }
+                            if (hasValue)
+                            {
+                                dt.Rows.Add(dr);
                             }
                         }
-                        if (hasValue)
-                        {
-                            dt.Rows.Add(dr);
-                        }
+                        sheet = null;
+                        hssfworkbook = null;
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
             else dt = null;
             return dt;
         }
+
+        /// <summary>
+        /// 将Excel文件中指定sheet名称的数据读出到DataTable中(xls)
+        /// </summary>
+        /// <param name="FileName">Excel文件名称</param>
+        /// <param name="SheetName">Sheet名称</param>
+        /// <returns></returns>
+        public static DataTable ExcelToDataTable(string FileName, string SheetName)
+        {
+            if (string.IsNullOrEmpty(SheetName)) return null;
+            DataTable dt = new DataTable();
+            if (File.Exists(FileName))
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook(fs);
+                        ISheet sheet = hssfworkbook.GetSheet(SheetName);
+
+                        //表头
+                        IRow header = sheet.GetRow(sheet.FirstRowNum);
+                        List<int> columns = new List<int>();
+                        for (int i = 0; i < header.LastCellNum; i++)
+                        {
+                            object obj = GetValueTypeForXLS(header.GetCell(i) as HSSFCell);
+                            if (obj == null || obj.ToString() == string.Empty)
+                            {
+                                dt.Columns.Add(new DataColumn("Columns" + i.ToString()));
+                                //continue;
+                            }
+                            else
+                                dt.Columns.Add(new DataColumn(obj.ToString()));
+                            columns.Add(i);
+                        }
+                        //数据
+                        for (int i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
+                        {
+                            DataRow dr = dt.NewRow();
+                            bool hasValue = false;
+                            foreach (int j in columns)
+                            {
+                                dr[j] = GetValueTypeForXLS(sheet.GetRow(i).GetCell(j) as HSSFCell);
+                                if (dr[j] != null && dr[j].ToString() != string.Empty)
+                                {
+                                    hasValue = true;
+                                }
+                            }
+                            if (hasValue)
+                            {
+                                dt.Rows.Add(dr);
+                            }
+                        }
+                        sheet = null;
+                        hssfworkbook = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            else dt = null;
+            return dt;
+        }
+
+        /// <summary>
+        /// 计数:所有的Sheet数量
+        /// </summary>
+        /// <param name="FileName">Excel文件名称</param>
+        /// <returns></returns>
+        public static int CountSheets(string FileName)
+        {
+            if (File.Exists(FileName))
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook(fs);
+                        return hssfworkbook.Count;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 根据Sheet索引获取Sheet名称
+        /// </summary>
+        /// <param name="FileName">Excel文件名称</param>
+        /// <param name="SheetIndex">Sheet索引</param>
+        /// <returns></returns>
+        public static string GetSheetName(string FileName, int SheetIndex)
+        {
+            if (File.Exists(FileName))
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook(fs);
+                        string SheetName = hssfworkbook.GetSheetName(SheetIndex);
+                        return SheetName;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return "";
+
+        }
+
+        /// <summary>
+        /// 获取所有的Sheet的名称
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
+        public static string[] GetExcelSheetNames(string FileName)
+        {
+            string[] Result=null;
+            if (File.Exists(FileName))
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        HSSFWorkbook hssfworkbook = new HSSFWorkbook(fs);
+                        int Count = hssfworkbook.Count;
+                        if (Count > 0)
+                        {
+                            Result = new string[Count];
+                            for (int Index = 0; Index < Count; Index++)
+                            {
+                                Result[Index] = hssfworkbook.GetSheetName(Index);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return Result;
+        }
+
 
         /// <summary>
         /// 将DataTable数据导出到Excel文件中(xls)

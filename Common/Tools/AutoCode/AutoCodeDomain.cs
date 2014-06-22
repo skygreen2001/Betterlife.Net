@@ -140,6 +140,8 @@ namespace Tools.AutoCode
                     }
                 case "datetime":
                     return "Nullable<System.DateTime>";
+                case "uniqueidentifier":
+                    return "System.Guid";
             }
             return "string";
 

@@ -41,7 +41,7 @@ namespace AdminManage
             //设置在线编辑器的类型:UEditor|CKEditor
             HttpCookie OnlineEditorCookie=filterContext.RequestContext.HttpContext.Request.Cookies["OnlineEditor"];
             if (OnlineEditorCookie!=null)
-                BasicController.Online_Editor = UtilNumber.Parse(OnlineEditorCookie.Value, EnumOnlineEditor.UEDITOR);
+                BasicController.Online_Editor = (EnumOnlineEditor)UtilNumber.Parse(OnlineEditorCookie.Value, (int)EnumOnlineEditor.UEDITOR);
 
             //在Action执行前执行
             //filterContext.HttpContext.Response.Write(@"<br />Before Action execute" + "\t " + Message);

@@ -276,10 +276,6 @@ namespace Util.Common
         /// <param name="Path"></param>
         public static void WriteString2File(string Path,  string Content)
         {
-            if (!File.Exists(Path))
-            {
-                
-            }
             using (StreamWriter wrtier = new StreamWriter(Path))
             {
                 wrtier.Write(Content);
