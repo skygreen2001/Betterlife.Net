@@ -144,7 +144,7 @@ namespace AdminManage.Services
                 blog.Username = user.Username;
                 blog.Blog_ContentShow = Regex.Replace(blog.Blog_Content, "<\\s*img\\s+[^>]*?src\\s*=\\s*(\'|\")(.*?)\\1[^>]*?\\/?\\s*>", "<a href='${2}' target='_blank'>${0}</a>");
                 blog.Blog_ContentShow = blog.Blog_ContentShow.Replace("\\\"", "");
-                this.Stores.Add(blog);
+                this.Stores.Add((Blog)ClearInclude(blog));
                 i++;
             }
             this.TotalCount = rowCount;

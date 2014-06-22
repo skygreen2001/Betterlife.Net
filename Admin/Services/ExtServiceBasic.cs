@@ -102,6 +102,31 @@ namespace AdminManage.Services
             keysList.Remove("extUpload");
         }
 
+        /// <summary>
+        /// 清除数据对象关联的数据对象,一般在获取到所需数据之后最后执行
+        /// </summary>
+        protected object ClearInclude(object entityObject)
+        {
+            object destObject = Activator.CreateInstance(entityObject.GetType().BaseType);
+            List<string> keysList = UtilReflection.GetPropertNames(entityObject);
+            PropertyInfo p, p_n;
+            foreach (string key in keysList)
+            {
+                p = entityObject.GetType().GetProperty(key);
+                p_n = destObject.GetType().GetProperty(key);
+                if (p_n.PropertyType.FullName.Contains("Database."))
+                {
+                    p_n.SetValue(destObject, null);
+                }
+                else
+                {
+                    object origin_pro = p.GetValue(entityObject);
+                    if (origin_pro != null) UtilReflection.SetValue(destObject, key, origin_pro.ToString());
+                }
+            }
+            return destObject;
+        }
+
         [JsonProperty(PropertyName = "totalCount")]
         public int TotalCount
         {

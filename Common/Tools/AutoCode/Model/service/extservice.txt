@@ -165,9 +165,9 @@ namespace {$ClassName}Manage.Services
                 List<{$ClassName}> list{$ClassName}s = {$InstanceName}Service.QueryPage(StartPoint, EndPoint, WhereClause).ToList<{$ClassName}>();
                 if (EndPoint > RowCount) EndPoint = RowCount;
                 this.Stores = new List<Object>();
-                foreach ({$ClassName} row in list{$ClassName}s)
+                foreach ({$ClassName} {$InstanceName} in list{$ClassName}s)
                 {
-                    this.Stores.Add(row);
+                    this.Stores.Add(({$ClassName})ClearInclude({$InstanceName}));
                 }
             }
             this.TotalCount = RowCount;

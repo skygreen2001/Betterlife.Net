@@ -192,7 +192,7 @@ namespace AdminManage.Services
                     row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
                     row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
                     row.Department_Name = row.Department.Department_Name;
-                    this.Stores.Add(row);
+                    this.Stores.Add((Admin)ClearInclude(row));
                 }
             }
             this.TotalCount = RowCount;
