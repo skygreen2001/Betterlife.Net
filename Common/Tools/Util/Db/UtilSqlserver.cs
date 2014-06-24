@@ -202,7 +202,10 @@ namespace Tools.Util.Db
             {
                 tablename = (string)item.ItemArray[0];
                 key = tablename;//.ToLower();
-                result[key] = tablename;
+                if (!key.ToLower().Equals("sysdiagrams"))
+                {
+                    result[key] = tablename;
+                }
             }
             return result;
         }
