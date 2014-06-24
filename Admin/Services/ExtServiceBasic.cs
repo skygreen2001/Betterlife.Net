@@ -114,14 +114,17 @@ namespace AdminManage.Services
             {
                 p = entityObject.GetType().GetProperty(key);
                 p_n = destObject.GetType().GetProperty(key);
-                if (p_n.PropertyType.FullName.Contains("Database."))
+                if (p_n != null)
                 {
-                    p_n.SetValue(destObject, null);
-                }
-                else
-                {
-                    object origin_pro = p.GetValue(entityObject);
-                    if (origin_pro != null) UtilReflection.SetValue(destObject, key, origin_pro.ToString());
+                    if (p_n.PropertyType.FullName.Contains("Database."))
+                    {
+                        p_n.SetValue(destObject, null);
+                    }
+                    else
+                    {
+                        object origin_pro = p.GetValue(entityObject);
+                        if (origin_pro != null) UtilReflection.SetValue(destObject, key, origin_pro.ToString());
+                    }
                 }
             }
             return destObject;

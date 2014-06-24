@@ -140,8 +140,7 @@ namespace AdminManage.Services
             int i = 1;
             foreach (Blog blog in listBlogs)
             {
-                User user = db.User.Where(e => e.ID==blog.User_ID).SingleOrDefault();
-                blog.Username = user.Username;
+                blog.Username = blog.User.Username;
                 blog.Blog_ContentShow = Regex.Replace(blog.Blog_Content, "<\\s*img\\s+[^>]*?src\\s*=\\s*(\'|\")(.*?)\\1[^>]*?\\/?\\s*>", "<a href='${2}' target='_blank'>${0}</a>");
                 blog.Blog_ContentShow = blog.Blog_ContentShow.Replace("\\\"", "");
                 this.Stores.Add((Blog)ClearInclude(blog));

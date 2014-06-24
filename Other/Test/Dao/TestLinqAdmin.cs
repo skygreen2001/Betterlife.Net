@@ -48,7 +48,7 @@ namespace Test.Dao
             admin.Department_ID = 1;
             admin.Password = Password;
             admin.Seescope = EnumSeescope.All.ToString();
-            admin.Roletype = EnumRoleType.Superadmin.ToString();
+            admin.Roletype = EnumRoletype.Superadmin.ToString();
             admin.LoginTimes = 0;
             admin.CommitTime = DateTime.Now;
             admin.UpdateTime = DateTime.Now;
@@ -109,7 +109,7 @@ namespace Test.Dao
                 admin.Password = Password;
                 admin.LoginTimes = i;
                 admin.Seescope = EnumSeescope.All.ToString();
-                admin.Roletype = EnumRoleType.Superadmin.ToString();
+                admin.Roletype = EnumRoletype.Superadmin.ToString();
                 admin.CommitTime = DateTime.Now;
                 admin.UpdateTime = DateTime.Now;
                 db.Admin.Add(admin);

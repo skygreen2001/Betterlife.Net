@@ -58,6 +58,10 @@ namespace Tools.AutoCode
         /// 获取类和注释的说明
         /// </summary>
         public static string Class_Comments;
+        /// <summary>
+        /// 一对多表关系定义数据
+        /// </summary>
+        public static Dictionary<string, List<string>> OneHasManyDefine;
 
         /// <summary>
         /// 初始化工作
@@ -78,12 +82,45 @@ namespace Tools.AutoCode
             if (FieldInfos == null)
             {
                 FieldInfos = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-                foreach (string TableName in TableList)
+                foreach (string Table_Name in TableList)
                 {
-                    FieldInfos.Add(TableName,UtilSqlserver.FieldInfoList(TableName));
+                    FieldInfos.Add(Table_Name, UtilSqlserver.FieldInfoList(Table_Name));
                 }
             }
-
+            if (OneHasManyDefine == null)
+            {
+                OneHasManyDefine = new Dictionary<string, List<string>>();
+                string Column_Name,Relation_ClassName;
+                List<string> lRelation_TableName=null;
+                foreach (string Table_Name in TableList)
+                {
+                    Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
+                    
+                    foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
+                    {
+                        Column_Name = entry.Key;
+                         
+                        if (Column_Name.Contains("_ID"))
+                        {
+                            Relation_ClassName = Column_Name.Replace("_ID", "");
+                            if (TableList.Contains(Relation_ClassName))
+                            {
+                                if (lRelation_TableName == null) lRelation_TableName = new List<string>();
+                                if (OneHasManyDefine.Keys.Contains(Relation_ClassName))
+                                {
+                                    lRelation_TableName = OneHasManyDefine[Relation_ClassName];
+                                }
+                                else
+                                {
+                                    lRelation_TableName=new List<string>();
+                                    OneHasManyDefine[Relation_ClassName] = lRelation_TableName;
+                                }
+                                if (!lRelation_TableName.Contains(Table_Name)) lRelation_TableName.Add(Table_Name);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>

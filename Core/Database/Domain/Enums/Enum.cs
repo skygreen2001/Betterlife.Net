@@ -22,7 +22,7 @@ namespace Database.Domain.Enums
     /// <summary>
     /// 系统管理员扮演角色
     /// </summary>
-    public class EnumRoleType
+    public class EnumRoletype
     {
         /// <summary>
         /// 超级管理员

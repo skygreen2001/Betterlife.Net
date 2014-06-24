@@ -167,7 +167,7 @@ namespace {$ClassName}Manage.Services
                 this.Stores = new List<Object>();
                 foreach ({$ClassName} {$InstanceName} in list{$ClassName}s)
                 {
-                    this.Stores.Add(({$ClassName})ClearInclude({$InstanceName}));
+{$SpecialResult}
                 }
             }
             this.TotalCount = RowCount;

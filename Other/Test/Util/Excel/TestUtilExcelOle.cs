@@ -44,7 +44,7 @@ namespace Test.Util.Excel
 
                 foreach (Administrator row in query)
                 {
-                    if (row.Roletype != null) row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
+                    if (row.Roletype != null) row.RoletypeShow = EnumRoletype.RoletypeShow(Convert.ToChar(row.Roletype));
                     if (row.Seescope != null) row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
                     row.Department_Name = row.Department.Department_Name;
                 }
@@ -124,7 +124,7 @@ namespace Test.Util.Excel
                     Department dep = db.Department.Where(e => e.Department_Name.Equals(admin.Department_Name)).SingleOrDefault();
                     admin.Department_ID = dep.ID;
                     admin.Seescope = EnumSeescope.SeescopeByShow(admin.SeescopeShow);
-                    admin.Roletype = EnumRoleType.RoletypeByShow(admin.RoletypeShow);
+                    admin.Roletype = EnumRoletype.RoletypeByShow(admin.RoletypeShow);
                     //admin.CommitTime = DateTime.Now;
                     //admin.UpdateTime = DateTime.Now;
                     db.Admin.Add(admin);

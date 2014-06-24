@@ -107,10 +107,11 @@ namespace Tools.AutoCode
             string ClassName = "Admin";
             string InstanceName = "admin";
             string Table_Comment = "系统管理员";
-            string Template_Name, Content, Content_New;
-
+            string Template_Name, UnitTemplate, Content, Content_New;
             string ColumnNameComment, ColumnCommentName;
-            string Column_Name, Column_Comment;
+            string Column_Name, Column_Comment, Column_Type, Column_Length;
+            string SpecialResult="";
+            string Relation_ClassName, Relation_InstanceName, Relation_Table_Name, Relation_Column_Name;
             foreach (string Table_Name in TableList)
             {
                 //读取原文件内容到内存
@@ -127,21 +128,74 @@ namespace Tools.AutoCode
                 Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
 
                 Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
-                ColumnNameComment = ""; ColumnCommentName = "";
+                ColumnNameComment = ""; ColumnCommentName = ""; SpecialResult = "";
                 foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
                 {
                     Column_Name = entry.Key;
                     Column_Comment = entry.Value["Comment"];
+                    Column_Type = entry.Value["Type"];
+                    Column_Length = entry.Value["Length"];
                     string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (c_c.Length > 1) Column_Comment = c_c[0];
                     ColumnNameComment += "                    {\"" + Column_Name + "\",\"" + Column_Comment + "\"},\r\n";
                     ColumnCommentName += "                    {\"" + Column_Comment + "\",\"" + Column_Name + "\"},\r\n";
+                    int iLength = UtilNumber.Parse(Column_Length);
+
+                    if (Column_Type.Equals("char"))
+                    {
+                        Column_Comment = entry.Value["Comment"];
+                        c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (c_c.Length > 1)
+                        {
+                            UnitTemplate = @"
+                    {$InstanceName}.{$Column_Name}Show = Enum{$Column_Name}.{$Column_Name}Show(Convert.ToChar({$InstanceName}.{$Column_Name}));";
+                            UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                            UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                            SpecialResult += UnitTemplate;
+                        }
+                    }else if (Column_Name.Contains("_ID")){
+                        Relation_ClassName = Column_Name.Replace("_ID", "");
+                        if (TableList.Contains(Relation_ClassName))
+                        {
+                            //读取原文件内容到内存
+                            Template_Name = @"AutoCode/Model/domain/httpdata.txt";
+                            Content = UtilFile.ReadFile2String(Template_Name);
+                            Relation_InstanceName = UtilString.LcFirst(Relation_ClassName);
+                            Relation_Table_Name = Relation_ClassName;
+
+                            Dictionary<string, Dictionary<string, string>> Relation_FieldInfo = FieldInfos[Relation_Table_Name];
+                            Relation_Column_Name = Column_Name;
+                            foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
+                            {
+                                Relation_Column_Name = relation_entry.Key;
+                                if (UtilString.Contains(relation_entry.Key.ToUpper(), "NAME", "TITLE", "URL")) break;
+                            }
+                            UnitTemplate = @"
+                    {$InstanceName}.{$Relation_Column_Name} = {$InstanceName}.{$Relation_ClassName}.{$Relation_Column_Name};";
+                            UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                            UnitTemplate = UnitTemplate.Replace("{$Relation_ClassName}", Relation_ClassName);
+                            UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                            SpecialResult += UnitTemplate;
+                        }
+                    }else if (ColumnIsTextArea(Column_Name, Column_Type, iLength)){
+                        UnitTemplate = @"
+                    {$InstanceName}.{$Column_Name}Show = Regex.Replace({$InstanceName}.{$Column_Name}, ""<\\s*img\\s+[^>]*?src\\s*=\\s*(\'|\"")(.*?)\\1[^>]*?\\/?\\s*>"", ""<a href='${2}' target='_blank'>${0}</a>"");
+                    {$InstanceName}.{$Column_Name}Show = {$InstanceName}.{$Column_Name}Show.Replace(""\\\"""", """");";
+                        UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                        UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                        SpecialResult += UnitTemplate;
+                    }
                 }
                 ColumnNameComment = ColumnNameComment.Substring(0, ColumnNameComment.Length - 3);
                 ColumnCommentName = ColumnCommentName.Substring(0, ColumnCommentName.Length - 3);
 
                 Content_New = Content_New.Replace("{$ColumnNameComment}", ColumnNameComment);
                 Content_New = Content_New.Replace("{$ColumnCommentName}", ColumnCommentName);
+
+                SpecialResult += @"
+                    this.Stores.Add((" + ClassName + ")ClearInclude(" + InstanceName + "));";
+                SpecialResult = SpecialResult.Substring(1,SpecialResult.Length-1);
+                Content_New = Content_New.Replace("{$SpecialResult}", SpecialResult);
 
                 //存入目标文件内容
                 UtilFile.WriteString2File(Save_Dir + "ExtService" + ClassName + ".ashx.cs", Content_New);

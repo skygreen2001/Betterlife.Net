@@ -187,12 +187,12 @@ namespace AdminManage.Services
                 List<Admin> listAdmins = adminService.QueryPage(StartPoint, EndPoint, WhereClause).ToList<Admin>();
                 if (EndPoint > RowCount) EndPoint = RowCount;
                 this.Stores = new List<Object>();
-                foreach (Admin row in listAdmins)
+                foreach (Admin admin in listAdmins)
                 {
-                    row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
-                    row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
-                    row.Department_Name = row.Department.Department_Name;
-                    this.Stores.Add((Admin)ClearInclude(row));
+                    admin.RoletypeShow = EnumRoletype.RoletypeShow(Convert.ToChar(admin.Roletype));
+                    admin.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(admin.Seescope));
+                    admin.Department_Name = admin.Department.Department_Name;
+                    this.Stores.Add((Admin)ClearInclude(admin));
                 }
             }
             this.TotalCount = RowCount;
@@ -242,7 +242,7 @@ namespace AdminManage.Services
                     Department dep = db.Department.Where(e => e.Department_Name.Equals(admin.Department_Name)).SingleOrDefault();
                     admin.Department_ID = dep.ID;
                     admin.Seescope = EnumSeescope.SeescopeByShow(admin.SeescopeShow);
-                    admin.Roletype = EnumRoleType.RoletypeByShow(admin.RoletypeShow);
+                    admin.Roletype = EnumRoletype.RoletypeByShow(admin.RoletypeShow);
                     db.Admin.Add(admin);
                 }
                 db.SaveChanges();
@@ -269,7 +269,7 @@ namespace AdminManage.Services
 
                 foreach (Admin row in query)
                 {
-                    if (row.Roletype != null) row.RoletypeShow = EnumRoleType.RoletypeShow(Convert.ToChar(row.Roletype));
+                    if (row.Roletype != null) row.RoletypeShow = EnumRoletype.RoletypeShow(Convert.ToChar(row.Roletype));
                     if (row.Seescope != null) row.SeescopeShow = EnumSeescope.SeescopeShow(Convert.ToChar(row.Seescope));
                     row.Department_Name = row.Department.Department_Name;
                 }

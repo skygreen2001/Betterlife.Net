@@ -56,6 +56,9 @@ namespace Tools.AutoCode
 
             string UnitColumnDefine;
             string Column_Name, Column_Type,Column_Comment;
+            string Relation_ClassName, Relation_InstanceName, Relation_Table_Name;
+            string Relation_Unit_Template = "", Relation_Table_Comment = "", Relation_UnitColumnDefine = "";//相关列数据对象定义
+            string OneHasMany_Table_Comment="",OneHasMany_Unit_Template="", OneHasMany_UnitColumnDefine = "";
             foreach (string Table_Name in TableList)
             {
                 //读取原文件内容到内存
@@ -77,7 +80,8 @@ namespace Tools.AutoCode
                 Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
 
                 Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
-                UnitColumnDefine = "";;
+                UnitColumnDefine = "";
+                Relation_UnitColumnDefine = ""; OneHasMany_UnitColumnDefine = "";
                 foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
                 {
                     Column_Name = entry.Key;
@@ -97,7 +101,7 @@ namespace Tools.AutoCode
                     {
                         Column_Comment = "        /// " + Column_Comment;
                     }
-                    Unit_Template = 
+                    Unit_Template =
 @"        /// <summary>
 {$Column_Comment}
         /// </summary>
@@ -107,9 +111,78 @@ namespace Tools.AutoCode
                     Unit_Template = Unit_Template.Replace("{$Column_Comment}", Column_Comment);
                     Unit_Template = Unit_Template.Replace("{$Column_Type}", Column_Type);
                     Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
-
                     UnitColumnDefine += Unit_Template;
+                    if (Column_Name.Contains("_ID"))
+                    {
+                        Relation_ClassName = Column_Name.Replace("_ID", "");
+                        if (TableList.Contains(Relation_ClassName))
+                        {
+                            //读取原文件内容到内存
+                            Template_Name = @"AutoCode/Model/domain/httpdata.txt";
+                            Content = UtilFile.ReadFile2String(Template_Name);
+                            Relation_InstanceName = UtilString.LcFirst(Relation_ClassName);
+                            Relation_Table_Name = Relation_ClassName;
+                            Relation_Table_Comment = TableInfoList[Relation_Table_Name]["Comment"];
+                            t_c = Relation_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (c_c.Length > 1)
+                            {
+                                Relation_Table_Comment = "";
+                                foreach (string Comment_Single_Line in c_c)
+                                {
+                                    Relation_Table_Comment += "        /// " + Comment_Single_Line + "\r\n";
+                                }
+                                Relation_Table_Comment = Relation_Table_Comment.Substring(0, Column_Comment.Length - 2);
+                            }
+                            else
+                            {
+                                Relation_Table_Comment = "        /// " + Relation_Table_Comment;
+                            }
+                            //多对一关系需定义
+                            Relation_Unit_Template = @"
+        /// <summary>
+{$Relation_Table_Comment}
+        /// </summary>
+        public virtual {$Relation_ClassName} {$Relation_ClassName} { get; set; }";
+                            Relation_Unit_Template = Relation_Unit_Template.Replace("{$Relation_ClassName}", Relation_ClassName);
+                            Relation_Unit_Template = Relation_Unit_Template.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
+                            Relation_UnitColumnDefine += Relation_Unit_Template;
+                        }
+                    }
                 }
+                if (OneHasManyDefine.ContainsKey(Table_Name))
+                {
+                    List<string> lOneHasMany = OneHasManyDefine[Table_Name];
+                    foreach (string OneHasMany_TableName in lOneHasMany)
+                    {
+                        OneHasMany_Table_Comment = TableInfoList[OneHasMany_TableName]["Comment"];
+                        t_c = OneHasMany_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (t_c.Length > 1)
+                        {
+                            OneHasMany_Table_Comment = "";
+                            foreach (string Comment_Single_Line in t_c)
+                            {
+                                OneHasMany_Table_Comment += "        /// " + Comment_Single_Line + "\r\n";
+                            }
+                            OneHasMany_Table_Comment = OneHasMany_Table_Comment.Substring(0, OneHasMany_Table_Comment.Length - 2);
+                        }
+                        else
+                        {
+                            OneHasMany_Table_Comment = "        /// " + OneHasMany_Table_Comment;
+                        }
+                        OneHasMany_Unit_Template = @"
+        /// <summary>
+{$OneHasMany_Table_Comment}
+        /// </summary>
+        public virtual ICollection<{$OneHasMany_TableName}> {$OneHasMany_TableName} { get; set; }
+                        ";
+                        OneHasMany_Unit_Template = OneHasMany_Unit_Template.Replace("{$OneHasMany_Table_Comment}", OneHasMany_Table_Comment);
+                        OneHasMany_Unit_Template = OneHasMany_Unit_Template.Replace("{$OneHasMany_TableName}", OneHasMany_TableName);
+                        OneHasMany_UnitColumnDefine += OneHasMany_Unit_Template;
+                    }
+                }
+                UnitColumnDefine += Relation_UnitColumnDefine;
+                UnitColumnDefine += OneHasMany_UnitColumnDefine;
+
                 Content_New = Content_New.Replace("{$ColumnDefines}", UnitColumnDefine);
 
                 //存入目标文件内容
@@ -307,8 +380,8 @@ namespace Tools.AutoCode
         /// </summary>
         private void CreateHttpData()
         {
-            string ClassName = "Admin";
-            string InstanceName = "admin";
+            string Relation_ClassName = "Admin";
+            string Relation_InstanceName = "admin";
             string Table_Comment = "系统管理员";
             string Relation_Table_Name, Relation_Column_Name="";
             string Template_Name, Content, Content_New;
@@ -323,19 +396,19 @@ namespace Tools.AutoCode
                     Column_Comment = entry.Value["Comment"];
                     if (Column_Name.Contains("_ID"))
                     {
-                        ClassName = Column_Name.Replace("_ID", "");
-                        if (TableList.Contains(ClassName))
+                        Relation_ClassName = Column_Name.Replace("_ID", "");
+                        if (TableList.Contains(Relation_ClassName))
                         {
                             //读取原文件内容到内存
                             Template_Name = @"AutoCode/Model/domain/httpdata.txt";
                             Content = UtilFile.ReadFile2String(Template_Name);
 
-                            Table_Comment = TableInfoList[ClassName]["Comment"];
+                            Table_Comment = TableInfoList[Relation_ClassName]["Comment"];
                             string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                             if (t_c.Length > 1) Table_Comment = t_c[0];
-                            InstanceName = UtilString.LcFirst(ClassName);
+                            Relation_InstanceName = UtilString.LcFirst(Relation_ClassName);
 
-                            Relation_Table_Name=ClassName;
+                            Relation_Table_Name=Relation_ClassName;
 
                             Dictionary<string, Dictionary<string, string>> Relation_FieldInfo=FieldInfos[Relation_Table_Name];
                             foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
@@ -344,23 +417,23 @@ namespace Tools.AutoCode
                                 if (UtilString.Contains(relation_entry.Key.ToUpper(),"NAME","TITLE","URL"))break;
                             }
 
-                            Content_New = Content.Replace("{$ClassName}", ClassName);
+                            Content_New = Content.Replace("{$ClassName}", Relation_ClassName);
                             Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
-                            Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
+                            Content_New = Content_New.Replace("{$InstanceName}", Relation_InstanceName);
                             Content_New = Content_New.Replace("{$Column_Name}", Column_Name);
                             Content_New = Content_New.Replace("{$Relation_Column_Name}", Relation_Column_Name);
 
                             //存入目标文件内容
-                            UtilFile.WriteString2File(Save_Dir + ClassName + ".ashx.cs", Content_New);
+                            UtilFile.WriteString2File(Save_Dir + Relation_ClassName + ".ashx.cs", Content_New);
 
 
                             //读取原文件内容到内存
                             Template_Name = @"AutoCode/Model/domain/httpdatadefine.txt";
                             Content = UtilFile.ReadFile2String(Template_Name);
-                            Content_New = Content.Replace("{$ClassName}", ClassName);
+                            Content_New = Content.Replace("{$ClassName}", Relation_ClassName);
 
                             //存入目标文件内容
-                            UtilFile.WriteString2File(Save_Dir + ClassName + ".ashx", Content_New);
+                            UtilFile.WriteString2File(Save_Dir + Relation_ClassName + ".ashx", Content_New);
                         }
                     }
 

@@ -136,14 +136,12 @@ namespace AdminManage.Services
                 OrderByDescending(p => p.ID).Skip(start).Take(PageCount);
 
             List<Comment> listComments = comments.ToList<Comment>();
-            int i = 1;
             foreach (Comment comment in listComments)
             {
                 comment.Username = comment.User.Username;
                 comment.Blog_Name = comment.Blog.Blog_Name;
                 comment.Content = comment.Comment1;
-                this.Stores.Add(comment);
-                i++;
+                this.Stores.Add((Comment)ClearInclude(comment));
             }
             this.TotalCount = rowCount;
             this.Success = true;
