@@ -49,11 +49,13 @@ namespace Tools.AutoCode
             foreach (string Table_Name in TableList)
             {
                 ClassName = Table_Name;
-                Table_Comment = TableInfoList[Table_Name]["Comment"];
-                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (t_c.Length > 1) Table_Comment = t_c[0];
+                if (TableInfoList.ContainsKey(Table_Name))
+                {
+                    Table_Comment = TableInfoList[Table_Name]["Comment"];
+                    string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t_c.Length > 1) Table_Comment = t_c[0];
 
-                Unit_Template = @"
+                    Unit_Template = @"
         // 控制器:{$Table_Comment}
         // GET: /Home/{$ClassName}
         public ActionResult {$ClassName}()
@@ -61,28 +63,30 @@ namespace Tools.AutoCode
             return View();
         }
                 ";
-                Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
-                Textarea_Text = "";
-                foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
-                {
-                    Column_Name = entry.Key;
-                    Column_Type = entry.Value["Type"];
-                    Column_Length = entry.Value["Length"];
-                    int iLength = UtilNumber.Parse(Column_Length);
-                    if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                    Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
+                    Textarea_Text = "";
+                    foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
                     {
-                        Textarea_Text += "\"" + Column_Name + "\",";
+                        Column_Name = entry.Key;
+                        Column_Type = entry.Value["Type"];
+                        Column_Length = entry.Value["Length"];
+                        int iLength = UtilNumber.Parse(Column_Length);
+                        if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                        {
+                            Textarea_Text += "\"" + Column_Name + "\",";
+                        }
                     }
-                }
-                if (!string.IsNullOrEmpty(Textarea_Text)) {
-                    Textarea_Text = Textarea_Text.Substring(0,Textarea_Text.Length-1);
-                    Textarea_Text = @"
+                    if (!string.IsNullOrEmpty(Textarea_Text))
+                    {
+                        Textarea_Text = Textarea_Text.Substring(0, Textarea_Text.Length - 1);
+                        Textarea_Text = @"
             this.ViewBag.OnlineEditorHtml = this.Load_Onlineditor(" + Textarea_Text + ");";
+                    }
+                    Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
+                    Unit_Template = Unit_Template.Replace("{$Textarea_Text}", Textarea_Text);
+
+                    MainContent += Unit_Template.Replace("{$Table_Comment}", Table_Comment);
                 }
-                Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
-                Unit_Template = Unit_Template.Replace("{$Textarea_Text}", Textarea_Text);
-                
-                MainContent += Unit_Template.Replace("{$Table_Comment}", Table_Comment);
             }
             Content = Content.Replace("{$MainContent}", MainContent);
             //存入目标文件内容
@@ -108,11 +112,13 @@ namespace Tools.AutoCode
             foreach (string Table_Name in TableList)
             {
                 ClassName = Table_Name;
-                Table_Comment = TableInfoList[Table_Name]["Comment"];
-                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (t_c.Length > 1) Table_Comment = t_c[0];
-                InstanceName = UtilString.LcFirst(ClassName);
-                Unit_Template = @"
+                if (TableInfoList.ContainsKey(Table_Name))
+                {
+                    Table_Comment = TableInfoList[Table_Name]["Comment"];
+                    string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t_c.Length > 1) Table_Comment = t_c[0];
+                    InstanceName = UtilString.LcFirst(ClassName);
+                    Unit_Template = @"
         /// <summary>
         /// 上传Excel文件:{$Table_Comment}
         /// </summary>
@@ -135,13 +141,14 @@ namespace Tools.AutoCode
             return null;
         }}
                 ";
-                Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
-                Unit_Template = Unit_Template.Replace("{$InstanceName}", InstanceName);
-                MainContent += Unit_Template.Replace("{$Table_Comment}", Table_Comment);
+                    Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
+                    Unit_Template = Unit_Template.Replace("{$InstanceName}", InstanceName);
+                    MainContent += Unit_Template.Replace("{$Table_Comment}", Table_Comment);
+                }
+                Content = Content.Replace("{$MainContent}", MainContent);
+                //存入目标文件内容
+                UtilFile.WriteString2File(Save_Dir + "UploadController.cs", Content);
             }
-            Content = Content.Replace("{$MainContent}", MainContent);
-            //存入目标文件内容
-            UtilFile.WriteString2File(Save_Dir + "UploadController.cs", Content);
         }
     }
 }

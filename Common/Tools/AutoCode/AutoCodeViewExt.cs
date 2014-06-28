@@ -48,31 +48,34 @@ namespace Tools.AutoCode
                 Template_Name = @"AutoCode/Model/view/extjs.txt";
                 Content = UtilFile.ReadFile2String(Template_Name);
                 ClassName = Table_Name;
-                Table_Comment = TableInfoList[Table_Name]["Comment"];
-                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (t_c.Length > 1) Table_Comment = t_c[0];
-                InstanceName = UtilString.LcFirst(ClassName);
+                if (TableInfoList.ContainsKey(Table_Name))
+                {
+                    Table_Comment = TableInfoList[Table_Name]["Comment"];
+                    string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t_c.Length > 1) Table_Comment = t_c[0];
+                    InstanceName = UtilString.LcFirst(ClassName);
 
-                Content_New = Content.Replace("$classname", ClassName);
-                Content_New = Content_New.Replace("{$table_comment}", Table_Comment);
-                Content_New = Content_New.Replace("{$instancename}", InstanceName);
-                Content_New = Content_New.Replace("$appName", JsNamespace);
-                Content_New = Content_New.Replace("$ns_alias", JsNamespace_Alias);
-                //Ext "store" 中包含的fields
-                Dictionary<string,string> StoreInfo=Model_Fields(Table_Name, InstanceName);
-                Content_New = Content_New.Replace("$fields", StoreInfo["fields"]);
-                //Ext "$relationStore="中关系库Store的定义
-                Content_New = Content_New.Replace("$relationStore", StoreInfo["relationStore"]);
-                
-                //Ext "EditWindow"里items的fieldLabels
-                Content_New = Content_New.Replace("$fieldLabels", Model_FieldLables(ClassName, JsNamespace_Alias, ""));
-                //Ext "Tabs" 中"onAddItems"包含的viewdoblock
-                Content_New = Content_New.Replace("$viewdoblock", Model_Viewblock(ClassName));
-                //Ext "Grid" 中包含的columns
-                Content_New = Content_New.Replace("$columns", Model_Columns(ClassName,""));
+                    Content_New = Content.Replace("$classname", ClassName);
+                    Content_New = Content_New.Replace("{$table_comment}", Table_Comment);
+                    Content_New = Content_New.Replace("{$instancename}", InstanceName);
+                    Content_New = Content_New.Replace("$appName", JsNamespace);
+                    Content_New = Content_New.Replace("$ns_alias", JsNamespace_Alias);
+                    //Ext "store" 中包含的fields
+                    Dictionary<string, string> StoreInfo = Model_Fields(Table_Name, InstanceName);
+                    Content_New = Content_New.Replace("$fields", StoreInfo["fields"]);
+                    //Ext "$relationStore="中关系库Store的定义
+                    Content_New = Content_New.Replace("$relationStore", StoreInfo["relationStore"]);
 
-                //存入目标文件内容
-                UtilFile.WriteString2File(Save_Dir + InstanceName + ".js", Content_New);
+                    //Ext "EditWindow"里items的fieldLabels
+                    Content_New = Content_New.Replace("$fieldLabels", Model_FieldLables(ClassName, JsNamespace_Alias, ""));
+                    //Ext "Tabs" 中"onAddItems"包含的viewdoblock
+                    Content_New = Content_New.Replace("$viewdoblock", Model_Viewblock(ClassName));
+                    //Ext "Grid" 中包含的columns
+                    Content_New = Content_New.Replace("$columns", Model_Columns(ClassName, ""));
+
+                    //存入目标文件内容
+                    UtilFile.WriteString2File(Save_Dir + InstanceName + ".js", Content_New);
+                }
             }
         }
 
@@ -117,18 +120,20 @@ namespace Tools.AutoCode
                     if (TableList.Contains(Relation_Table_Name))
                     {
                         Relation_Class_Name = Relation_Table_Name;
-                        Relation_Table_Comment = TableInfoList[Relation_Table_Name]["Comment"];
-                        string[] t_c = Relation_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (t_c.Length > 1) Relation_Table_Comment = t_c[0];
-                        Relation_InstanceName = UtilString.LcFirst(Relation_Class_Name);
-                        Relation_Column_Name = "";
-                        Dictionary<string, Dictionary<string, string>> Relation_FieldInfo = FieldInfos[Relation_Table_Name];
-                        foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
+                        if (TableInfoList.ContainsKey(Relation_Table_Name))
                         {
-                            Relation_Column_Name = relation_entry.Key;
-                            if (UtilString.Contains(relation_entry.Key.ToUpper(), "NAME", "TITLE", "URL")) break;
-                        }
-                        RelationStoreTemplate = @"
+                            Relation_Table_Comment = TableInfoList[Relation_Table_Name]["Comment"];
+                            string[] t_c = Relation_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (t_c.Length > 1) Relation_Table_Comment = t_c[0];
+                            Relation_InstanceName = UtilString.LcFirst(Relation_Class_Name);
+                            Relation_Column_Name = "";
+                            Dictionary<string, Dictionary<string, string>> Relation_FieldInfo = FieldInfos[Relation_Table_Name];
+                            foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
+                            {
+                                Relation_Column_Name = relation_entry.Key;
+                                if (UtilString.Contains(relation_entry.Key.ToUpper(), "NAME", "TITLE", "URL")) break;
+                            }
+                            RelationStoreTemplate = @"
     /**
      * {$Column_Comment}所属{$Relation_Table_Comment}
      */
@@ -147,16 +152,17 @@ namespace Tools.AutoCode
         ])
     })
                         ";
-                        RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
-                        RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
-                        RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_Class_Name}", Relation_Class_Name);
-                        RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_InstanceName}", Relation_InstanceName);
-                        RelationStoreTemplate = RelationStoreTemplate.Replace("{$Column_Name}", Column_Name);
-                        RelationStoreTemplate = RelationStoreTemplate.Replace("{$Column_Comment}", Column_Comment);
-                        RelationStore += RelationStoreTemplate;
-                        Relation_Unit_Template = @"
+                            RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                            RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
+                            RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_Class_Name}", Relation_Class_Name);
+                            RelationStoreTemplate = RelationStoreTemplate.Replace("{$Relation_InstanceName}", Relation_InstanceName);
+                            RelationStoreTemplate = RelationStoreTemplate.Replace("{$Column_Name}", Column_Name);
+                            RelationStoreTemplate = RelationStoreTemplate.Replace("{$Column_Comment}", Column_Comment);
+                            RelationStore += RelationStoreTemplate;
+                            Relation_Unit_Template = @"
                 { name: '{$Relation_Column_Name}', type: 'string' },";
-                        Relation_Unit_Template = Relation_Unit_Template.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                            Relation_Unit_Template = Relation_Unit_Template.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                        }
                     }
                 }
                 Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
@@ -237,18 +243,20 @@ namespace Tools.AutoCode
                     if (TableList.Contains(Relation_Table_Name))
                     {
                         Relation_Class_Name = Relation_Table_Name;
-                        Relation_Table_Comment = TableInfoList[Relation_Table_Name]["Comment"];
-                        string[] t_c = Relation_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (t_c.Length > 1) Relation_Table_Comment = t_c[0];
-                        Relation_InstanceName = UtilString.LcFirst(Relation_Class_Name);
-                        Relation_Column_Name = "";
-                        Dictionary<string, Dictionary<string, string>> Relation_FieldInfo = FieldInfos[Relation_Table_Name];
-                        foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
+                        if (TableInfoList.ContainsKey(Relation_Table_Name))
                         {
-                            Relation_Column_Name = relation_entry.Key;
-                            if (UtilString.Contains(relation_entry.Key.ToUpper(), "NAME", "TITLE", "URL")) break;
-                        }
-                        Unit_Template = @"
+                            Relation_Table_Comment = TableInfoList[Relation_Table_Name]["Comment"];
+                            string[] t_c = Relation_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (t_c.Length > 1) Relation_Table_Comment = t_c[0];
+                            Relation_InstanceName = UtilString.LcFirst(Relation_Class_Name);
+                            Relation_Column_Name = "";
+                            Dictionary<string, Dictionary<string, string>> Relation_FieldInfo = FieldInfos[Relation_Table_Name];
+                            foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
+                            {
+                                Relation_Column_Name = relation_entry.Key;
+                                if (UtilString.Contains(relation_entry.Key.ToUpper(), "NAME", "TITLE", "URL")) break;
+                            }
+                            Unit_Template = @"
                             {
                                 fieldLabel: '{$Relation_Table_Comment}', xtype: 'combo', name: '{$Relation_Column_Name}', ref: '../{$Relation_Column_Name}',
                                 store: $ns_alias.$classname.Store.{$Relation_InstanceName}StoreForCombo, emptyText: '请选择{$Relation_Table_Comment}', itemSelector: 'div.search-item',
@@ -272,9 +280,10 @@ namespace Tools.AutoCode
                                     }
                                 }
                             },";
-                        Unit_Template = Unit_Template.Replace("{$Relation_Column_Name}", Relation_Column_Name);
-                        Unit_Template = Unit_Template.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
-                        Unit_Template = Unit_Template.Replace("{$Relation_InstanceName}", Relation_InstanceName);
+                            Unit_Template = Unit_Template.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                            Unit_Template = Unit_Template.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
+                            Unit_Template = Unit_Template.Replace("{$Relation_InstanceName}", Relation_InstanceName);
+                        }
                     }
                 }
                 else if (Column_Type.Equals("char"))
@@ -379,7 +388,7 @@ namespace Tools.AutoCode
 
                 }
                 c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (c_c.Length > 1) Column_Comment = c_c[0];
+                if (c_c.Length >= 1) Column_Comment = c_c[0];
                 UnitTemplate = @"
                              '    <tr class=""entry""><td class=""head"">{$Column_Comment}</td><td class=""content"">{{$Column_Name}}</td></tr>',";
                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
@@ -457,7 +466,7 @@ namespace Tools.AutoCode
                     }
                 }
                 c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (c_c.Length > 1) Column_Comment = c_c[0];
+                if (c_c.Length >= 1) Column_Comment = c_c[0];
                 UnitTemplate = @"
                         { header: '{$Column_Comment}', dataIndex: '{$Column_Name}' },";
                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);

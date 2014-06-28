@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="ExtService{$ClassName}.ashx.cs" Class="AdminManage.Services.ExtService{$ClassName}" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="ExtService{$ClassName}.ashx.cs" Class="{$Service_NameSpace}.Services.ExtService{$ClassName}" %>

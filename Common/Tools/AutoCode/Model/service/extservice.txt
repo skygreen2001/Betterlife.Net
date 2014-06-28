@@ -1,5 +1,7 @@
 ﻿using Business;
+using Business.Core.Service;
 using Database;
+using Database.Domain.Enums;
 using Ext.Direct;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,7 +13,7 @@ using System.Web;
 using Util.Common;
 using Util.DataType.Datatable;
 
-namespace {$ClassName}Manage.Services
+namespace {$Service_NameSpace}.Services
 {
     /// <summary>
     /// 服务类:{$Table_Comment}
@@ -51,8 +53,8 @@ namespace {$ClassName}Manage.Services
                 base.CopyProperties({$InstanceName}, {$InstanceName}Form);
                 try
                 {
-                    {$InstanceName}.CommitTime = DateTime.Now;
-                    {$InstanceName}.UpdateTime = DateTime.Now;
+                    {$InstanceName}.{$CommitTime_Str} = DateTime.Now;
+                    {$InstanceName}.{$UpdateTime_Str} = DateTime.Now;
                     db.{$ClassName}.Add({$InstanceName}); 
                     db.SaveChanges();
                     msg = "保存成功!";
@@ -90,7 +92,7 @@ namespace {$ClassName}Manage.Services
                     int id = UtilNumber.Parse({$InstanceName}_id);
                     {$ClassName} {$InstanceName} = db.{$ClassName}.Single(e => e.ID.Equals(id));
                     base.CopyProperties({$InstanceName}, {$InstanceName}Form);
-                    {$InstanceName}.UpdateTime = DateTime.Now;
+                    {$InstanceName}.{$UpdateTime_Str} = DateTime.Now;
                     db.SaveChanges();
                     msg = "保存成功!";
                     result = true;
@@ -227,7 +229,7 @@ namespace {$ClassName}Manage.Services
 
                 DataTable dt = UtilDataTable.ToDataTable(query); 
                 dt.TableName = "{$ClassName}";
-                UtilDataTable.DeleteColumns(dt, "ID", "CommitTime", "UpdateTime");
+                UtilDataTable.DeleteColumns(dt, "ID", "{$CommitTime_Str}", "{$UpdateTime_Str}");
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
 {$ColumnNameComment}

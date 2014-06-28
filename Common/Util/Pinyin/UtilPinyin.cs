@@ -16,10 +16,15 @@ namespace Util.Pinyin
         /// 中文转拼音
         /// </summary>
         /// <param name="content">原中文内容</param>
+        /// <param name="IsSpace">是否空格;默认没有空格</param>
+        /// <param name="IsUpper">是否大写，默认大写</param>
         /// <returns></returns>
-        public static string Translate(string content)
+        public static string Translate(string content, bool IsSpace = false, bool IsUpper = true)
         {
-            return PinginObject.GetPinyin(content);
+            string Result = PinginObject.GetPinyin(content);
+            if (!IsSpace) Result = Result.Replace(" ", "");
+            if (IsUpper) Result = Result.ToUpper();
+            return Result;
         }
 
         /// <summary>

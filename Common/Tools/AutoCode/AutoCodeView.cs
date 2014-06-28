@@ -49,32 +49,35 @@ namespace Tools.AutoCode
                 Template_Name = @"AutoCode/Model/view/view.txt";
                 Content = UtilFile.ReadFile2String(Template_Name);
                 ClassName = Table_Name;
-                Table_Comment = TableInfoList[Table_Name]["Comment"];
-                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (t_c.Length > 1) Table_Comment = t_c[0];
-                InstanceName = UtilString.LcFirst(ClassName);
-                
-                Content_New = Content.Replace("{$ClassName}", ClassName);
-                Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
-                Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
-
-                Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
-                foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
+                if (TableInfoList.ContainsKey(Table_Name))
                 {
-                    Column_Name = entry.Key;
-                    Column_Type = entry.Value["Type"];
-                    Column_Length = entry.Value["Length"];
-                    int iLength = UtilNumber.Parse(Column_Length);
-                    if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
-                    {
-                        OnlineEditorHtml = "	@Html.Raw(ViewBag.OnlineEditorHtml)";
-                    }
-                }
-                
-                Content_New = Content_New.Replace("{$OnlineEditorHtml}", OnlineEditorHtml);
+                    Table_Comment = TableInfoList[Table_Name]["Comment"];
+                    string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t_c.Length > 1) Table_Comment = t_c[0];
+                    InstanceName = UtilString.LcFirst(ClassName);
 
-                //存入目标文件内容
-                UtilFile.WriteString2File(Save_Dir + ClassName + ".cshtml", Content_New);
+                    Content_New = Content.Replace("{$ClassName}", ClassName);
+                    Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
+                    Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
+
+                    Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
+                    foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
+                    {
+                        Column_Name = entry.Key;
+                        Column_Type = entry.Value["Type"];
+                        Column_Length = entry.Value["Length"];
+                        int iLength = UtilNumber.Parse(Column_Length);
+                        if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                        {
+                            OnlineEditorHtml = "	@Html.Raw(ViewBag.OnlineEditorHtml)";
+                        }
+                    }
+
+                    Content_New = Content_New.Replace("{$OnlineEditorHtml}", OnlineEditorHtml);
+
+                    //存入目标文件内容
+                    UtilFile.WriteString2File(Save_Dir + ClassName + ".cshtml", Content_New);
+                }
             }
         }
 
@@ -98,16 +101,19 @@ namespace Tools.AutoCode
             foreach (string Table_Name in TableList)
             {
                 ClassName = Table_Name;
-                Table_Comment = TableInfoList[Table_Name]["Comment"];
-                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (t_c.Length > 1) Table_Comment = t_c[0];
-                InstanceName = UtilString.LcFirst(ClassName);
-                Unit_Template = @"
+                if (TableInfoList.ContainsKey(Table_Name))
+                {
+                    Table_Comment = TableInfoList[Table_Name]["Comment"];
+                    string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t_c.Length > 1) Table_Comment = t_c[0];
+                    InstanceName = UtilString.LcFirst(ClassName);
+                    Unit_Template = @"
         <p>@Html.ActionLink(""{$Table_Comment}"", ""{$ClassName}"", ""Home"",null,new { id = ""{$InstanceName}"",title = ""{$Table_Comment}"",@class=""menuIcon""})</p>";
-                Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
-                Unit_Template = Unit_Template.Replace("{$Table_Comment}", Table_Comment);
-                Unit_Template = Unit_Template.Replace("{$InstanceName}", InstanceName);
-                MainContent += Unit_Template;
+                    Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
+                    Unit_Template = Unit_Template.Replace("{$Table_Comment}", Table_Comment);
+                    Unit_Template = Unit_Template.Replace("{$InstanceName}", InstanceName);
+                    MainContent += Unit_Template;
+                }
             }
             MainContent = MainContent.Substring(2);
             Content = Content.Replace("{$MainContent}", MainContent);

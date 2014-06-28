@@ -107,7 +107,15 @@ namespace AdminManage.Services
         /// </summary>
         protected object ClearInclude(object entityObject)
         {
-            object destObject = Activator.CreateInstance(entityObject.GetType().BaseType);
+            object destObject;
+            if (entityObject.GetType().BaseType.FullName.Equals("System.Object"))
+            {
+                destObject = Activator.CreateInstance(entityObject.GetType());
+            }
+            else
+            {
+                destObject = Activator.CreateInstance(entityObject.GetType().BaseType);
+            }
             List<string> keysList = UtilReflection.GetPropertNames(entityObject);
             PropertyInfo p, p_n;
             foreach (string key in keysList)

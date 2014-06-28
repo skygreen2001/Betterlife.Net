@@ -326,7 +326,7 @@ namespace Util.Reflection
         public static bool IsType(Type type, string typeName)
         {
             if (type == null) return false;
-            if (type.ToString() == typeName)
+            if (type.ToString().Contains(typeName))
                 return true;
             if (type.ToString() == "System.Object")
                 return false;
