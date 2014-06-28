@@ -117,7 +117,7 @@ namespace Tools.AutoCode
             string SpecialResult = "";
             string Relation_ClassName, Relation_InstanceName, Relation_Table_Name, Relation_Column_Name;
 
-            string CommitTime_Str = "Committime", UpdateTime_Str = "Updatetime";
+            string CommitTime_Str = "CommitTime", UpdateTime_Str = "UpdateTime";
             foreach (string Table_Name in TableList)
             {
                 //读取原文件内容到内存

@@ -325,6 +325,25 @@ namespace Tools.AutoCode
                             UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
                             UnitColumnDefine += UnitTemplate;
                         }
+
+                    }
+
+                    if (OneHasManyDefine.ContainsKey(Table_Name))
+                    {
+                        UnitTemplate = @"
+        /// <summary>
+        /// 辅助主键
+        ///【用于ExtJs Combo主键下拉框显示ID以和主表ID名称区别开来】
+        /// </summary>
+        public String {$Table_Name}_ID
+        {
+            get;
+            set;
+        }";
+                        UnitTemplate = UnitTemplate.Replace("{$Table_Name}", Table_Name);
+                        UnitColumnDefine += UnitTemplate;
+
+
                     }
                     if (!string.IsNullOrEmpty(UnitColumnDefine))
                     {
