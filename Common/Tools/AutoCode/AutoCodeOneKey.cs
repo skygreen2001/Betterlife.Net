@@ -9,7 +9,7 @@ namespace Tools.AutoCode
     /// <summary>
     /// 一键生成所有主程序
     /// </summary>
-    class AutoCodeOneKey:AutoCode
+    class AutoCodeOneKey:AutoCodeBase
     {
         /// <summary>
         /// 生成实体类

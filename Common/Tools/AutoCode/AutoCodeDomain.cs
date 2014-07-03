@@ -8,7 +8,7 @@ namespace Tools.AutoCode
     /// <summary>
     /// 工具类:自动生成代码-实体类
     /// </summary>
-    public class AutoCodeDomain:AutoCode
+    public class AutoCodeDomain:AutoCodeBase
     {
         /// <summary>
         /// 运行主程序
@@ -113,7 +113,7 @@ namespace Tools.AutoCode
                             Column_Comment = "        /// " + Column_Comment;
                         }
                         Unit_Template =
-    @"        /// <summary>
+@"        /// <summary>
 {$Column_Comment}
         /// </summary>
         public {$Column_Type} {$Column_Name} { get; set; }
@@ -239,7 +239,7 @@ namespace Tools.AutoCode
                         
                         int iLength = UtilNumber.Parse(Column_Length);
 
-                        if (Column_Type.Equals("char"))
+                        if (Column_Type.Equals("tinyint"))
                         {
                             Column_Comment = entry.Value["Comment"];
                             c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -388,6 +388,8 @@ namespace Tools.AutoCode
                 case "nvarchar":
                 case "char":
                     return "string";
+                case "tinyint":
+                    return Column_Type;
                 case "int":
                     if (Column_Name.Contains("ID"))
                     {
@@ -447,8 +449,6 @@ namespace Tools.AutoCode
             Content = Content.Replace("{$MainContent}", MainContent);
             //存入目标文件内容
             UtilFile.WriteString2File(Save_Dir + EntitiesName+".Context.cs", Content);
-
-
         }
 
         /// <summary>
@@ -466,6 +466,7 @@ namespace Tools.AutoCode
             string EnumDefineBlock, EnumD2VBlock, EnumV2DBlock;
             string Column_Name, Column_Type, Column_Comment, MainContent;
             List<Dictionary<string, string>> Enum_ColumnDefine;
+            List<string> enumL=new List<string>();//如果重名只放一个
             MainContent = "";
             foreach (string Table_Name in TableList)
             {
@@ -485,31 +486,33 @@ namespace Tools.AutoCode
                         Column_Comment = entry.Value["Comment"];
                         Column_Type = entry.Value["Type"];
 
-                        if (Column_Type.Equals("char"))
+                        if (Column_Type.Equals("tinyint"))
                         {
                             string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                             if (c_c.Length > 1)
                             {
-                                Enum_ColumnDefine = EnumDefines(Column_Comment);
-                                if ((Enum_ColumnDefine != null) && (Enum_ColumnDefine.Count > 0))
+                                if (!enumL.Contains(Column_Name))
                                 {
-                                    EnumDefineBlock = ""; EnumD2VBlock = ""; EnumV2DBlock = "";
-                                    foreach (Dictionary<string, string> ColumnDefine in Enum_ColumnDefine)
+                                    enumL.Add(Column_Name);
+                                    Enum_ColumnDefine = EnumDefines(Column_Comment);
+                                    if ((Enum_ColumnDefine != null) && (Enum_ColumnDefine.Count > 0))
                                     {
-                                        ColumnDefine["Name"] = UtilString.UcFirst(ColumnDefine["Name"]);
-                                        EnumDefineBlock += "        /// <summary>\r\n" +
-                                                          "        /// " + ColumnDefine["Comment"] + "\r\n" +
-                                                          "        /// </summary>\r\n" +
-                                                          "        public const char " + ColumnDefine["Name"] + " = '" + ColumnDefine["Value"] + "';\r\n";
-                                        EnumD2VBlock += "                case " + ColumnDefine["Name"] + ":\r\n" +
-                                                        "                    return \"" + ColumnDefine["Comment"] + "\";\r\n";
-                                        EnumV2DBlock += "                case \"" + ColumnDefine["Comment"] + "\":\r\n" +
-                                                        "                    result= " + ColumnDefine["Name"] + ";\r\n" +
-                                                        "                    break;\r\n";
+                                        EnumDefineBlock = ""; EnumD2VBlock = ""; EnumV2DBlock = "";
+                                        foreach (Dictionary<string, string> ColumnDefine in Enum_ColumnDefine)
+                                        {
+                                            ColumnDefine["Name"] = UtilString.UcFirst(ColumnDefine["Name"]);
+                                            EnumDefineBlock += "        /// <summary>\r\n" +
+                                                              "        /// " + ColumnDefine["Comment"] + "\r\n" +
+                                                              "        /// </summary>\r\n" +
+                                                              "        public const byte " + ColumnDefine["Name"] + " = " + ColumnDefine["Value"] + ";\r\n";
+                                            EnumD2VBlock += "                case " + ColumnDefine["Name"] + ":\r\n" +
+                                                            "                    return \"" + ColumnDefine["Comment"] + "\";\r\n";
+                                            EnumV2DBlock += "                case \"" + ColumnDefine["Comment"] + "\":\r\n" +
+                                                            "                    result= " + ColumnDefine["Name"] + ";\r\n" +
+                                                            "                    break;\r\n";
+                                        }
 
-                                    }
-
-                                    Unit_Template = @"
+                                        Unit_Template = @"
     /// <summary>
     /// {$Column_Comment}
     /// </summary>
@@ -520,9 +523,9 @@ namespace Tools.AutoCode
         /// <summary>
         /// 显示{$Column_Comment}
         /// </summary>
-        public static String {$Column_Name}Show(char Type)
+        public static String {$Column_Name}Show(byte? {$Column_Name})
         {
-            switch (Type)
+            switch ({$Column_Name})
             {
 {$EnumD2VBlock}
             }
@@ -532,25 +535,26 @@ namespace Tools.AutoCode
         /// <summary>
         /// 根据{$Column_Comment}显示文字获取{$Column_Comment}
         /// </summary>
-        public static string {$Column_Name}ByShow(string Content)
+        public static byte? {$Column_Name}ByShow(string Content)
         {
-            char result=char.MinValue;
+            byte result=byte.MinValue;
             switch (Content)
             {
 {$EnumV2DBlock}
             }
-            return result.ToString();
+            return result;
         }
     }
 ";
-                                    Unit_Template = Unit_Template.Replace("{$EnumDefineBlock}", EnumDefineBlock);
-                                    Unit_Template = Unit_Template.Replace("{$EnumD2VBlock}", EnumD2VBlock);
-                                    Unit_Template = Unit_Template.Replace("{$EnumV2DBlock}", EnumV2DBlock);
+                                        Unit_Template = Unit_Template.Replace("{$EnumDefineBlock}", EnumDefineBlock);
+                                        Unit_Template = Unit_Template.Replace("{$EnumD2VBlock}", EnumD2VBlock);
+                                        Unit_Template = Unit_Template.Replace("{$EnumV2DBlock}", EnumV2DBlock);
 
-                                    Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
-                                    Column_Comment = c_c[0];
-                                    Unit_Template = Unit_Template.Replace("{$Column_Comment}", Column_Comment);
-                                    MainContent += Unit_Template;
+                                        Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
+                                        Column_Comment = c_c[0];
+                                        Unit_Template = Unit_Template.Replace("{$Column_Comment}", Column_Comment);
+                                        MainContent += Unit_Template;
+                                    }
                                 }
                             }
                         }
@@ -630,7 +634,6 @@ namespace Tools.AutoCode
                             }
                         }
                     }
-
                 }
             }
         }

@@ -285,6 +285,20 @@ namespace Util.Common
         }
 
         /// <summary>
+        /// 将字符串内容写入到文件[文件编码格式为GB2312]
+        /// </summary>
+        /// <param name="Content"></param>
+        /// <param name="Path"></param>
+        public static void WriteString2FileEncodingGbk(string Path, string Content)
+        {
+            using (StreamWriter wrtier = new StreamWriter(Path, false, Encoding.GetEncoding("GB2312")))
+            {
+                wrtier.Write(Content);
+                wrtier.Flush();
+            }
+        }
+
+        /// <summary>
         /// 将内容一行行写入
         /// </summary>
         /// <param name="Path"></param>

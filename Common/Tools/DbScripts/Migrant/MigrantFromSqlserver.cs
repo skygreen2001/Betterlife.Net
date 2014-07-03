@@ -211,10 +211,10 @@ SET FOREIGN_KEY_CHECKS=0;
                             column_type = type_length[0];
                             if (column_type.Equals("nvarchar")) column_type = "varchar";
 
-                            if (column_type.Equals("char"))
+                            if (column_type.Equals("tinyint"))
                             {
                                 enum_comments=Enum_ColumnDefine(column_comment);
-                                if ((enum_comments != null) && (enum_comments.Length > 0))
+                                if ((enum_comments != null) && (enum_comments.Length > 1))
                                 {
                                     column_type = "enum(" + string.Join(",", enum_comments) + ")";
                                 }

@@ -198,6 +198,7 @@ namespace {$Service_NameSpace}.Services
                 {
                     {$ClassName} {$InstanceName} = new {$ClassName}();
                     UtilDataTable.ToObject({$InstanceName}, dt.Rows[i], dt.Columns);
+{$ImportConvertDataToShow}
                     db.{$ClassName}.Add({$InstanceName});
                 }
                 db.SaveChanges();
@@ -222,14 +223,14 @@ namespace {$Service_NameSpace}.Services
             {
                 var query={$InstanceName}s.AsEnumerable();
 
-                foreach ({$ClassName} row in query)
+                foreach ({$ClassName} {$InstanceName} in query)
                 {
-
+{$ExportConvertShowToData}
                 }
 
                 DataTable dt = UtilDataTable.ToDataTable(query); 
                 dt.TableName = "{$ClassName}";
-                UtilDataTable.DeleteColumns(dt, "ID", "{$CommitTime_Str}", "{$UpdateTime_Str}");
+                UtilDataTable.DeleteColumns(dt, {$EnumColumnName} "{$CommitTime_Str}", "{$UpdateTime_Str}");
                 Dictionary<string, string> dic = new Dictionary<string, string>()
                 {
 {$ColumnNameComment}

@@ -9,7 +9,7 @@ using Util.Common;
 
 namespace Tools.AutoCode
 {
-    public class AutoCode
+    public class AutoCodeBase
     {
         /// <summary>
         /// 生成文件保存的路径
@@ -145,7 +145,7 @@ namespace Tools.AutoCode
                 Result = new List<Dictionary<string, string>>();
                 for (int i = 1; i < c_c.Length; i++)
                 {
-                    C_Comment = c_c[i];
+                    C_Comment = c_c[i].Trim();
                     C_Comment = C_Comment.Replace("：", ":");
                     Part_Arr = C_Comment.Split(':');
                     if ((Part_Arr != null) && (Part_Arr.Length == 2))

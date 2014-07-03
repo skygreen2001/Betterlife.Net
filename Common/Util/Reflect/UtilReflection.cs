@@ -241,6 +241,12 @@ namespace Util.Reflection
                 return;
             }
 
+            if (IsType(propertyInfo.PropertyType, "System.Byte"))
+            {
+                propertyInfo.SetValue(entity, Byte.Parse(fieldValue), null);
+                return;
+            }
+
             if (IsType(propertyInfo.PropertyType, "System.Int32"))
             {
                 if (fieldValue != "")

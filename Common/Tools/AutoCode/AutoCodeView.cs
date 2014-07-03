@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using Util.Common;
 
 namespace Tools.AutoCode
@@ -8,7 +9,7 @@ namespace Tools.AutoCode
     /// <summary>
     /// 工具类:自动生成代码-使用后台生成的表示层
     /// </summary>
-    public class AutoCodeView:AutoCode
+    public class AutoCodeView:AutoCodeBase
     {
         /// <summary>
         /// 运行主程序
@@ -54,6 +55,7 @@ namespace Tools.AutoCode
                     Table_Comment = TableInfoList[Table_Name]["Comment"];
                     string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (t_c.Length > 1) Table_Comment = t_c[0];
+                    
                     InstanceName = UtilString.LcFirst(ClassName);
 
                     Content_New = Content.Replace("{$ClassName}", ClassName);
@@ -76,7 +78,7 @@ namespace Tools.AutoCode
                     Content_New = Content_New.Replace("{$OnlineEditorHtml}", OnlineEditorHtml);
 
                     //存入目标文件内容
-                    UtilFile.WriteString2File(Save_Dir + ClassName + ".cshtml", Content_New);
+                    UtilFile.WriteString2FileEncodingGbk(Save_Dir + ClassName + ".cshtml", Content_New);
                 }
             }
         }

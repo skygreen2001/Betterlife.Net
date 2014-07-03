@@ -8,7 +8,7 @@ namespace Tools.AutoCode
     /// <summary>
     /// 工具类:自动生成代码-控制器类
     /// </summary>
-    public class AutoCodeAction: AutoCode
+    public class AutoCodeAction: AutoCodeBase
     {
         /// <summary>
         /// 运行主程序
@@ -145,10 +145,10 @@ namespace Tools.AutoCode
                     Unit_Template = Unit_Template.Replace("{$InstanceName}", InstanceName);
                     MainContent += Unit_Template.Replace("{$Table_Comment}", Table_Comment);
                 }
-                Content = Content.Replace("{$MainContent}", MainContent);
-                //存入目标文件内容
-                UtilFile.WriteString2File(Save_Dir + "UploadController.cs", Content);
             }
+            Content = Content.Replace("{$MainContent}", MainContent);
+            //存入目标文件内容
+            UtilFile.WriteString2File(Save_Dir + "UploadController.cs", Content);
         }
     }
 }

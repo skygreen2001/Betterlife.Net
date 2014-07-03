@@ -75,14 +75,17 @@ namespace AdminManage.Services
         protected string FiltertoCondition(Dictionary<String, object> condition)
         {
             string result="";
-            List<string> conditionL=new List<string>();
-            foreach (KeyValuePair<String,object> entry in condition)
+            List<string> conditionL = new List<string>();
+            foreach (KeyValuePair<String, object> entry in condition)
             {
-                Console.WriteLine(entry.Key + entry.Value);
                 string value = entry.Value.ToString();
-                if ((value != null) && (!string.IsNullOrEmpty(value)))
+                if (entry.Key.Equals("ID") || (entry.Key.ToUpper().Contains("_ID")))
                 {
-                    conditionL.Add(entry.Key+" LIKE '%"+value+"%' "); 
+                    conditionL.Add(entry.Key + " = '" + value + "' ");
+                }
+                else if ((value != null) && (!string.IsNullOrEmpty(value)))
+                {
+                    conditionL.Add(entry.Key + " LIKE '%" + value + "%' ");
                 }
             }
             if (condition.Count>0)result=string.Join(" AND ",conditionL.ToArray());

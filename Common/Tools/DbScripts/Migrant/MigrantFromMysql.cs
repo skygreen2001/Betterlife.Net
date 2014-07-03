@@ -317,7 +317,7 @@ GO
 
                     if (oldType.Contains("enum"))
                     {
-                        newType = "[char](1)";
+                        newType = "[tinyint]";
                     }
                     else if (oldType.Contains("int"))
                     {

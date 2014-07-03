@@ -11,7 +11,7 @@ namespace Tools.AutoCode
     ///      1.Core/Service服务层所有的服务业务类
     ///      2.Business/Admin后台所有ExtService服务类
     /// </summary>
-    public class AutoCodeService:AutoCode
+    public class AutoCodeService:AutoCodeBase
     {
         /// <summary>
         /// 服务类生成定义的方式
@@ -112,8 +112,9 @@ namespace Tools.AutoCode
             string Table_Comment = "系统管理员";
             string Service_NameSpace = "AdminManage";
             string Template_Name, UnitTemplate, Content, Content_New;
-            string ColumnNameComment, ColumnCommentName;
+            string ColumnNameComment, ColumnCommentName, EnumColumnName;
             string Column_Name, Column_Comment, Column_Type, Column_Length;
+            string ImportConvertDataToShow, ExportConvertShowToData;
             string SpecialResult = "";
             string Relation_ClassName, Relation_InstanceName, Relation_Table_Name, Relation_Column_Name;
 
@@ -136,7 +137,8 @@ namespace Tools.AutoCode
                     Content_New = Content_New.Replace("{$InstanceName}", InstanceName);
 
                     Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
-                    ColumnNameComment = ""; ColumnCommentName = ""; SpecialResult = "";
+                    ColumnNameComment = ""; ColumnCommentName = ""; EnumColumnName = ""; SpecialResult = "";
+                    ImportConvertDataToShow = ""; ExportConvertShowToData = "";
                     foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
                     {
                         Column_Name = entry.Key;
@@ -145,11 +147,17 @@ namespace Tools.AutoCode
                         Column_Length = entry.Value["Length"];
                         string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                         if (c_c.Length >= 1) Column_Comment = c_c[0];
-                        ColumnNameComment += "                    {\"" + Column_Name + "\",\"" + Column_Comment + "\"},\r\n";
-                        ColumnCommentName += "                    {\"" + Column_Comment + "\",\"" + Column_Name + "\"},\r\n";
+                        if (!((Column_Name.ToUpper().Equals(CommitTime_Str.ToUpper())) || (Column_Name.ToUpper().Equals(UpdateTime_Str.ToUpper()))))
+                        {
+                            if (!Column_Type.Equals("tinyint"))
+                            {
+                                ColumnNameComment += "                    {\"" + Column_Name + "\",\"" + Column_Comment + "\"},\r\n";
+                                ColumnCommentName += "                    {\"" + Column_Comment + "\",\"" + Column_Name + "\"},\r\n";
+                            }
+                        }
+                        
                         int iLength = UtilNumber.Parse(Column_Length);
-
-                        if (Column_Type.Equals("char"))
+                        if (Column_Type.Equals("tinyint"))
                         {
                             Column_Comment = entry.Value["Comment"];
                             c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -160,11 +168,18 @@ namespace Tools.AutoCode
                                 UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
                                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
                                 SpecialResult += UnitTemplate;
+                                Column_Comment = c_c[0].Trim();
+                                EnumColumnName += "\""+Column_Name+"\",";
+                                ColumnNameComment += "                    {\"" + Column_Name + "Show\",\"" + Column_Comment + "\"},\r\n";
+                                ColumnCommentName += "                    {\"" + Column_Comment + "\",\"" + Column_Name + "Show\"},\r\n";
+                                ExportConvertShowToData += "                    " + InstanceName + "." + Column_Name + "Show = Enum" + Column_Name + "." + Column_Name + "Show(" + InstanceName + "." + Column_Name + ");\r\n";
+                                ImportConvertDataToShow += "                    " + InstanceName + "." + Column_Name + " = Enum" + Column_Name + "." + Column_Name + "ByShow(" + InstanceName + "." + Column_Name + "Show);\r\n";
                             }
                         }
                         else if (Column_Name.Contains("_ID"))
                         {
                             Relation_ClassName = Column_Name.Replace("_ID", "");
+
                             if (TableList.Contains(Relation_ClassName))
                             {
                                 //读取原文件内容到内存
@@ -186,6 +201,16 @@ namespace Tools.AutoCode
                                 UnitTemplate = UnitTemplate.Replace("{$Relation_ClassName}", Relation_ClassName);
                                 UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
                                 SpecialResult += UnitTemplate;
+                                UnitTemplate = @"
+                    {$Relation_ClassName} {$Relation_InstanceName} = db.{$Relation_ClassName}.Where(e => e.{$Relation_Column_Name}.Equals({$InstanceName}.{$Relation_Column_Name})).SingleOrDefault();
+                    {$InstanceName}.{$Column_Name} = {$Relation_InstanceName}.ID;
+                                ";
+                                UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                                UnitTemplate = UnitTemplate.Replace("{$Relation_InstanceName}", Relation_InstanceName);
+                                UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                                UnitTemplate = UnitTemplate.Replace("{$Relation_ClassName}", Relation_ClassName);
+                                UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                                ImportConvertDataToShow += UnitTemplate;
                             }
                         }
                         else if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
@@ -211,9 +236,11 @@ namespace Tools.AutoCode
                     Content_New = Content_New.Replace("{$Service_NameSpace}", Service_NameSpace);
                     Content_New = Content_New.Replace("{$CommitTime_Str}", CommitTime_Str);
                     Content_New = Content_New.Replace("{$UpdateTime_Str}", UpdateTime_Str);
+                    Content_New = Content_New.Replace("{$EnumColumnName}", EnumColumnName);
+                    Content_New = Content_New.Replace("{$ImportConvertDataToShow}", ImportConvertDataToShow);
+                    Content_New = Content_New.Replace("{$ExportConvertShowToData}", ExportConvertShowToData);
                     
                     
-
                     //存入目标文件内容
                     UtilFile.WriteString2File(Save_Dir + "ExtService" + ClassName + ".ashx.cs", Content_New);
 

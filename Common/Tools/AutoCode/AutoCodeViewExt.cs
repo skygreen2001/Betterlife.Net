@@ -11,7 +11,7 @@ namespace Tools.AutoCode
     /// <summary>
     /// 工具类:自动生成代码-使用后台生成的ExtJS表示层
     /// </summary>
-    public class AutoCodeViewExt:AutoCode
+    public class AutoCodeViewExt:AutoCodeBase
     {
         /// <summary>
         /// 运行主程序
@@ -104,7 +104,7 @@ namespace Tools.AutoCode
                 Column_Type = ColumnTypeByDbDefine(Column_Type, Column_Name);
                 Column_Comment = entry.Value["Comment"];
                 string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (c_c.Length > 0) Column_Comment = c_c[0]; else Column_Comment = Column_Name;
+                if (c_c.Length > 0) Column_Comment = c_c[0].Trim(); else Column_Comment = Column_Name;
 
                 if (Column_Type.Equals("date"))
                 {
@@ -171,13 +171,13 @@ namespace Tools.AutoCode
                 Fields += Relation_Unit_Template;
                 Column_Type = entry.Value["Type"];
                 Column_Comment = entry.Value["Comment"];
-                if (Column_Type.Equals("char"))
+                if (Column_Type.Equals("tinyint"))
                 {
                     c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (c_c.Length > 1)
                     {
                         Unit_Template = @"
-                { name: '{$Column_Name}Show', type: 'string',";
+                { name: '{$Column_Name}Show', type: 'string' },";
                         Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
                         Fields += Unit_Template;
 
@@ -286,7 +286,7 @@ namespace Tools.AutoCode
                         }
                     }
                 }
-                else if (Column_Type.Equals("char"))
+                else if (Column_Type.Equals("tinyint"))
                 {
                     string Enum_Data="";
                     List<Dictionary<string, string>> Enum_ColumnDefine=new List<Dictionary<string,string>>();
@@ -294,7 +294,7 @@ namespace Tools.AutoCode
                     if (c_c.Length > 1)
                     {
                         Enum_ColumnDefine = EnumDefines(Column_Comment);
-                        Column_Comment = c_c[0];
+                        Column_Comment = c_c[0].Trim();
                     }
                     foreach (Dictionary<string, string> entry_enum in Enum_ColumnDefine)
                     {
@@ -315,7 +315,7 @@ namespace Tools.AutoCode
                 }else
                 {
                     string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (c_c.Length > 0) Column_Comment = c_c[0]; else Column_Comment = Column_Name;
+                    if (c_c.Length > 0) Column_Comment = c_c[0].Trim(); else Column_Comment = Column_Name;
                     Column_Type = ColumnTypeByDbDefine(Column_Type, Column_Name);
                     if (Column_Type.Equals("date")) ColumnFormat = ",xtype : 'datefield',format : 'Y-m-d'";
                     Unit_Template = @"
@@ -351,12 +351,12 @@ namespace Tools.AutoCode
                 Column_Type = entry.Value["Type"];
                 Column_Comment = entry.Value["Comment"];
                 string[] c_c;
-                if (Column_Type.Equals("char"))
+                if (Column_Type.Equals("tinyint"))
                 {
                     c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (c_c.Length > 1)
                     {
-                        Column_Comment = c_c[0];
+                        Column_Comment = c_c[0].Trim();
                         UnitTemplate = @"
                              '    <tr class=""entry""><td class=""head"">{$Column_Comment}</td><td class=""content"">{{$Column_Name}Show}</td></tr>',";
                         UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
@@ -388,7 +388,7 @@ namespace Tools.AutoCode
 
                 }
                 c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (c_c.Length >= 1) Column_Comment = c_c[0];
+                if (c_c.Length >= 1) Column_Comment = c_c[0].Trim();
                 UnitTemplate = @"
                              '    <tr class=""entry""><td class=""head"">{$Column_Comment}</td><td class=""content"">{{$Column_Name}}</td></tr>',";
                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
@@ -429,13 +429,13 @@ namespace Tools.AutoCode
                     UnitTemplate = UnitTemplate.Replace("{$Column_Comment}", Column_Comment);
                     Result += UnitTemplate;
                     continue;
-                    
-                }if (Column_Type.Equals("char"))
+                }
+                if (Column_Type.Equals("tinyint"))
                 {
                     c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (c_c.Length > 1)
                     {
-                        Column_Comment = c_c[0];
+                        Column_Comment = c_c[0].Trim();
                         UnitTemplate = @"
                         { header: '{$Column_Comment}', dataIndex: '{$Column_Name}Show' },";
                         UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
@@ -466,7 +466,7 @@ namespace Tools.AutoCode
                     }
                 }
                 c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                if (c_c.Length >= 1) Column_Comment = c_c[0];
+                if (c_c.Length >= 1) Column_Comment = c_c[0].Trim();
                 UnitTemplate = @"
                         { header: '{$Column_Comment}', dataIndex: '{$Column_Name}' },";
                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
