@@ -1,0 +1,13 @@
+﻿using Business.Core.Service;
+
+namespace Portal
+{
+    /// <summary>
+    /// 服务类:所有Service的管理类
+    /// </summary>
+    public class ManageService
+    {
+{$ServiceDefine}
+{$ServiceMethod}
+    }
+}

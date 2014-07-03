@@ -110,6 +110,7 @@
     <Compile Include="HttpData\Survey.ashx.cs">
       <DependentUpon>Survey.ashx</DependentUpon>
     </Compile>
+    <Compile Include="ManageService.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

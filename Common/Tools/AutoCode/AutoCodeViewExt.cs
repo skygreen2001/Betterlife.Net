@@ -14,6 +14,14 @@ namespace Tools.AutoCode
     public class AutoCodeViewExt:AutoCodeBase
     {
         /// <summary>
+        /// JS命名空间
+        /// </summary>
+        private static string JsNamespace = "BetterlifeNet";
+        /// <summary>
+        /// JS命名空间别名
+        /// </summary>
+        private static string JsNamespace_Alias = "Bn";
+        /// <summary>
         /// 运行主程序
         /// 1.后台extjs文件生成
         /// </summary>
@@ -37,8 +45,6 @@ namespace Tools.AutoCode
             string ClassName = "Admin";
             string InstanceName = "admin";
             string Table_Comment = "系统管理员";
-            string JsNamespace = "BetterlifeNet";
-            string JsNamespace_Alias = "Bn";
 
 
             string Template_Name, Content, Content_New;
@@ -219,12 +225,12 @@ namespace Tools.AutoCode
         /// <returns></returns>
         public string Model_FieldLables(string Table_Name, string Ns_Alias, string Blank_Pre = "")
         {
-            string Unit_Template, Result;
+            string Unit_Template, Result, ClassName;
             string Relation_Table_Name, Relation_Table_Comment, Relation_Class_Name, Relation_InstanceName, Relation_Column_Name;
             string Column_Name, Column_Type, Column_Comment, ColumnFormat = "";
 
             Result = "";
-
+            ClassName = Table_Name;
             Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
             Result = "                              { xtype: 'hidden', name: 'ID', ref: '../ID' },";
             Unit_Template = "";
@@ -240,9 +246,15 @@ namespace Tools.AutoCode
                 if (Column_Name.ToUpper().Contains("_ID"))
                 {
                     Relation_Table_Name = Column_Name.Replace("_ID", "");
-                    if (TableList.Contains(Relation_Table_Name))
+                    if (TableList.Contains(Relation_Table_Name) || (Relation_Table_Name.ToUpper().Equals("PARENT")))
                     {
                         Relation_Class_Name = Relation_Table_Name;
+                        if (Relation_Table_Name.ToUpper().Equals("PARENT"))
+                        {
+                            ClassName = Table_Name;
+                            Relation_Table_Name = Table_Name;
+                            Relation_Class_Name = ClassName;
+                        }
                         if (TableInfoList.ContainsKey(Relation_Table_Name))
                         {
                             Relation_Table_Comment = TableInfoList[Relation_Table_Name]["Comment"];
@@ -283,6 +295,9 @@ namespace Tools.AutoCode
                             Unit_Template = Unit_Template.Replace("{$Relation_Column_Name}", Relation_Column_Name);
                             Unit_Template = Unit_Template.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
                             Unit_Template = Unit_Template.Replace("{$Relation_InstanceName}", Relation_InstanceName);
+                            Unit_Template = Unit_Template.Replace("$classname", ClassName);
+                            Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
+                            Unit_Template = Unit_Template.Replace("$ns_alias", JsNamespace_Alias);
                         }
                     }
                 }

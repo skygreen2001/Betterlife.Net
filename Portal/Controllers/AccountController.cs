@@ -14,15 +14,6 @@ namespace Portal.Controllers
 {
     public class AccountController : Controller
     {
-        /// <summary>
-        /// 用户服务
-        /// </summary>
-        private static IServiceUser userService;
-
-        public AccountController()
-        {
-            if (userService==null)userService=new ServiceUser();
-        }
         //
         // GET: /Account/LogOn
 
@@ -39,7 +30,7 @@ namespace Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (userService.IsValidateUser(model.UserName, model.Password))
+                if (ManageService.UserService().IsValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -89,7 +80,7 @@ namespace Portal.Controllers
             if (ModelState.IsValid)
             {
                 // 尝试注册用户
-                int createStatus = userService.CreatUser(model.UserName, model.Password, model.Email, null);
+                int createStatus = ManageService.UserService().CreatUser(model.UserName, model.Password, model.Email, null);
                 if (createStatus==0)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
@@ -131,7 +122,7 @@ namespace Portal.Controllers
                 bool changePasswordSucceeded= false;
                 try
                 {
-                    User currentUser = userService.GetUserByUsername(User.Identity.Name);
+                    User currentUser = ManageService.UserService().GetUserByUsername(User.Identity.Name);
                     if (model.OldPassword.Equals(model.NewPassword))
                     {
                         ModelState.AddModelError("", "新密码不能设置和旧密码一样。");
@@ -143,7 +134,7 @@ namespace Portal.Controllers
 
                     }else
                     {
-                        changePasswordSucceeded = userService.ChangePassword(currentUser, model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = ManageService.UserService().ChangePassword(currentUser, model.OldPassword, model.NewPassword);
                         changePasswordSucceeded = true;
                     }
                 }

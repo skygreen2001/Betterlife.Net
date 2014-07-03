@@ -188,6 +188,9 @@
     <Content Include="AutoCode\Model\service\iservice.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AutoCode\Model\service\manageservice.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AutoCode\Model\service\service.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

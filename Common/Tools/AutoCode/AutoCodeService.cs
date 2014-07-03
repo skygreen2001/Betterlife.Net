@@ -10,9 +10,18 @@ namespace Tools.AutoCode
     ///      本框架中包括两种:
     ///      1.Core/Service服务层所有的服务业务类
     ///      2.Business/Admin后台所有ExtService服务类
+    ///      3.Portal 网站主体的ManageService工具类
     /// </summary>
     public class AutoCodeService:AutoCodeBase
     {
+        /// <summary>
+        /// 特殊字段:CommitTime
+        /// </summary>
+        private static string CommitTime_Str = "CommitTime";
+        /// <summary>
+        /// 特殊字段:Updatetime
+        /// </summary>
+        private static string UpdateTime_Str = "UpdateTime";
         /// <summary>
         /// 服务类生成定义的方式
         /// 1.Core/Service服务层所有的服务业务类|接口
@@ -34,6 +43,10 @@ namespace Tools.AutoCode
             Save_Dir = App_Dir + "Admin" + Path.DirectorySeparatorChar + "Services" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
             if (ServiceType == 2) CreateExtService();
+            //3.Portal 网站主体的ManageService工具类
+            Save_Dir = App_Dir + "Portal" + Path.DirectorySeparatorChar;
+            if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
+            if (ServiceType == 2) CreateManageService();
         }
 
         /// <summary>
@@ -118,7 +131,6 @@ namespace Tools.AutoCode
             string SpecialResult = "";
             string Relation_ClassName, Relation_InstanceName, Relation_Table_Name, Relation_Column_Name;
 
-            string CommitTime_Str = "CommitTime", UpdateTime_Str = "UpdateTime";
             foreach (string Table_Name in TableList)
             {
                 //读取原文件内容到内存
@@ -254,6 +266,59 @@ namespace Tools.AutoCode
                     UtilFile.WriteString2File(Save_Dir + "ExtService" + ClassName + ".ashx", Content_New);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 3.Portal 网站主体的ManageService工具类
+        /// </summary>
+        /// [模板文件]:service/manageservice.txt
+        /// 生成文件名称:ManageService.cs
+        private void CreateManageService()
+        {
+            string Content="";
+            string ClassName,InstanceName,Table_Comment,UnitTemplate;
+            string ServiceDefine = "", ServiceMethod = "";
+            //读取原文件内容到内存
+            string Template_Name = @"AutoCode/Model/service/manageservice.txt";
+            Content = UtilFile.ReadFile2String(Template_Name);
+
+            foreach (string Table_Name in TableList)
+            {
+                ClassName = Table_Name;
+
+                Table_Comment = TableInfoList[Table_Name]["Comment"];
+                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t_c.Length > 1) Table_Comment = t_c[0];
+                InstanceName = UtilString.LcFirst(ClassName);
+                UnitTemplate = @"
+        /// <summary>
+        /// {$Table_Comment}服务
+        /// </summary>
+        private static IService{$ClassName} {$InstanceName}Service;"; 
+                UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                UnitTemplate = UnitTemplate.Replace("{$ClassName}", ClassName);
+                UnitTemplate = UnitTemplate.Replace("{$Table_Comment}", Table_Comment);
+                ServiceDefine += UnitTemplate;
+                UnitTemplate = @"
+        /// <summary>
+        /// 服务:{$Table_Comment}
+        /// </summary>
+        public static IService{$ClassName} {$ClassName}Service()
+        {
+            if ({$InstanceName}Service == null) {$InstanceName}Service = new Service{$ClassName}();
+            return {$InstanceName}Service;
+        }";
+                UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                UnitTemplate = UnitTemplate.Replace("{$ClassName}", ClassName);
+                UnitTemplate = UnitTemplate.Replace("{$Table_Comment}", Table_Comment);
+                ServiceMethod += UnitTemplate;
+            }
+            Content = Content.Replace("{$ServiceDefine}", ServiceDefine);
+            Content = Content.Replace("{$ServiceMethod}", ServiceMethod);
+            
+            //存入目标文件内容
+            UtilFile.WriteString2File(Save_Dir + "ManageService.cs", Content);
         }
     }
 }
