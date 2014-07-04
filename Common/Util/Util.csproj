@@ -109,11 +109,11 @@
     <Compile Include="Log\Writer\WinEventWriter.cs" />
     <Compile Include="Reflect\UtilBeans.cs" />
     <Compile Include="Reflect\UtilReflection.cs" />
-    <Compile Include="Type\Datatable\ConversionAttribute.cs" />
-    <Compile Include="Type\Datatable\DataTableConverter.cs" />
-    <Compile Include="Type\Datatable\IDataTableConverter.cs" />
-    <Compile Include="Type\Datatable\MyList.cs" />
-    <Compile Include="Type\Datatable\UtilDataTable.cs" />
+    <Compile Include="DataType\Datatable\ConversionAttribute.cs" />
+    <Compile Include="DataType\Datatable\DataTableConverter.cs" />
+    <Compile Include="DataType\Datatable\IDataTableConverter.cs" />
+    <Compile Include="DataType\Datatable\MyList.cs" />
+    <Compile Include="DataType\Datatable\UtilDataTable.cs" />
     <Compile Include="View\OnlineEditor\UtilCKEeditor.cs" />
     <Compile Include="View\OnlineEditor\UtilUEditor.cs" />
     <Compile Include="Xml\NamespaceIgnorantXmlTextReader.cs" />
