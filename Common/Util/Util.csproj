@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailUtil\UtilEmail.cs" />
     <Compile Include="Pinyin\NPinyin\Pinyin.cs" />
     <Compile Include="Pinyin\NPinyin\PyCode.cs" />
     <Compile Include="Pinyin\NPinyin\PyHash.cs" />

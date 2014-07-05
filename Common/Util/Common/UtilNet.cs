@@ -2,6 +2,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 namespace Util.Common
 {
@@ -48,9 +49,9 @@ namespace Util.Common
         public static string UrlDomaintoIp(string url)
         {
             Uri u = new Uri(url);
-            String domain=u.Host;
+            String domain = u.Host;
             //String domain=System.Text.RegularExpressions.Regex.Match(url, @"(?<=://)[a-zA-Z\.0-9]+(?=\/)").Value.ToString(); 
-            string ip=IPParse(domain);
+            string ip = IPParse(domain);
             url = url.Replace(domain, ip);
             return url;
         }
@@ -70,26 +71,25 @@ namespace Util.Common
             {
                 MD5 m = new MD5CryptoServiceProvider();
                 byte[] s = m.ComputeHash(UnicodeEncoding.UTF8.GetBytes(content));
-                string result=BitConverter.ToString(s);
-                result=result.Replace("-", "");
-                result=result.ToLower();
+                string result = BitConverter.ToString(s);
+                result = result.Replace("-", "");
+                result = result.ToLower();
                 return result;
             }
         }
 
-
         /// <summary>
         /// 将域名替换成IP地址<br/>
-        /// 由于西本的IP地址虚拟映射的域名方能正常访问应用<br/>
-        /// 西本虚拟的域名并不是真正注册的域名，一般以.xblan.net结尾，它需要在系统的host文件下注册与IP的映射。<br/>
-        /// 因此在本应用中对西本虚拟的域名不需要做ip地址转换。
+        /// 由于BetterlifeNet的IP地址虚拟映射的域名方能正常访问应用<br/>
+        /// BetterlifeNet虚拟的域名并不是真正注册的域名，一般以.betterlife.net结尾，它需要在系统的host文件下注册与IP的映射。<br/>
+        /// 因此在本应用中对BetterlifeNet虚拟的域名不需要做ip地址转换。
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
         public static string IPParse(string domainName)
         {
             string result = domainName;
-            if (!result.Contains(".xblan.net"))
+            if (!result.Contains(".betterlife.net"))
             {
                 try
                 {
@@ -105,6 +105,25 @@ namespace Util.Common
                 {
                     Console.WriteLine(ex.Message);
                 }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取客户端Ip地址
+        /// </summary>
+        /// <returns></returns>
+        public static string GetClientIP()
+        {
+            string result = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (null == result || result == String.Empty)
+            {
+                result = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            }
+
+            if (null == result || result == String.Empty)
+            {
+                result = HttpContext.Current.Request.UserHostAddress;
             }
             return result;
         }
