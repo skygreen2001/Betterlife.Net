@@ -72,6 +72,7 @@
     <Compile Include="Dao\TestServiceAdmin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dao\TestLinqAdmin.cs" />
+    <Compile Include="Util\EmailUtil\TestUtilEmail.cs" />
     <Compile Include="Util\Excel\TestUtilExcelOle.cs" />
     <Compile Include="Util\TestUtilEncrypt.cs" />
     <Compile Include="Util\TestUtilPinyin.cs" />

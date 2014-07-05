@@ -9,7 +9,6 @@ using Portal.Models;
 using Business.Core.Service;
 using Database;
 using Util.Common;
-using Util.EmailUtil;
 
 namespace Portal.Controllers
 {
@@ -20,7 +19,6 @@ namespace Portal.Controllers
 
         public ActionResult LogOn()
         {
-            UtilEmail.SendMail("zhouyuepu@xun-ao.com","注册Betterlife.Net成功！","您收到此邮件是因为您是Betterlife.Net网站的会员。我们很高兴地通知您，您现在已经可以观看新的管理博客了。<br/><br/>",true);
             return View();
         }
 
