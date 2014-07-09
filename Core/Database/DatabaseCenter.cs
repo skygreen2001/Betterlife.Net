@@ -27,5 +27,13 @@ namespace Database
             if (db == null) db = new BetterlifeNetEntities();
             return db;
         }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public static void Init()
+        {
+            db = null;
+        }
     }
 }

@@ -79,7 +79,9 @@
     <Compile Include="Util\Excel\TestUtilExcelNpoi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

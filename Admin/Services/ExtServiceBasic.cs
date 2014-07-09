@@ -17,7 +17,14 @@ namespace AdminManage.Services
     /// <see cref="https://github.com/evantrimboli"/>
     public class ExtServiceBasic : DirectHandler, IRequiresSessionState
     {
+        /// <summary>
+        /// 当前的数据库数据资源
+        /// </summary>
         protected static BetterlifeNetEntities db = DatabaseCenter.Instance();
+        /// <summary>
+        /// 当前的Session会话
+        /// </summary>
+        protected static HttpSessionState Session = HttpContext.Current.Session;
 
         /// <summary>
         /// 返回Ext Direct Api的ProviderName
@@ -26,6 +33,7 @@ namespace AdminManage.Services
         {
             get
             {
+                
                 return "Ext.app.REMOTING_API";
             }
         }
@@ -39,6 +47,16 @@ namespace AdminManage.Services
             {
                 return "";
             }
+        }
+
+        /// <summary>
+        /// 初始化工作
+        /// 1.初始化获取数据库数据单例
+        /// 一般是在服务器变更了数据库，重置DatabaseCenter的db，重新获取一次即可
+        /// </summary>
+        public static void Init_Db()
+        {
+            db = DatabaseCenter.Instance();
         }
 
         /// <summary>
@@ -108,7 +126,7 @@ namespace AdminManage.Services
         /// <summary>
         /// 清除数据对象关联的数据对象,一般在获取到所需数据之后最后执行
         /// </summary>
-        protected object ClearInclude(object entityObject)
+        protected object ClearInclude(object entityObject,bool IsIncludeCommitTime=true,bool IsIncludeUpdateTime=true)
         {
             object destObject;
             if (entityObject.GetType().BaseType.FullName.Equals("System.Object"))
@@ -133,6 +151,22 @@ namespace AdminManage.Services
                     }
                     else
                     {
+                        if (!IsIncludeCommitTime)
+                        {
+                            if (key.ToUpper().Equals("COMMITTIME"))
+                            {
+                                p_n.SetValue(destObject, null);
+                                continue;
+                            }
+                        }
+                        if (!IsIncludeUpdateTime)
+                        {
+                            if (key.ToUpper().Equals("UPDATETIME"))
+                            {
+                                p_n.SetValue(destObject, null);
+                                continue;
+                            }
+                        }
                         object origin_pro = p.GetValue(entityObject);
                         if (origin_pro != null) UtilReflection.SetValue(destObject, key, origin_pro.ToString());
                     }

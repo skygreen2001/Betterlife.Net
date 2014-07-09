@@ -256,7 +256,7 @@ namespace Util.Reflection
                 return;
             }
 
-            if (IsType(propertyInfo.PropertyType, "System.Nullable`1[System.Decimal]"))
+            if (IsType(propertyInfo.PropertyType, "System.Decimal"))
             {
                 if (fieldValue != "")
                     propertyInfo.SetValue(entity, Decimal.Parse(fieldValue), null);
@@ -265,51 +265,13 @@ namespace Util.Reflection
                 return;
             }
 
-            if (IsType(propertyInfo.PropertyType, "System.Nullable`1[System.DateTime]"))
+            if (IsType(propertyInfo.PropertyType, "System.DateTime"))
             {
                 if (fieldValue != "")
                 {
                     try
                     {
-                        string fStyle = "yyyy-MM-dd HH:mm:ss";
-                        if (UtilString.Substr_Count(fieldValue, "-") == 2)
-                        {
-                            string[] fv = fieldValue.Split('-');
-                            if (UtilString.Substr_Count(fieldValue, ":") == 2)
-                            {
-                                if (fv[1].Length == 1) fStyle = "yyyy-M-dd HH:mm:ss";
-                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
-                            }
-                            else
-                            {
-                                fStyle = "yyyy-MM-dd";
-                                if (fv[1].Length == 1) fStyle = "yyyy-M-dd";
-                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
-                            }
-                        }
-                        else if (UtilString.Substr_Count(fieldValue, "/") == 2)
-                        {
-                            fStyle = "yyyy/MM/dd HH:mm:ss";
-                            string[] fv = fieldValue.Split('/');
-                            if (UtilString.Substr_Count(fieldValue, ":") == 2)
-                            {
-                                if (fv[1].Length == 1) fStyle = "yyyy/M/dd HH:mm:ss";
-                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
-                            }
-                            else
-                            {
-                                fStyle = "yyyy/MM/dd";
-                                if (fv[1].Length == 1) fStyle = "yyyy/M/dd";
-                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, fStyle, null), null);
-                            }
-
-
-                        }else{
-                            if (UtilString.Substr_Count(fieldValue, ":") == 2)
-                            {
-                                propertyInfo.SetValue(entity, (DateTime?)DateTime.ParseExact(fieldValue, "HH:mm:ss", null), null);
-                            }
-                        }
+                        propertyInfo.SetValue(entity, Convert.ToDateTime(fieldValue), null);
                     }
                     catch(Exception ex)
                     {

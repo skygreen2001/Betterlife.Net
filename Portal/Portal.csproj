@@ -110,6 +110,13 @@
     <Compile Include="HttpData\Survey.ashx.cs">
       <DependentUpon>Survey.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Init.aspx.cs">
+      <DependentUpon>Init.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Init.aspx.designer.cs">
+      <DependentUpon>Init.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ManageService.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -170,6 +177,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Init.aspx" />
     <Content Include="Scripts\common\jquery-1.7.1.min.js" />
     <Content Include="HttpData\Survey.ashx" />
     <None Include="Scripts\common\jquery.validate-vsdoc.js" />
@@ -245,7 +253,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58950</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:6666/</IISUrl>
+          <IISUrl>http://localhost:9696/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
