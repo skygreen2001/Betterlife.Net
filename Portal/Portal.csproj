@@ -117,7 +117,6 @@
     <Compile Include="Init.aspx.designer.cs">
       <DependentUpon>Init.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ManageService.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

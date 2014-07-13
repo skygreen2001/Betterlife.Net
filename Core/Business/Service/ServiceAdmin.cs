@@ -110,6 +110,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public bool ExistByID(int ID)
         {
+            Init_Db();
             int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from Admin WHERE ID=" + ID).First();
             return (result > 0);
         }
@@ -121,6 +122,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public bool ExistBy(string WhereClause = null)
         {
+            Init_Db();
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE "+WhereClause;
             int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) from Admin " + WhereClause).First();
             return (result > 0);
@@ -133,6 +135,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public Admin GetByID(int ID)
         {
+            Init_Db();
             return db.Admin.Find(ID);
         }
 
@@ -145,6 +148,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<Admin> Get(string WhereClause=null, string OrderBy="ID DESC", int RowCount=10)
         {
+            Init_Db();
             List<Admin> result = null;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             var admins = db.Admin.SqlQuery("SELECT TOP " + RowCount + " * FROM Admin " + WhereClause + " ORDER BY " + OrderBy);
@@ -161,6 +165,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public Admin GetOne(string WhereClause = null, string OrderBy = "ID DESC")
         {
+            Init_Db();
             Admin result = null;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             var admins = db.Admin.SqlQuery("SELECT TOP 1 * FROM Admin " + WhereClause + " ORDER BY " + OrderBy);
@@ -175,6 +180,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public int Count(string WhereClause=null)
         {
+            Init_Db();
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) FROM Admin " + WhereClause).First();
             return result;
@@ -191,6 +197,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<Admin> QueryPage(int StartPoint, int EndPoint, string WhereClause=null, string OrderBy="ID DESC")
         {
+            Init_Db();
             List<Admin> result = null;
             if (StartPoint >= 1) StartPoint -= 1;
             if (StartPoint > EndPoint) StartPoint = EndPoint;
@@ -213,6 +220,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<Admin> QueryPageByPageNo(int PageNo, int PageSize, string WhereClause = null, string OrderBy = "ID DESC")
         {
+            Init_Db();
             List<Admin> result = null;
 
             int StartPoint = (PageNo-1)*PageSize;
@@ -234,6 +242,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<Admin> SqlExecute(string Sqlstr)
         {
+            Init_Db();
             List<Admin> result = null;
             var admins = db.Admin.SqlQuery(Sqlstr);
             result = admins.ToList<Admin>();

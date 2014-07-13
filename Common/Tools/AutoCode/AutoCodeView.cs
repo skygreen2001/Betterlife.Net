@@ -41,7 +41,8 @@ namespace Tools.AutoCode
             string ClassName = "Admin";
             string InstanceName = "admin";
             string Table_Comment = "系统管理员";
-            string Template_Name, Content, Content_New, OnlineEditorHtml="";
+            string Template_Name, Content, Content_New, OnlineEditorHtml = "", ComboTreeInitHtml="";
+            string Relation_Table_Name;
             string Column_Name, Column_Type, Column_Length;
 
             foreach (string Table_Name in TableList)
@@ -50,6 +51,8 @@ namespace Tools.AutoCode
                 Template_Name = @"AutoCode/Model/view/view.txt";
                 Content = UtilFile.ReadFile2String(Template_Name);
                 ClassName = Table_Name;
+                ComboTreeInitHtml = "";
+                OnlineEditorHtml = "";
                 if (TableInfoList.ContainsKey(Table_Name))
                 {
                     Table_Comment = TableInfoList[Table_Name]["Comment"];
@@ -68,6 +71,13 @@ namespace Tools.AutoCode
                         Column_Name = entry.Key;
                         Column_Type = entry.Value["Type"];
                         Column_Length = entry.Value["Length"];
+                        Relation_Table_Name = Column_Name.Replace("_ID", "");
+                        if (Relation_Table_Name.ToUpper().Equals("PARENT"))
+                        {
+                            ComboTreeInitHtml = @"
+    <script type=""text/javascript"" src=""@Url.Content(""~/Content/common/js/ajax/ext/shared/components/ComboBoxTree.js"")""></script>";
+                        }
+
                         int iLength = UtilNumber.Parse(Column_Length);
                         if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
                         {
@@ -76,6 +86,7 @@ namespace Tools.AutoCode
                     }
 
                     Content_New = Content_New.Replace("{$OnlineEditorHtml}", OnlineEditorHtml);
+                    Content_New = Content_New.Replace("{$ComboTreeInitHtml}", ComboTreeInitHtml);
 
                     //存入目标文件内容
                     UtilFile.WriteString2FileEncodingGbk(Save_Dir + ClassName + ".cshtml", Content_New);

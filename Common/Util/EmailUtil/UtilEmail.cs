@@ -89,6 +89,7 @@ namespace Util.EmailUtil
                 return false;
             }
         }
+
         /// <summary>
         /// 发送邮件
         /// </summary>

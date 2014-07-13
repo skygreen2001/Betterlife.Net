@@ -66,6 +66,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public User GetUserByUsername(string UserName)
         {
+            Init_Db();
             return db.User.Where(e => e.Username.Equals(UserName)).Single();
         }
 
@@ -104,6 +105,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public bool IsValidateUser(string UserName, string Password)
         {
+            Init_Db();
             bool result;
             Password=UtilEncrypt.MD5Encoding(Password);
             int count=db.User.Where(e => e.Username.Equals(UserName) &&
@@ -121,6 +123,7 @@ namespace Business.Core.Service
         /// <returns>true:已使用 ;false:未使用</returns>
         public bool IsUsernameExist(string Username, string User_ID)
         {
+            Init_Db();
             bool Used = true;
             var userToUpdate = db.User.FirstOrDefault(person => person.Username == Username);
             if (userToUpdate != null)
@@ -154,6 +157,7 @@ namespace Business.Core.Service
         /// <returns>true:已使用 ;false:未使用</returns>
         public bool IsEmailExist(string Email, string User_ID)
         {
+            Init_Db();
             bool Used = true;
             var userToUpdate = db.User.FirstOrDefault(person => person.Email == Email);
             if (userToUpdate != null)

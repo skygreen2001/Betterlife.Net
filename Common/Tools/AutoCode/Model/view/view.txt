@@ -3,7 +3,7 @@
 }
 
 @section HeadInclude{
-{$OnlineEditorHtml}
+{$OnlineEditorHtml}{$ComboTreeInitHtml}
     <script type="text/javascript" src="@Url.Content("~/Services/ExtService{$ClassName}.ashx")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/core/{$InstanceName}.js")"></script>
 }

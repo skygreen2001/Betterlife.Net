@@ -33,9 +33,17 @@ Ext.form.ComboBoxTree = Ext.extend(Ext.form.ComboBox, {
 			this.tree.on('click', function(node) {
 				cmb.canCollapse = false;
 				if (cmb.canFolderSelect){
-						cmb.canCollapse = true;
-						cmb.setValue(node.text);
-						cmb.collapse();
+				    cmb.canCollapse = true;
+				    //modify by skygreen
+				    //原为:cmb.setValue(node.text);
+				    if (Ext.isFunction(cmb.onSelect))
+				    {
+				        cmb.onSelect(cmb, node);
+				    } else
+				    {
+				        cmb.setValue(node.text);
+				    }
+					cmb.collapse();
 				}else{
 					if (node.isLeaf()) {
 						cmb.canCollapse = true;

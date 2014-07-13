@@ -1,0 +1,66 @@
+﻿using Database.Domain;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Util.Common;
+
+namespace AdminManage.HttpData.Core.Tree
+{
+    /// <summary>
+    /// Ajax请求:获取{$Table_Comment}目录树
+    /// </summary>
+    public class {$ClassName}TreeHandler : BasicHandler, IHttpHandler
+    {
+        public void ProcessRequest(HttpContext context)
+        {
+            context.Response.ContentType = "text/plain";			
+            Init_Db();
+
+            string query = context.Request["id"];
+            List<HttpdataTree> {$InstanceName}Dic = new List<HttpdataTree>();
+
+            Nullable<int> iParent_ID = UtilNumber.Parse(query,0);
+            if (iParent_ID == 0) iParent_ID = null;
+            var {$InstanceName}s = db.{$ClassName}.Where(e => e.Parent_ID == iParent_ID).
+                 OrderByDescending(p => p.ID);
+
+            string result = "";
+            if ({$InstanceName}s != null)
+            {
+                int?  MaxLevel=db.{$ClassName}.Max(e=>e.Region_Type);
+                foreach (var {$InstanceName} in {$InstanceName}s)
+                {
+                    HttpdataTree tree = new HttpdataTree();
+                    tree.id = {$InstanceName}.ID.ToString();
+                    tree.text = {$InstanceName}.{$Relation_Column_Name};{$Relation_Column_Level}
+                    tree.level = (level+1).ToString();
+                    if (level == MaxLevel)
+                    {
+                        tree.leaf = true;
+                        tree.cls = "file";
+                    }
+                    else
+                    {
+                        tree.cls = "folder";
+                    }
+                    {$InstanceName}Dic.Add(tree);
+                }
+
+                try
+                {
+                    result = JsonConvert.SerializeObject({$InstanceName}Dic, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            context.Response.Write(result);
+        }
+    }
+}

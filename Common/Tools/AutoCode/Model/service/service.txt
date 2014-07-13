@@ -133,6 +133,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public {$ClassName} GetByID({$ID_Type} ID)
         {
+            Init_Db();
             return db.{$ClassName}.Find(ID);
         }
 
@@ -145,6 +146,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<{$ClassName}> Get(string WhereClause=null, string OrderBy="ID DESC", int RowCount=10)
         {
+            Init_Db();
             List<{$ClassName}> result = null;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             var {$InstanceName}s = db.{$ClassName}.SqlQuery("SELECT TOP " + RowCount + " * FROM {$ClassName} " + WhereClause + " ORDER BY " + OrderBy);
@@ -161,6 +163,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public {$ClassName} GetOne(string WhereClause = null, string OrderBy = "ID DESC")
         {
+            Init_Db();
             {$ClassName} result = null;
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             var {$InstanceName}s = db.{$ClassName}.SqlQuery("SELECT TOP 1 * FROM {$ClassName} " + WhereClause + " ORDER BY " + OrderBy);
@@ -175,6 +178,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public int Count(string WhereClause=null)
         {
+            Init_Db();
             if (!string.IsNullOrEmpty(WhereClause)) WhereClause = " WHERE " + WhereClause;
             int result = db.Database.SqlQuery<int>("SELECT COUNT(ID) FROM {$ClassName} " + WhereClause).First();
             return result;
@@ -191,6 +195,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<{$ClassName}> QueryPage(int StartPoint, int EndPoint, string WhereClause=null, string OrderBy="ID DESC")
         {
+            Init_Db();
             List<{$ClassName}> result = null;
             if (StartPoint >= 1) StartPoint -= 1;
             if (StartPoint > EndPoint) StartPoint = EndPoint;
@@ -213,6 +218,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<{$ClassName}> QueryPageByPageNo(int PageNo, int PageSize, string WhereClause = null, string OrderBy = "ID DESC")
         {
+            Init_Db();
             List<{$ClassName}> result = null;
 
             int StartPoint = (PageNo-1)*PageSize;
@@ -234,6 +240,7 @@ namespace Business.Core.Service
         /// <returns></returns>
         public List<{$ClassName}> SqlExecute(string Sqlstr)
         {
+            Init_Db();
             List<{$ClassName}> result = null;
             var {$InstanceName}s = db.{$ClassName}.SqlQuery(Sqlstr);
             result = {$InstanceName}s.ToList<{$ClassName}>();

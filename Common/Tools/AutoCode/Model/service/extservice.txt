@@ -149,6 +149,7 @@ namespace {$Service_NameSpace}.Services
         [DirectMethod]
         public ExtService{$ClassName} queryPage{$ClassName}(Dictionary<String, object> condition)
         {
+            Init_Db();
             int StartPoint = 1, EndPoint = 15;
 
             if (condition.ContainsKey("start")) StartPoint = Convert.ToInt16(condition["start"])+1;
@@ -176,7 +177,7 @@ namespace {$Service_NameSpace}.Services
             this.Success = true;
             return this;
         }
-
+{$RelationFieldTreeRecursive}
         /// <summary>
         /// 导入:{$Table_Comment}
         /// </summary>

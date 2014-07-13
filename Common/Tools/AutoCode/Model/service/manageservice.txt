@@ -8,6 +8,12 @@ namespace Portal
     public class ManageService
     {
 {$ServiceDefine}
+        /// <summary>
+        /// 初始化工作
+        /// </summary>
+        private static void Init()
+        {
+        }
 {$ServiceMethod}
     }
 }

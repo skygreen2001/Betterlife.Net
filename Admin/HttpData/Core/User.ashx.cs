@@ -16,6 +16,8 @@ namespace AdminManage.HttpData.Core
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
+            Init_Db();
+
             int pageSize = 15;
             string query = context.Request["query"];
 

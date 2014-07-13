@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gc.cs" />
+    <Compile Include="ManageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IServiceAdmin.cs" />
     <Compile Include="Service\ServiceAdmin.cs" />

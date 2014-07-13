@@ -24,7 +24,9 @@ namespace Database
         /// <returns></returns>
         public static BetterlifeNetEntities Instance()
         {
-            if (db == null) db = new BetterlifeNetEntities();
+            //if (db == null) db = new BetterlifeNetEntities();
+            //实时更新数据模型的数据
+            db = new BetterlifeNetEntities();
             return db;
         }
 
