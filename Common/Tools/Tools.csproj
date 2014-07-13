@@ -176,6 +176,12 @@
     <Content Include="AutoCode\Model\domain\httpdatadefine.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AutoCode\Model\domain\httpdatatree.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AutoCode\Model\domain\httpdatatreedefine.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AutoCode\Model\service\extservice.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

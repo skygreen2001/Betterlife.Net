@@ -129,6 +129,7 @@
     <Compile Include="HttpData\Core\Department.ashx.cs">
       <DependentUpon>Department.ashx</DependentUpon>
     </Compile>
+    <Compile Include="HttpData\Core\Tree\HttpdataTree.cs" />
     <Compile Include="HttpData\Core\User.ashx.cs">
       <DependentUpon>User.ashx</DependentUpon>
     </Compile>
