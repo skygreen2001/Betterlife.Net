@@ -17,11 +17,11 @@ namespace Tools.AutoCode
         /// <summary>
         /// 特殊字段:CommitTime
         /// </summary>
-        private static string CommitTime_Str = "Committime";
+        private static string CommitTime_Str = "CommitTime";
         /// <summary>
         /// 特殊字段:Updatetime
         /// </summary>
-        private static string UpdateTime_Str = "Updatetime";
+        private static string UpdateTime_Str = "UpdateTime";
         /// <summary>
         /// 服务类生成定义的方式
         /// 1.Core/Service服务层所有的服务业务类|接口

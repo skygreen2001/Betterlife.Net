@@ -16,11 +16,11 @@ namespace Tools.AutoCode
         /// <summary>
         /// JS命名空间
         /// </summary>
-        private static string JsNamespace = "H1zc";
+        private static string JsNamespace = "BetterlifeNet";
         /// <summary>
         /// JS命名空间别名
         /// </summary>
-        private static string JsNamespace_Alias = "Hz";
+        private static string JsNamespace_Alias = "Bn";
         /// <summary>
         /// 运行主程序
         /// 1.后台extjs文件生成
@@ -552,7 +552,7 @@ namespace Tools.AutoCode
                             string[] t_c = Relation_Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                             if (t_c.Length > 1) Relation_Table_Comment = t_c[0];
                             Relation_InstanceName = UtilString.LcFirst(Relation_Class_Name);
-                            Relation_Column_Name = "";
+                            Relation_Column_Name = ""; Relation_Column_Comment = "";
                             Dictionary<string, Dictionary<string, string>> Relation_FieldInfo = FieldInfos[Relation_Table_Name];
                             foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
                             {
@@ -592,6 +592,7 @@ namespace Tools.AutoCode
                             },";
                             Unit_Template = Unit_Template.Replace("{$Relation_Column_Name}", Relation_Column_Name);
                             Unit_Template = Unit_Template.Replace("{$Relation_Table_Comment}", Relation_Table_Comment);
+                            Unit_Template = Unit_Template.Replace("{$Relation_Column_Comment}", Relation_Column_Comment);
                             Unit_Template = Unit_Template.Replace("{$Relation_InstanceName}", Relation_InstanceName);
                             Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
                             Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
@@ -686,8 +687,14 @@ namespace Tools.AutoCode
                     if (c_c.Length > 0) Column_Comment = c_c[0].Trim(); else Column_Comment = Column_Name;
                     Column_Type = ColumnTypeByDbDefine(Column_Type, Column_Name);
                     if (Column_Type.Equals("date")) ColumnFormat = ",xtype : 'datefield',format : 'Y-m-d'";
+                    string AllowBlankStr = "";
+                    if (Column_Name.ToUpper().Contains("NAME")) AllowBlankStr = ", allowBlank:false";
+                    bool IsPermitNull = true;
+                    if (entry.Value["Null"].Equals("否")) IsPermitNull = false;
+                    if (!IsPermitNull) AllowBlankStr = ", allowBlank:false";
+
                     Unit_Template = @"
-                            { fieldLabel: '{$Column_Comment}', name: '{$Column_Name}' {$ColumnFormat}},";
+                            { fieldLabel: '{$Column_Comment}', name: '{$Column_Name}'" + AllowBlankStr + " {$ColumnFormat}},";
                 }
                 Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
                 Unit_Template = Unit_Template.Replace("{$ColumnFormat}", ColumnFormat);
