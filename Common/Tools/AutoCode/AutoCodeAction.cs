@@ -126,8 +126,8 @@ namespace Tools.AutoCode
         // POST: /Upload/Upload{$ClassName}/
         [HttpPost]
         public ActionResult Upload{$ClassName}(FormCollection form)
-        {{
-            if (Request.Files.Count > 0){{
+        {
+            if (Request.Files.Count > 0){
                 HttpPostedFileBase file = Request.Files[0];
                 string fileName = Path.Combine(Gc.UploadPath, ""attachment"", ""{$InstanceName}"", ""{$InstanceName}"" + UtilDateTime.NowS() + "".xls"");
                 file.SaveAs(fileName);
@@ -135,11 +135,11 @@ namespace Tools.AutoCode
                 JObject resultJ = ExtService{$ClassName}.import{$ClassName}(fileName);
                 string result = JsonConvert.SerializeObject(resultJ);
                 Response.Write(result);
-            }}else{{
+            }else{
                 Response.Write(""{'success':false,'data':'上传文件不能为空'}"");
-            }}
+            }
             return null;
-        }}
+        }
                 ";
                     Unit_Template = Unit_Template.Replace("{$ClassName}", ClassName);
                     Unit_Template = Unit_Template.Replace("{$InstanceName}", InstanceName);

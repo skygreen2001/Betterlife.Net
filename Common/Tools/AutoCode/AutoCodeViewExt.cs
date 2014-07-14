@@ -145,6 +145,7 @@ namespace Tools.AutoCode
                 {
                     if (ColumnIsTextArea(Column_Name, ColumnType, iLength))
                     {
+                        string InstanceName = UtilString.LcFirst(ClassName);
                         Has_Textarea = true;
 						TextareaOnlineditor_Replace_array["UEditor"]+="                                this.editForm."+Column_Name+".setWidth(\"98%\");\r\n";
 						TextareaOnlineditor_Replace_array["UEditor"]+=Blank_Pre+"                                pageInit_ue_"+Column_Name+"();\r\n";
@@ -158,9 +159,9 @@ namespace Tools.AutoCode
 						
 						TextareaOnlineditor_Save_array["UEditor"]+="                                if (ue_"+Column_Name+")this.editForm."+Column_Name+".setValue(ue_"+Column_Name+".getContent());\r\n";
 						TextareaOnlineditor_Save_array["ckEditor"]+="                                if (CKEDITOR.instances."+Column_Name+") this.editForm."+Column_Name+".setValue(CKEDITOR.instances."+Column_Name+".getData());\r\n";
-						
-						TextareaOnlineditor_Reset_array["UEditor"]+="                                if (ue_"+Column_Name+") ue_"+Column_Name+".setContent("+JsNamespace_Alias+"."+ClassName+".View.Running.{$instancename}Grid.getSelectionModel().getSelected().data."+Column_Name+");\r\n";
-						TextareaOnlineditor_Reset_array["ckEditor"]+="                                if (CKEDITOR.instances."+Column_Name+") CKEDITOR.instances."+Column_Name+".setData("+JsNamespace_Alias+"."+ClassName+".View.Running.{$instancename}Grid.getSelectionModel().getSelected().data."+Column_Name+");\r\n";
+
+                        TextareaOnlineditor_Reset_array["UEditor"] += "                                if (ue_" + Column_Name + ") ue_" + Column_Name + ".setContent(" + JsNamespace_Alias + "." + ClassName + ".View.Running." + InstanceName + "Grid.getSelectionModel().getSelected().data." + Column_Name + ");\r\n";
+                        TextareaOnlineditor_Reset_array["ckEditor"] += "                                if (CKEDITOR.instances." + Column_Name + ") CKEDITOR.instances." + Column_Name + ".setData(" + JsNamespace_Alias + "." + ClassName + ".View.Running." + InstanceName + "Grid.getSelectionModel().getSelected().data." + Column_Name + ");\r\n";
 					}
                 }
             }
@@ -692,7 +693,6 @@ namespace Tools.AutoCode
                     bool IsPermitNull = true;
                     if (entry.Value["Null"].Equals("否")) IsPermitNull = false;
                     if (!IsPermitNull) AllowBlankStr = ", allowBlank:false";
-
                     Unit_Template = @"
                             { fieldLabel: '{$Column_Comment}', name: '{$Column_Name}'" + AllowBlankStr + " {$ColumnFormat}},";
                 }

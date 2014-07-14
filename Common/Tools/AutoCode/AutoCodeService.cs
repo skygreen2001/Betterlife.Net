@@ -44,7 +44,7 @@ namespace Tools.AutoCode
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
             if (ServiceType == 2) CreateExtService();
             //3.Portal 网站主体的ManageService工具类
-            Save_Dir = App_Dir + "Portal" + Path.DirectorySeparatorChar;
+            Save_Dir = App_Dir + "Core" + Path.DirectorySeparatorChar + "Business" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
             if (ServiceType == 2) CreateManageService();
         }

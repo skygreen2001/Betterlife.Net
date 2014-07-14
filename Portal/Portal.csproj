@@ -177,6 +177,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Init.aspx" />
+    <Content Include="readme.txt" />
     <Content Include="Scripts\common\jquery-1.7.1.min.js" />
     <Content Include="HttpData\Survey.ashx" />
     <None Include="Scripts\common\jquery.validate-vsdoc.js" />
