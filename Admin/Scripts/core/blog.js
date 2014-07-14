@@ -79,8 +79,7 @@ Bn.Blog.Store = {
                 { name: 'Blog_ContentShow', type: 'string' }
 
             ]
-        }
-		),
+        }),
         writer: new Ext.data.JsonWriter({
             encode: false
         }),

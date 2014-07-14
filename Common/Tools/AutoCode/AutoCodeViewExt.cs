@@ -143,7 +143,7 @@ namespace Tools.AutoCode
                 }
                 else
                 {
-                    if (ColumnIsTextArea(Column_Name, Column_Comment, iLength))
+                    if (ColumnIsTextArea(Column_Name, ColumnType, iLength))
                     {
                         Has_Textarea = true;
 						TextareaOnlineditor_Replace_array["UEditor"]+="                                this.editForm."+Column_Name+".setWidth(\"98%\");\r\n";
@@ -171,7 +171,7 @@ namespace Tools.AutoCode
 									        "        /**\r\n"+
 									        "         * 在线编辑器类型。\r\n";
 			    TextareaOnlineditor_Init+="         * 1:CkEditor,4:UEditor[默认]\r\n";
-			    TextareaOnlineditor_Init+="         * 配合Action的变量配置\\$online_editor\r\n"+
+			    TextareaOnlineditor_Init+="         * 配合Action的变量配置$online_editor\r\n"+
 									        "         */\r\n"+
 									        "        OnlineEditor:4";
 			    TextareaOnlineditor_Init_func="\r\n"+
@@ -259,7 +259,7 @@ namespace Tools.AutoCode
         {
             Dictionary<string,string> Result;
             string Unit_Template,Fields;
-            string ClassName,Column_Name, Column_Type, Column_Comment, ColumnFormat;
+            string ClassName, Column_Name, Column_Type, Column_Comment, Column_Length, ColumnFormat;
             string Relation_Table_Name, Relation_Table_Comment, Relation_Class_Name, Relation_InstanceName, Relation_Column_Name;
             string RelationStore="",RelationStoreTemplate = "";
             Result = new Dictionary<string,string>();
@@ -368,6 +368,16 @@ namespace Tools.AutoCode
 
                     }
                 }
+                Column_Type = entry.Value["Type"];
+                Column_Length = entry.Value["Length"];
+                int iLength = UtilNumber.Parse(Column_Length);
+                if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                {
+                    Unit_Template = @"
+                { name: '{$Column_Name}Show', type: 'string' },";
+                    Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
+                    Fields += Unit_Template;
+                }
             }
             Fields = Fields.Substring(2,Fields.Length-3);
             if(!string.IsNullOrEmpty(RelationStore)&&RelationStore.Length>3)RelationStore = RelationStore.Substring(0, RelationStore.Length - 1);
@@ -409,7 +419,7 @@ namespace Tools.AutoCode
             string FieldLabels;//Ext "EditWindow"里items的fieldLabels
             string Unit_Template, ClassName;
             string Relation_Table_Name, Relation_Table_Comment, Relation_Class_Name, Relation_InstanceName, Relation_Column_Name, Relation_Column_Comment;
-            string Column_Name, Column_Type, Column_Comment, ColumnFormat = "";
+            string Column_Name, Column_Type,Column_Length, Column_Comment, ColumnFormat = "";
             bool IsImage;
             Result = new Dictionary<string,string>();
             FieldLabels = "";
@@ -428,7 +438,10 @@ namespace Tools.AutoCode
                 if ((Column_Name.ToUpper().Equals("COMMITTIME")) || (Column_Name.ToUpper().Equals("UPDATETIME"))) continue;
                 Column_Comment = entry.Value["Comment"];
                 Column_Type = entry.Value["Type"];
-                
+
+                Column_Length = entry.Value["Length"];
+                int iLength = UtilNumber.Parse(Column_Length);
+
                 IsImage = ColumnIsImage(Column_Name,Column_Comment);
                 if (IsImage)
                 {
@@ -589,9 +602,9 @@ namespace Tools.AutoCode
                     string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (c_c.Length > 0) Column_Comment = c_c[0].Trim(); else Column_Comment = Column_Name;
 
-                    Unit_Template  = Blank_Pre + "                            {fieldLabel : '{$Column_Comment}(<font color=red>*</font>)',name : '{$Column_Name}',inputType:'{$Column_Name}',ref:'../{$Column_Name}'},\r\n";
-                    Unit_Template += Blank_Pre + "                            {xtype: 'hidden',name : '{$Column_Name}_old',ref:'../{$Column_Name}_old'";
-					Password_Add+=Blank_Pre+"            var {$Column_Name}Obj=$ns_alias.$classname.View.Running.edit_window.{$Column_Name};\r\n"+
+                    Unit_Template = Blank_Pre + "\r\n                            { fieldLabel : '{$Column_Comment}(<font color=red>*</font>)',name : '{$Column_Name}',inputType:'{$Column_Name}',ref:'../{$Column_Name}' },\r\n";
+                    Unit_Template += Blank_Pre + "                            { xtype: 'hidden',name : '{$Column_Name}_old',ref:'../{$Column_Name}_old' },";
+                    Password_Add += Blank_Pre + "            var {$Column_Name}Obj=$ns_alias.$classname.View.Running.edit_window.{$Column_Name};\r\n" +
 								   Blank_Pre+"            {$Column_Name}Obj.allowBlank=false;\r\n"+
 								   Blank_Pre+"            if ({$Column_Name}Obj.getEl()) {$Column_Name}Obj.getEl().dom.parentNode.previousSibling.innerHTML =\"{$Column_Comment}(<font color=red>*</font>)\";\r\n";
 					Password_Update+="\r\n"+
@@ -662,6 +675,11 @@ namespace Tools.AutoCode
                             },";
                     Unit_Template = Unit_Template.Replace("{$Enum_Data}", Enum_Data);
                 }
+                else if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                {
+                    Unit_Template = @"
+                            { fieldLabel: '{$Column_Comment}', name: '{$Column_Name}',  xtype: 'textarea', id: '{$Column_Name}', ref: '{$Column_Name}' },";
+                }
                 else
                 {
                     string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -693,7 +711,7 @@ namespace Tools.AutoCode
         {
             string Result = "";
             string UnitTemplate = "";
-            string Column_Name, Column_Type,Column_Comment;
+            string Column_Name, Column_Type, Column_Length, Column_Comment;
             string Relation_Table_Name, Relation_Column_Name, Relation_Column_Comment;
             string Table_Name = ClassName;
             Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
@@ -705,6 +723,10 @@ namespace Tools.AutoCode
                 if (Column_Name.ToUpper().Equals("COMMITTIME") || Column_Name.ToUpper().Equals("UPDATETIME")) continue;
                 Column_Type = entry.Value["Type"];
                 Column_Comment = entry.Value["Comment"];
+
+                Column_Length = entry.Value["Length"];
+                int iLength = UtilNumber.Parse(Column_Length);
+
                 string[] c_c;
                 if (Column_Type.Equals("tinyint"))
                 {
@@ -719,6 +741,16 @@ namespace Tools.AutoCode
                         Result += UnitTemplate;
                         continue;
                     }
+                }else if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
+                {
+                    c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (c_c.Length >= 1) Column_Comment = c_c[0].Trim();
+                    UnitTemplate = @"
+                             '    <tr class=""entry""><td class=""head"">{$Column_Comment}</td><td class=""content"">{{$Column_Name}Show}</td></tr>',";
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Comment}", Column_Comment);
+                    Result += UnitTemplate;
+                    continue;
                 }
                 else if (Column_Name.ToUpper().Contains("_ID"))
                 {
@@ -744,8 +776,8 @@ namespace Tools.AutoCode
                             Column_Comment = Column_Comment.Replace("标识", "");
                             UnitTemplate = @"
                              '    <tr class=""entry""><td class=""head"">{$Relation_Column_Comment}</td><td class=""content"">{{$Relation_Column_Name}_Parent}<tpl if=""{$Relation_Column_Name}_Parent"">({" + ClassName + "ShowAll})</tpl></td></tr>',";
-                            UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Comment}", Column_Comment); 
-                            UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name); 
+                            UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Comment}", Column_Comment);
+                            UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
                             Result += UnitTemplate;
                             continue;
                         }
