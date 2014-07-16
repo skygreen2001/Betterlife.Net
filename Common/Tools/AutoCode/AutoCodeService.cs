@@ -404,7 +404,7 @@ namespace Tools.AutoCode
             {
                 ClassName = Table_Name;
                 Table_Comment = "";
-                if (TableInfoList.ContainsKey("Table_Name"))
+                if (TableInfoList.ContainsKey(Table_Name))
                 {
                     Table_Comment = TableInfoList[Table_Name]["Comment"];
                     string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
