@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Reflection;
 using System.Web;
 using System.Web.SessionState;
+using Util.Common;
 using Util.Reflection;
 
 namespace AdminManage.Services
@@ -173,6 +175,41 @@ namespace AdminManage.Services
                 }
             }
             return destObject;
+        }
+
+        /// <summary>
+        /// 上传图片文件
+        /// </summary>
+        /// <param name="files">上传的文件对象</param>
+        /// <param name="uploadFlag">上传标识,上传文件的input组件的名称</param>
+        /// <param name="upload_dir">上传文件存储的所在目录[最后一级目录，一般对应图片列名称]</param>
+        /// <param name="categoryId">上传文件所在的目录标识，一般为类实例名称</param>
+        /// <returns></returns>
+        public Dictionary<string, object> UploadImage(HttpFileCollection files, string uploadFlag, string upload_dir, string categoryId = "default")
+        {
+            string diffpart = DateTime.Now.Ticks.ToString();//UtilDateTime.NowS();
+            Dictionary<string, object> result = null;
+            if ((files != null) && (files.Count > 0))
+            {
+                string filename, uploadPath, tmptail = "";
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFile hpf = files[i];
+                    filename = hpf.FileName;
+                    if (!String.IsNullOrEmpty(filename))
+                    {
+                        tmptail = Path.GetExtension(filename);
+                        uploadPath = Path.Combine(Business.Gc.UploadPath, "images", categoryId, upload_dir, diffpart + tmptail); //保存路径名称,统一文件命名
+                        UtilFile.CreateDir(uploadPath);
+                        hpf.SaveAs(uploadPath); //保存文件
+                        result = new Dictionary<string, object>();
+                        result["success"] = true;
+                        result["file_showname"] = hpf.FileName;
+                        result["file_name"] = categoryId + "/" + upload_dir + "/" + diffpart + tmptail;
+                    }
+                }
+            }
+            return result;
         }
 
         [JsonProperty(PropertyName = "totalCount")]

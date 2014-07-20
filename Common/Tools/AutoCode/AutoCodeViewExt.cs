@@ -449,9 +449,9 @@ namespace Tools.AutoCode
                     string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                     if (c_c.Length > 0) Column_Comment = c_c[0].Trim(); else Column_Comment = Column_Name;
                     Result["IsFileUpload"]="fileUpload: true,";
-                    Unit_Template = Blank_Pre + "                            {xtype: 'hidden',  name : '{$Column_Name}',ref:'../{$Column_Name}'},\r\n";
+                    Unit_Template = Blank_Pre + "\r\n                            {xtype: 'hidden',  name : '{$Column_Name}',ref:'../{$Column_Name}'},\r\n";
                     Unit_Template += Blank_Pre + "                            {fieldLabel : '{$Column_Comment}',name : '{$Column_Name}Upload',ref:'../{$Column_Name}Upload',xtype:'fileuploadfield',\r\n" +
-                                   Blank_Pre + "                              emptyText: '请上传{$Column_Comment}文件',buttonText: '',accept:'image/*',buttonCfg: {iconCls: 'upload-icon'}";
+                                   Blank_Pre + "                              emptyText: '请上传{$Column_Comment}文件',buttonText: '',accept:'image/*',buttonCfg: {iconCls: 'upload-icon'}},";
 
                     Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
                     Unit_Template = Unit_Template.Replace("{$Column_Comment}", Column_Comment);
@@ -639,7 +639,7 @@ namespace Tools.AutoCode
                     if (c_c.Length > 0) Column_Comment = c_c[0].Trim(); else Column_Comment = Column_Name;
                     Unit_Template ="                            \r\n" +
                                   Blank_Pre + "                            {\r\n" +
-                                  Blank_Pre + "                                 fieldLabel: '{$Column_Comment}',xtype:'combo',ref:'../{$Column_Name}',mode : 'local',triggerAction : 'all',\r\n" +
+                                  Blank_Pre + "                                 fieldLabel: '{$Column_Comment}',hiddenName:'{$Column_Name}',xtype:'combo',name:'{$Column_Name}',ref:'../{$Column_Name}',mode : 'local',triggerAction : 'all',\r\n" +
 								  Blank_Pre+"                                 lazyRender : true,editable: false,allowBlank : false,valueNotFoundText:'否',\r\n"+
 								  Blank_Pre+"                                 store : new Ext.data.SimpleStore({\r\n"+
 								  Blank_Pre+"                                     fields : ['value', 'text'],\r\n"+
@@ -759,6 +759,17 @@ namespace Tools.AutoCode
                     Result += UnitTemplate;
                     continue;
                 }
+                else if (Column_Type.Equals("bit"))
+                {
+                    c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (c_c.Length >= 1) Column_Comment = c_c[0].Trim();
+                    UnitTemplate = @"
+                             '    <tr class=""entry""><td class=""head"">{$Column_Comment}</td><td class=""content""><tpl if=""{$Column_Name} == \'true\' || {$Column_Name} == true"">是</tpl><tpl if=""{$Column_Name} == \'false\' || {$Column_Name} == false"">否</tpl></td></tr>',";
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Comment}", Column_Comment);
+                    Result += UnitTemplate;
+                    continue;
+                }
                 else if (Column_Name.ToUpper().Contains("_ID"))
                 {
                     Relation_Table_Name = Column_Name.Replace("_ID", "");
@@ -806,7 +817,6 @@ namespace Tools.AutoCode
                             continue;
                         }
                     }
-
                 }
                 c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 if (c_c.Length >= 1) Column_Comment = c_c[0].Trim();
@@ -815,6 +825,18 @@ namespace Tools.AutoCode
                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
                 UnitTemplate = UnitTemplate.Replace("{$Column_Comment}", Column_Comment);
                 Result += UnitTemplate;
+
+                bool IsImage = ColumnIsImage(Column_Name, Column_Comment);
+                if (IsImage)
+                {
+                    Column_Comment = Column_Comment.Replace("路径","");
+                    UnitTemplate = @"
+                             '    <tr class=""entry""><td class=""head"">{$Column_Comment}</td><td class=""content""><tpl if=""{$Column_Name}""><a href=""../Uploads/images/{{$Column_Name}}"" target=""_blank""><img src=""../Uploads/images/{{$Column_Name}}"" /></a></tpl></td></tr>',";
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Comment}", Column_Comment);
+                    Result += UnitTemplate;
+
+                }
             }
             Result = Result.Substring(2, Result.Length -2);
             return Result;
@@ -830,7 +852,7 @@ namespace Tools.AutoCode
         {
             string Result = "";
             string UnitTemplate = "";
-            string Column_Name, Column_Type, Column_Comment;
+            string Column_Name, Column_Type, Column_Comment, Column_Length;
             string Relation_Table_Name, Relation_Column_Name, Relation_Column_Comment;
             string Table_Name = ClassName;
             Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
@@ -844,6 +866,9 @@ namespace Tools.AutoCode
                 Column_Comment = entry.Value["Comment"];
                 string[] c_c;
 
+                Column_Length = entry.Value["Length"];
+                int iLength = UtilNumber.Parse(Column_Length);
+                if (ColumnIsTextArea(Column_Name, Column_Type, iLength) || ColumnIsImage(Column_Name, Column_Comment)) continue;
                 if (Column_Name.ToUpper().Equals("ID")){
                     UnitTemplate = @"
                         { header: '{$Column_Comment}', dataIndex: 'ID', hidden: true },";
@@ -864,6 +889,20 @@ namespace Tools.AutoCode
                         Result += UnitTemplate;
                         continue;
                     }
+                }
+                else if (Column_Type.Equals("bit"))
+                {
+                    c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (c_c.Length > 1)
+                    {
+                        Column_Comment = c_c[0].Trim();
+                    }
+                    UnitTemplate = @"
+                        { header : '{$Column_Comment}',dataIndex : '{$Column_Name}',renderer:function(value){if ((value == ""true"") || (value == true)) {return ""是"";}else{return ""否"";}} },";
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                    UnitTemplate = UnitTemplate.Replace("{$Column_Comment}", Column_Comment);
+                    Result += UnitTemplate;
+                    continue;
                 }
                 else if (Column_Name.ToUpper().Contains("_ID"))
                 {

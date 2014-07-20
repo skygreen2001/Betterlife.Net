@@ -61,7 +61,7 @@ namespace Tools.AutoCode
             string Template_Name,Unit_Template, Content, Content_New;
 
             string UnitColumnDefine;
-            string Column_Name, Column_Type,Column_Comment;
+            string Column_Name, Column_Type, Column_Comment, Column_Null;
             string Relation_ClassName, Relation_InstanceName, Relation_Table_Name;
             string Relation_Unit_Template = "", Relation_Table_Comment = "", Relation_UnitColumnDefine = "";//相关列数据对象定义
             string OneHasMany_Table_Comment="",OneHasMany_Unit_Template="", OneHasMany_UnitColumnDefine = "";
@@ -118,7 +118,10 @@ namespace Tools.AutoCode
         /// </summary>
         public {$Column_Type} {$Column_Name} { get; set; }
 ";
-                        Column_Type = ColumnTypeByDbDefine(Column_Type, Column_Name);
+                        bool IsNull = true;
+                        Column_Null = entry.Value["Null"];
+                        if (Column_Null.Equals("否")) IsNull = false;
+                        Column_Type = ColumnTypeByDbDefine(Column_Type, Column_Name, IsNull);
                         Unit_Template = Unit_Template.Replace("{$Column_Comment}", Column_Comment);
                         Unit_Template = Unit_Template.Replace("{$Column_Type}", Column_Type);
                         Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
@@ -413,9 +416,6 @@ namespace Tools.AutoCode
                     }
                 }
             }
-
-
-
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace Tools.AutoCode
         /// </summary>
         /// <param name="Column_Type">列类型</param>
         /// <param name="Column_Name">列名称</param>
-        private string ColumnTypeByDbDefine(string Column_Type, string Column_Name)
+        private string ColumnTypeByDbDefine(string Column_Type, string Column_Name,bool IsNull)
         {
             switch (Column_Type)
             {
@@ -431,21 +431,30 @@ namespace Tools.AutoCode
                 case "char":
                     return "string";
                 case "tinyint":
-                    return Column_Type;
+                case "decimal":
                 case "int":
+                    if (IsNull) 
+                        return "Nullable<" +Column_Type+ ">";
+                    else
+                        return Column_Type;
+                case "bit":
                     if (Column_Name.Contains("ID"))
                     {
-                        return "int";
+                        return "bool";
                     }
                     else
                     {
-                        return "Nullable<int>";
+                        return "Nullable<bool>";
                     }
                 case "datetime":
-                    return "Nullable<System.DateTime>";
+                    if (IsNull) 
+                        return "Nullable<System.DateTime>";
+                    else
+                        return "System.DateTime";
                 case "uniqueidentifier":
                     return "System.Guid";
             }
+
             return "string";
 
         }
@@ -680,21 +689,42 @@ namespace Tools.AutoCode
                                             break;
                                         }
                                     }
-                                    UnitTemplate = @"
+                                    bool IsPermitNull = true;
+                                    if (entry.Value["Null"].Equals("否")) IsPermitNull = false;
+                                    if (IsPermitNull)
+                                    {
+                                        UnitTemplate = @"
+                    int? level=Convert.ToInt16({$InstanceName}.{$Relation_Column_Level});";
+                                    }
+                                    else
+                                    {
+                                        UnitTemplate = @"
                     int level=Convert.ToInt16({$InstanceName}.{$Relation_Column_Level});";
+                                    }
                                 }
                                 else
                                 {
-                                    UnitTemplate = @"
+                                    bool IsPermitNull = true;
+                                    if (entry.Value["Null"].Equals("否")) IsPermitNull = false;
+                                    if (IsPermitNull)
+                                    {
+                                        UnitTemplate = @"
+                    int? level={$InstanceName}.{$Relation_Column_Level};";
+                                    }
+                                    else
+                                    {
+                                        UnitTemplate = @"
                     int level={$InstanceName}.{$Relation_Column_Level};";
-
+                                    }
                                 }
                                 UnitTemplate = UnitTemplate.Replace("{$InstanceName}", Relation_InstanceName);
                                 UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Level}", Relation_Column_Level);
-
-                                Table_Comment = TableInfoList[ClassName]["Comment"];
-                                string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                                if (t_c.Length > 1) Table_Comment = t_c[0];
+                                if (TableInfoList.ContainsKey(ClassName)&&TableInfoList[ClassName].ContainsKey("Comment"))
+                                {
+                                    Table_Comment = TableInfoList[ClassName]["Comment"];
+                                    string[] t_c = Table_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                                    if (t_c.Length > 1) Table_Comment = t_c[0];
+                                }
 
                                 Column_Comment = entry.Value["Comment"];
                                 string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -705,6 +735,7 @@ namespace Tools.AutoCode
                                 Content_New = Content_New.Replace("{$Table_Comment}", Table_Comment);
                                 Content_New = Content_New.Replace("{$InstanceName}", Relation_InstanceName);
                                 Content_New = Content_New.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                                Content_New = Content_New.Replace("{$Relation_Column_Level_Name}", Relation_Column_Level);
                                 Content_New = Content_New.Replace("{$Relation_Column_Level}", UnitTemplate);
 
                                 //存入目标文件内容

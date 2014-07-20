@@ -53,7 +53,7 @@ namespace {$Service_NameSpace}.Services
                 {$ClassName} {$InstanceName} = new {$ClassName}();
                 base.CopyProperties({$InstanceName}, {$InstanceName}Form);
                 try
-                {
+                {	{$ImgUploadSrc}{$Relation_Parent_Init}
                     {$InstanceName}.{$CommitTime_Str} = DateTime.Now;
                     {$InstanceName}.{$UpdateTime_Str} = DateTime.Now;
                     db.{$ClassName}.Add({$InstanceName}); 
@@ -87,15 +87,15 @@ namespace {$Service_NameSpace}.Services
             if ({$InstanceName}Form != null)
             {
                 string {$InstanceName}_id = {$InstanceName}Form["ID"];
-                string Username = {$InstanceName}Form["Username"];
                 try
                 {
                     int id = UtilNumber.Parse({$InstanceName}_id);
                     {$ClassName} {$InstanceName} = db.{$ClassName}.Single(e => e.ID.Equals(id));
                     base.CopyProperties({$InstanceName}, {$InstanceName}Form);
+					{$ImgUploadSrc}{$Relation_Parent_Init}
                     {$InstanceName}.{$UpdateTime_Str} = DateTime.Now;
                     db.SaveChanges();
-                    msg = "保存成功!";
+                    msg = "修改成功!";
                     result = true;
                 }
                 catch (Exception error)
@@ -168,10 +168,9 @@ namespace {$Service_NameSpace}.Services
             {
                 List<{$ClassName}> list{$ClassName}s = {$InstanceName}Service.QueryPage(StartPoint, EndPoint, WhereClause).ToList<{$ClassName}>();
                 if (EndPoint > RowCount) EndPoint = RowCount;
-                this.Stores = new List<Object>();
+                this.Stores = new List<Object>();{$TreeInstanceDefine}
                 foreach ({$ClassName} {$InstanceName} in list{$ClassName}s)
-                {
-{$SpecialResult}
+                {{$SpecialResult}
                 }
             }
             this.TotalCount = RowCount;

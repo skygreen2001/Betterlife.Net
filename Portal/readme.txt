@@ -9,3 +9,6 @@ i18n globalization with gettext and ASP.NET MVC
 
 Asp.Net MVC3 Razor and RESX Localisations/Localizations
 	http://adventureswith.net/asp-net-mvc3-razor-and-resx-localisationslocalizations/
+
+turquoiseowl/i18n:Smart internationalization for ASP.NET MVC
+	https://github.com/turquoiseowl/i18n

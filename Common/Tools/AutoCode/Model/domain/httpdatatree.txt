@@ -29,7 +29,7 @@ namespace AdminManage.HttpData.Core.Tree
             string result = "";
             if ({$InstanceName}s != null)
             {
-                int?  MaxLevel=db.{$ClassName}.Max(e=>e.Region_Type);
+                int?  MaxLevel=db.{$ClassName}.Max(e=>e.{$Relation_Column_Level_Name});
                 foreach (var {$InstanceName} in {$InstanceName}s)
                 {
                     HttpdataTree tree = new HttpdataTree();

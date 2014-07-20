@@ -129,7 +129,10 @@ namespace Tools.AutoCode
             string Column_Name, Column_Comment, Column_Type, Column_Length;
             string ImportConvertDataToShow, ExportConvertShowToData;
             string SpecialResult = "";
-            string Relation_ClassName, Relation_InstanceName, Relation_Table_Name, Relation_Column_Name, Relation_Column_Level,RelationFieldTreeRecursive;
+            string Relation_ClassName, Relation_InstanceName;
+            string Relation_Table_Name, Relation_Column_Name,TreeInstanceDefine, Relation_Column_Level,RelationFieldTreeRecursive;
+            string ImgUploadSrc = "", Relation_Parent_Init = "";
+            bool IsImage;
 
             foreach (string Table_Name in TableList)
             {
@@ -138,6 +141,7 @@ namespace Tools.AutoCode
                 Content = UtilFile.ReadFile2String(Template_Name);
                 ClassName = Table_Name;
                 RelationFieldTreeRecursive="";
+                TreeInstanceDefine="";
                 if (TableInfoList.ContainsKey(Table_Name))
                 {
                     Table_Comment = TableInfoList[Table_Name]["Comment"];
@@ -151,9 +155,10 @@ namespace Tools.AutoCode
 
                     Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[Table_Name];
                     ColumnNameComment = ""; ColumnCommentName = ""; EnumColumnName = ""; SpecialResult = "";
-                    ImportConvertDataToShow = ""; ExportConvertShowToData = "";
+                    ImportConvertDataToShow = ""; ExportConvertShowToData = ""; ImgUploadSrc = ""; Relation_Parent_Init = "";
                     foreach (KeyValuePair<String, Dictionary<string, string>> entry in FieldInfo)
                     {
+                        IsImage = false;
                         Column_Name = entry.Key;
                         Column_Comment = entry.Value["Comment"];
                         Column_Type = entry.Value["Type"];
@@ -168,9 +173,19 @@ namespace Tools.AutoCode
                                 ColumnCommentName += "                    {\"" + Column_Comment + "\",\"" + Column_Name + "\"},\r\n";
                             }
                         }
-                        
                         int iLength = UtilNumber.Parse(Column_Length);
-                        if (Column_Type.Equals("tinyint"))
+                        IsImage = ColumnIsImage(Column_Name, Column_Comment);
+                        if (IsImage)
+                        {
+                            UnitTemplate = @"
+                    Dictionary<string,object> uploadResult=this.UploadImage({$InstanceName}Form.Files,""{$Column_Name}Upload"",""{$Column_Name}"",""{$InstanceName}"");
+                    if ((uploadResult!=null)&&((bool)uploadResult[""success""]==true)&&(uploadResult.Keys.Contains(""file_name""))){
+                        {$InstanceName}.{$Column_Name}=(string)uploadResult[""file_name""];
+                    }";
+                            UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                            UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                            ImgUploadSrc += UnitTemplate;
+                        }else if (Column_Type.Equals("tinyint"))
                         {
                             Column_Comment = entry.Value["Comment"];
                             c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -212,14 +227,18 @@ namespace Tools.AutoCode
                                             break;
                                         }
                                     }
+                                    bool IsPermitNull = true;
                                     foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
                                     {
                                         if (UtilString.Contains(relation_entry.Key.ToUpper(), "LEVEL"))
                                         {
                                             Relation_Column_Level = relation_entry.Key;
+                                            if (relation_entry.Value["Null"].Equals("否")) IsPermitNull = false;
                                             break;
                                         }
                                     }
+                                    TreeInstanceDefine = @"
+                {$Relation_ClassName} {$Relation_InstanceName}_instance;";
                                     if (string.IsNullOrEmpty(Relation_Column_Level))
                                     {
                                         foreach (KeyValuePair<String, Dictionary<string, string>> relation_entry in Relation_FieldInfo)
@@ -261,7 +280,11 @@ namespace Tools.AutoCode
             return {$Relation_ClassName}ShowAll;
         }
 ";
-                                    }else{
+                                    }
+                                    else
+                                    {
+                                        string ColumnTypeNull = "int";
+                                        if (IsPermitNull) ColumnTypeNull += "?";
                                         UnitTemplate = @"
                     {$Relation_InstanceName}_instance=null;
                     if ({$Relation_InstanceName}.Parent_ID!=null){
@@ -269,9 +292,10 @@ namespace Tools.AutoCode
                         {$Relation_InstanceName}.{$Relation_Column_Name}_Parent={$Relation_InstanceName}_instance.{$Relation_Column_Name};
                     }
                     if ({$Relation_InstanceName}_instance!=null){
-                        int level = {$Relation_InstanceName}_instance.{$Relation_Column_Level};
+                        {$ColumnTypeNull} level = {$Relation_InstanceName}_instance.{$Relation_Column_Level};
                         {$Relation_InstanceName}.{$Relation_ClassName}ShowAll=this.{$Relation_ClassName}ShowAll({$Relation_InstanceName}.Parent_ID,level);
                     }";
+                                        UnitTemplate = UnitTemplate.Replace("{$ColumnTypeNull}", ColumnTypeNull);
                                         RelationFieldTreeRecursive = @"
         /// <summary>
         /// 显示{$Column_Comment}[全]
@@ -298,6 +322,8 @@ namespace Tools.AutoCode
                                     UnitTemplate = UnitTemplate.Replace("{$Relation_ClassName}", Relation_ClassName);
                                     UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Name}", Relation_Column_Name);
                                     UnitTemplate = UnitTemplate.Replace("{$Relation_Column_Level}", Relation_Column_Level);
+                                    TreeInstanceDefine = TreeInstanceDefine.Replace("{$Relation_InstanceName}", Relation_InstanceName);
+                                    TreeInstanceDefine = TreeInstanceDefine.Replace("{$Relation_ClassName}", Relation_ClassName);
                                     SpecialResult += UnitTemplate;
                                     Column_Comment = entry.Value["Comment"];
                                     c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -307,6 +333,11 @@ namespace Tools.AutoCode
                                     RelationFieldTreeRecursive = RelationFieldTreeRecursive.Replace("{$Relation_InstanceName}", Relation_InstanceName);
                                     RelationFieldTreeRecursive = RelationFieldTreeRecursive.Replace("{$Relation_ClassName}", Relation_ClassName);
                                     RelationFieldTreeRecursive = RelationFieldTreeRecursive.Replace("{$Relation_Column_Name}", Relation_Column_Name);
+                                    UnitTemplate = @"
+                    if ({$InstanceName}.{$Column_Name} == 0) {$InstanceName}.{$Column_Name} = null;";
+                                    UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
+                                    UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                                    Relation_Parent_Init += UnitTemplate;
                                 }
                                 else if (TableInfoList.ContainsKey(Relation_Table_Name))
                                 {
@@ -345,8 +376,11 @@ namespace Tools.AutoCode
                         else if (ColumnIsTextArea(Column_Name, Column_Type, iLength))
                         {
                             UnitTemplate = @"
-                    {$InstanceName}.{$Column_Name}Show = Regex.Replace({$InstanceName}.{$Column_Name}, ""<\\s*img\\s+[^>]*?src\\s*=\\s*(\'|\"")(.*?)\\1[^>]*?\\/?\\s*>"", ""<a href='${2}' target='_blank'>${0}</a>"");
-                    {$InstanceName}.{$Column_Name}Show = {$InstanceName}.{$Column_Name}Show.Replace(""\\\"""", """");";
+                    if (!string.IsNullOrEmpty({$InstanceName}.{$Column_Name}))
+                    {
+                        {$InstanceName}.{$Column_Name}Show = Regex.Replace({$InstanceName}.{$Column_Name}, ""<\\s*img\\s+[^>]*?src\\s*=\\s*(\'|\"")(.*?)\\1[^>]*?\\/?\\s*>"", ""<a href='${2}' target='_blank'>${0}</a>"");
+                        {$InstanceName}.{$Column_Name}Show = {$InstanceName}.{$Column_Name}Show.Replace(""\\\"""", """");
+                    }";
                             UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
                             UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
                             SpecialResult += UnitTemplate;
@@ -365,11 +399,15 @@ namespace Tools.AutoCode
                     Content_New = Content_New.Replace("{$Service_NameSpace}", Service_NameSpace);
                     Content_New = Content_New.Replace("{$CommitTime_Str}", CommitTime_Str);
                     Content_New = Content_New.Replace("{$UpdateTime_Str}", UpdateTime_Str);
+
                     Content_New = Content_New.Replace("{$EnumColumnName}", EnumColumnName);
                     Content_New = Content_New.Replace("{$ImportConvertDataToShow}", ImportConvertDataToShow);
                     Content_New = Content_New.Replace("{$ExportConvertShowToData}", ExportConvertShowToData);
                     Content_New = Content_New.Replace("{$RelationFieldTreeRecursive}", RelationFieldTreeRecursive);
+                    Content_New = Content_New.Replace("{$TreeInstanceDefine}",TreeInstanceDefine);
                     
+                    Content_New = Content_New.Replace("{$ImgUploadSrc}", ImgUploadSrc);
+                    Content_New = Content_New.Replace("{$Relation_Parent_Init}", Relation_Parent_Init);
                     
                     //存入目标文件内容
                     UtilFile.WriteString2File(Save_Dir + "ExtService" + ClassName + ".ashx.cs", Content_New);
