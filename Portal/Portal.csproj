@@ -102,7 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionBase.cs" />
+    <Compile Include="Code\Util\UtilCultureHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -119,6 +121,16 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.en.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -184,7 +196,25 @@
     <Content Include="Scripts\common\jquery-ui-1.8.20.min.js" />
     <Content Include="Scripts\common\jquery.validate.min.js" />
     <Content Include="Scripts\common\modernizr-2.5.3.js" />
+    <Content Include="Scripts\cultures\globalize.culture.en-US.js" />
+    <Content Include="Scripts\cultures\globalize.culture.ja-JP.js" />
+    <Content Include="Scripts\cultures\globalize.culture.ja.js" />
+    <Content Include="Scripts\cultures\globalize.culture.ko-KR.js" />
+    <Content Include="Scripts\cultures\globalize.culture.ko.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-CHS.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-CHT.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-CN.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-Hans.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-Hant.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-HK.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-MO.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-SG.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh-TW.js" />
+    <Content Include="Scripts\cultures\globalize.culture.zh.js" />
+    <Content Include="Scripts\cultures\globalize.cultures.js" />
+    <Content Include="Scripts\globalize.js" />
     <Content Include="Scripts\index.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -213,10 +243,12 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Content\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -234,6 +266,16 @@
       <Project>{e7ca231a-c788-4dc1-b3af-ec4fbb9cc4d6}</Project>
       <Name>Database</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -322,3 +322,11 @@ div#title {
 .tri-state {
     width: 6em;
 }
+
+
+.lang-picker-wrapper {
+    position: absolute;
+    right: 50px;
+    top: 2px;
+    z-index: 1000;
+}

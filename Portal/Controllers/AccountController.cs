@@ -1,6 +1,7 @@
 ﻿using Business.Core;
 using Database;
 using Portal.Models;
+using Portal.Properties;
 using System;
 using System.Web.Mvc;
 using System.Web.Security;

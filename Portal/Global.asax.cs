@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Portal.Code.Util;
 
 namespace Portal
 {
@@ -36,6 +32,35 @@ namespace Portal
             AreaRegistration.RegisterAllAreas();
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+        }
+
+        /// <summary>
+        /// i18n Custom caching
+        /// </summary>
+        /// <see cref="http://afana.me/post/aspnet-mvc-internationalization-part-2.aspx" title="Output Caching" />
+        /// <param name="context"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public override string GetVaryByCustomString(HttpContext context, string arg)
+        {
+            // It seems this executes multiple times and early, so we need to extract language again from cookie.
+            if (arg == "culture") // culture name (e.g. "en-US") is what should vary caching
+            {
+                string cultureName = null;
+                // Attempt to read the culture cookie from Request
+                HttpCookie cultureCookie = Request.Cookies["_culture"];
+                if (cultureCookie != null)
+                    cultureName = cultureCookie.Value;
+                else
+                    cultureName = Request.UserLanguages[0]; // obtain it from HTTP header AcceptLanguages
+
+                // Validate culture name
+                cultureName = UtilCultureHelper.GetImplementedCulture(cultureName); // This is safe
+
+                return cultureName.ToLower();// use culture name as cache key, "es", "en-us", "es-cl", etc.
+            }
+
+            return base.GetVaryByCustomString(context, arg);
         }
     }
 }
