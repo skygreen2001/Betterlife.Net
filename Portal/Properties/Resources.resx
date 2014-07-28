@@ -117,7 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>关于我们</value>
+  </data>
+  <data name="AccountInfo" xml:space="preserve">
+    <value>帐户信息</value>
+  </data>
+  <data name="AccountNew" xml:space="preserve">
+    <value>创建新帐户</value>
+  </data>
+  <data name="ClickMe" xml:space="preserve">
+    <value>点击我</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>电子邮件地址</value>
+  </data>
+  <data name="ErrorLogonFail" xml:space="preserve">
+    <value>登录不成功。请更正错误并重试。</value>
+  </data>
+  <data name="ErrorPasswordLength" xml:space="preserve">
+    <value>密码必须至少包含 {0} 个字符。</value>
+  </data>
+  <data name="ErrorRegisterFail" xml:space="preserve">
+    <value>帐户创建不成功。请更正错误并重试。</value>
+  </data>
   <data name="HomePage" xml:space="preserve">
     <value>主页</value>
+  </data>
+  <data name="Like_Language" xml:space="preserve">
+    <value>我最喜欢的语言</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>注销</value>
+  </data>
+  <data name="Logon" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="NewPasswordAndConfirmationMismatch" xml:space="preserve">
+    <value>密码和确认密码不匹配。</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="PasswordChange" xml:space="preserve">
+    <value>修改密码</value>
+  </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
+  <data name="PasswordCurrent" xml:space="preserve">
+    <value>当前密码</value>
+  </data>
+  <data name="PasswordNew" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="PasswordNewConfirm" xml:space="preserve">
+    <value>确认新密码</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>{0} 必须至少包含 {2} 个字符。</value>
+  </data>
+  <data name="PromptRegister" xml:space="preserve">
+    <value>请输入用户名和密码。如果您没有帐户，请</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="RegisterInfo" xml:space="preserve">
+    <value>使用以下表单创建新帐户。</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>记住我?</value>
+  </data>
+  <data name="SiteName" xml:space="preserve">
+    <value>Betterlife.Net网站框架</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>乐活betterlife.net</value>
+  </data>
+  <data name="TestAccount" xml:space="preserve">
+    <value>测试帐户</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>欢迎使用 Betterlife.NET MVC!</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>欢迎</value>
+  </data>
+  <data name="WelcomeVisit" xml:space="preserve">
+    <value>若要了解有关 Betterlife.NET MVC 的更多信息，请访问</value>
   </data>
 </root>

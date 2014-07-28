@@ -10,16 +10,8 @@ using Util.EmailUtil;
 
 namespace Portal.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BasicController
     {
-        /// <summary>
-        /// 发送至邮箱
-        /// </summary>
-        private const string ToEmail = "zhouyuepu@xun-ao.com";
-        /// <summary>
-        /// 邮件标题
-        /// </summary>
-        private const string Subject = "乐活betterlife.net";
         //
         // GET: /Account/LogOn
 
@@ -90,8 +82,8 @@ namespace Portal.Controllers
                 if (createStatus==0)
                 {
                     UtilEmail.SendMail(
-                        ToEmail,
-                        Subject,
+                        model.Email,
+                        Resources.Subject,
                         "您收到此邮件是因为您是Betterlife.Net网站的会员。我们很高兴地通知您，您现在已经可以观看新的管理博客了。<br/><br/>",
                         true);
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);

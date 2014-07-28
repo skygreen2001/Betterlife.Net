@@ -42,9 +42,6 @@ namespace Portal
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.ViewBag.Title = Gc.SiteName;
-            filterContext.Controller.ViewBag.SiteName = Gc.SiteName;
-
             base.OnActionExecuting(filterContext);
         }
 

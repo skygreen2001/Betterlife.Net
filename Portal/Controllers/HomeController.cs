@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Portal.Properties;
 using System.Web.Mvc;
 
 namespace Portal.Controllers
@@ -10,7 +7,7 @@ namespace Portal.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "欢迎使用 Betterlife.NET MVC!";
+            ViewBag.Message =Resources.Welcome;
 
             return View();
         }

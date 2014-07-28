@@ -9,15 +9,15 @@
     <div class="page">
         <div id="header">
             <div id="title">
-                <h1>Betterlife.Net网站框架</h1>
+                <h1>@Resources.SiteName</h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
             </div>
             <div id="menucontainer">
                 <ul id="menu">
-                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
+                    <li>@Html.ActionLink(@Resources.HomePage, "Index", "Home")</li>
+                    <li>@Html.ActionLink(@Resources.About, "About", "Home")</li>
                 </ul>
             </div>
         </div>

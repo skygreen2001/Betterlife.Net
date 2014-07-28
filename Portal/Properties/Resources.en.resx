@@ -117,7 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="AccountInfo" xml:space="preserve">
+    <value>Account Info</value>
+  </data>
+  <data name="AccountNew" xml:space="preserve">
+    <value>Create a new account</value>
+  </data>
+  <data name="ClickMe" xml:space="preserve">
+    <value>Click Me</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="ErrorLogonFail" xml:space="preserve">
+    <value>Logon failed!modify the error and try again!</value>
+  </data>
+  <data name="ErrorPasswordLength" xml:space="preserve">
+    <value>Password must have at least {0} chars.</value>
+  </data>
+  <data name="ErrorRegisterFail" xml:space="preserve">
+    <value>Register failed!modify the error and try again!</value>
+  </data>
   <data name="HomePage" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="Like_Language" xml:space="preserve">
+    <value>I Like Computer Language Best</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Log Off</value>
+  </data>
+  <data name="Logon" xml:space="preserve">
+    <value>Logon</value>
+  </data>
+  <data name="NewPasswordAndConfirmationMismatch" xml:space="preserve">
+    <value>New Password And Confirmation Mismatch</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordChange" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value>Password Confirm</value>
+  </data>
+  <data name="PasswordCurrent" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="PasswordNew" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="PasswordNewConfirm" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>{0} must specify a password of {2} or more characters.</value>
+  </data>
+  <data name="PromptRegister" xml:space="preserve">
+    <value>Please input your username and password,</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RegisterInfo" xml:space="preserve">
+    <value>Create account by following form</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember Me?</value>
+  </data>
+  <data name="SiteName" xml:space="preserve">
+    <value>Betterlife.Net Mvc Framework</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Betterlife.Net</value>
+  </data>
+  <data name="TestAccount" xml:space="preserve">
+    <value>Test Account</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome to Betterlife.NET MVC!</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="WelcomeVisit" xml:space="preserve">
+    <value>If You want to learn Betterlife.Net MVC in detail,Please visit</value>
   </data>
 </root>

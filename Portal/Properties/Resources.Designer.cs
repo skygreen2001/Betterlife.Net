@@ -61,11 +61,290 @@ namespace Portal.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 关于.
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 关于我们.
+        /// </summary>
+        public static string AboutUs {
+            get {
+                return ResourceManager.GetString("AboutUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 帐户信息.
+        /// </summary>
+        public static string AccountInfo {
+            get {
+                return ResourceManager.GetString("AccountInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 创建新帐户.
+        /// </summary>
+        public static string AccountNew {
+            get {
+                return ResourceManager.GetString("AccountNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 点击我.
+        /// </summary>
+        public static string ClickMe {
+            get {
+                return ResourceManager.GetString("ClickMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 电子邮件地址.
+        /// </summary>
+        public static string EmailAddress {
+            get {
+                return ResourceManager.GetString("EmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 登录不成功。请更正错误并重试。.
+        /// </summary>
+        public static string ErrorLogonFail {
+            get {
+                return ResourceManager.GetString("ErrorLogonFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 密码必须至少包含 {0} 个字符。.
+        /// </summary>
+        public static string ErrorPasswordLength {
+            get {
+                return ResourceManager.GetString("ErrorPasswordLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 帐户创建不成功。请更正错误并重试。.
+        /// </summary>
+        public static string ErrorRegisterFail {
+            get {
+                return ResourceManager.GetString("ErrorRegisterFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 主页.
         /// </summary>
         public static string HomePage {
             get {
                 return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 我最喜欢的语言.
+        /// </summary>
+        public static string Like_Language {
+            get {
+                return ResourceManager.GetString("Like_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 注销.
+        /// </summary>
+        public static string LogOff {
+            get {
+                return ResourceManager.GetString("LogOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 登录.
+        /// </summary>
+        public static string Logon {
+            get {
+                return ResourceManager.GetString("Logon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 密码和确认密码不匹配。.
+        /// </summary>
+        public static string NewPasswordAndConfirmationMismatch {
+            get {
+                return ResourceManager.GetString("NewPasswordAndConfirmationMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 密码.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 修改密码.
+        /// </summary>
+        public static string PasswordChange {
+            get {
+                return ResourceManager.GetString("PasswordChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认密码.
+        /// </summary>
+        public static string PasswordConfirm {
+            get {
+                return ResourceManager.GetString("PasswordConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 当前密码.
+        /// </summary>
+        public static string PasswordCurrent {
+            get {
+                return ResourceManager.GetString("PasswordCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新密码.
+        /// </summary>
+        public static string PasswordNew {
+            get {
+                return ResourceManager.GetString("PasswordNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认新密码.
+        /// </summary>
+        public static string PasswordNewConfirm {
+            get {
+                return ResourceManager.GetString("PasswordNewConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 必须至少包含 {2} 个字符。.
+        /// </summary>
+        public static string PasswordTooShort {
+            get {
+                return ResourceManager.GetString("PasswordTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请输入用户名和密码。如果您没有帐户，请.
+        /// </summary>
+        public static string PromptRegister {
+            get {
+                return ResourceManager.GetString("PromptRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 注册.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 使用以下表单创建新帐户。.
+        /// </summary>
+        public static string RegisterInfo {
+            get {
+                return ResourceManager.GetString("RegisterInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 记住我?.
+        /// </summary>
+        public static string RememberMe {
+            get {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Betterlife.Net网站框架.
+        /// </summary>
+        public static string SiteName {
+            get {
+                return ResourceManager.GetString("SiteName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 乐活betterlife.net.
+        /// </summary>
+        public static string Subject {
+            get {
+                return ResourceManager.GetString("Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 测试帐户.
+        /// </summary>
+        public static string TestAccount {
+            get {
+                return ResourceManager.GetString("TestAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用户名.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎使用 Betterlife.NET MVC!.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎.
+        /// </summary>
+        public static string WelcomeText {
+            get {
+                return ResourceManager.GetString("WelcomeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 若要了解有关 Betterlife.NET MVC 的更多信息，请访问.
+        /// </summary>
+        public static string WelcomeVisit {
+            get {
+                return ResourceManager.GetString("WelcomeVisit", resourceCulture);
             }
         }
     }

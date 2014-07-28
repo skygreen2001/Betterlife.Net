@@ -1,6 +1,21 @@
-﻿    <style type="text/css">
+﻿@{
+    if(Request.IsAuthenticated) {
+        ViewBag.LanJsPosition = "450px";
+    }
+    else {
+        ViewBag.LanJsPosition = "50px";
+    }
+}
+    <style type="text/css">
         /*新增样式:modify by skygreen*/
         /*选择中英文*/
+        .lang-picker-wrapper {
+            position: absolute;
+            right: 50px;
+            top: 2px;
+            z-index: 1000;
+        }
+
         .lang-picker {
             border-radius: 6px;
             color: #ffffff;
@@ -32,7 +47,7 @@
         $(function ()
         {
             Globalize.culture("@UtilCultureHelper.GetCurrentCulture()");
-
+            $('.lang-picker-wrapper').css('right', "@ViewBag.LanJsPosition");
             $(".lang-picker").bind("mouseenter mouseleave", function ()
             {
                 $(this).toggleClass('hover');
@@ -63,10 +78,10 @@
         </span>
     </div>
 @if(Request.IsAuthenticated) {
-    <span>@Html.ActionLink("修改密码", "ChangePassword", "Account")</span>
-    <text>欢迎 <strong>@User.Identity.Name</strong>!
-    [ @Html.ActionLink("注销", "LogOff", "Account") ]</text>
+    <span>@Html.ActionLink(@Resources.PasswordChange, "ChangePassword", "Account")</span>
+    <text>@Resources.WelcomeText <strong>@User.Identity.Name</strong>!
+    [ @Html.ActionLink(@Resources.LogOff, "LogOff", "Account") ]</text>
 }
 else {
-    @:[ @Html.ActionLink("登录", "LogOn", "Account") ]
+    @:[ @Html.ActionLink(@Resources.Logon, "LogOn", "Account") ]
 }

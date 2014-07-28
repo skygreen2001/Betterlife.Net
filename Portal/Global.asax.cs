@@ -13,6 +13,7 @@ namespace Portal
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new ActionBase() { Message = "全局信息" }, 0);
         }
 
         public static void RegisterRoutes(RouteCollection routes)

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Util.Reflection;
 using Portal.Code.Util;
+using Portal.Properties;
 
 namespace Portal.Controllers
 {
@@ -23,6 +24,9 @@ namespace Portal.Controllers
         /// </summary>
         protected override void ExecuteCore()
         {
+            ViewBag.Title = Resources.SiteName;
+            ViewBag.SiteName = Resources.SiteName;
+
             UseMultiLanguage();
             base.ExecuteCore();
         }
