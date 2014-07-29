@@ -27,7 +27,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{93
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portal", "Portal\Portal.csproj", "{4D526BA3-8224-4FE6-9219-56B23575999A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B5407FD4-9F32-4C03-872D-A20DD6B50B64}"
+	ProjectSection(SolutionItems) = preProject
+		Betterlife.Net.testsettings = Betterlife.Net.testsettings
+		Betterlife.Net.vsmdi = Betterlife.Net.vsmdi
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Betterlife.Net.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
