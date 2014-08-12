@@ -1,5 +1,6 @@
 ﻿#region Refrences
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -111,13 +112,13 @@ namespace Util.xml
             if (xml == null)
             {
                 //throw new ArgumentNullException("xml");
-                Console.WriteLine(String.Format("无xml信息：{0}\r\n{1}", xml, type.FullName));
+                Debug.WriteLine(String.Format("无xml信息：{0}\r\n{1}", xml, type.FullName));
                 return null;
             }
             if (type == null)
             {
                 //throw new ArgumentNullException("type");
-                Console.WriteLine(String.Format("无type信息：{0}\r\n{1}", xml, type.FullName));
+                Debug.WriteLine(String.Format("无type信息：{0}\r\n{1}", xml, type.FullName));
             }
             object obj1 = null;
             XmlSerializer serializer = new XmlSerializer(type);
@@ -131,7 +132,7 @@ namespace Util.xml
                 }
                 catch (InvalidOperationException exception1)
                 {
-                    Console.WriteLine(CONVERT_EXCEPTION_MSG + exception1.Message);
+                    Debug.WriteLine(CONVERT_EXCEPTION_MSG + exception1.Message);
                 }
                 finally
                 {

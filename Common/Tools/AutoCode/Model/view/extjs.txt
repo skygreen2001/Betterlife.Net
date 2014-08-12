@@ -387,6 +387,7 @@ $columns
 						    items: [
                                 '用户名', '&nbsp;&nbsp;', { ref: '../aUsername' }, '&nbsp;&nbsp;',
                                 '真实姓名', '&nbsp;&nbsp;', { ref: '../aRealname' }, '&nbsp;&nbsp;',
+								$filterFields
 								{
 								    xtype: 'button', text: '查询', scope: this,
 								    handler: function () {

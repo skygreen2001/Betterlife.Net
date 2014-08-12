@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Collections;
+using System.Diagnostics;
 
 namespace Util.Common
 {
@@ -34,7 +35,7 @@ namespace Util.Common
         public static void WriteLine(object element)
         {
             if (element.GetType().FullName.Contains("DynamicProxies")) return;
-            Console.WriteLine(Dump(element, 2));
+            Debug.WriteLine(Dump(element, 2));
         }
 
         public static string Dump(object element, int indentSize)

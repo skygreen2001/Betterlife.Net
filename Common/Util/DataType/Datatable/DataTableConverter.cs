@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Reflection;
 using Util.Common;
 
@@ -90,7 +91,7 @@ namespace Util.DataType.Datatable
             }
             else
             {
-                Console.WriteLine("List items不能被转换.");
+                Debug.WriteLine("List items不能被转换.");
                 //throw new ApplicationException("List items are not convertable.");
                 return null;
             }

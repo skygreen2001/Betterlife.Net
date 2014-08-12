@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -23,11 +24,11 @@ namespace Util.Reflection
             if (null == src)
             {
                 isRunWell = false;
-                Console.WriteLine("源对象不能为空！");
+                Debug.WriteLine("源对象不能为空！");
             }
             if (null == dest) {
                 isRunWell = false;
-                Console.WriteLine("目的对象不能为空！");
+                Debug.WriteLine("目的对象不能为空！");
             }
             if (isRunWell)
             {
@@ -79,7 +80,7 @@ namespace Util.Reflection
         {
             if (null == src || null == dest || null == fieldName)
             {
-                Console.WriteLine("操作的对象参数不能为空！");
+                Debug.WriteLine("操作的对象参数不能为空！");
             }
             else
             {
@@ -100,7 +101,7 @@ namespace Util.Reflection
         /// <returns>The copied object.</returns>     
         public static T Clone<T>(T source)     {         
             if (!typeof(T).IsSerializable)         {
-                Console.WriteLine("Type必须serializable." + source);
+                Debug.WriteLine("Type必须serializable." + source);
                 return default(T);
             }          
             // Don't serialize a null object, simply return the default for that object 

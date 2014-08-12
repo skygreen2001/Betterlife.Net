@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace Util.Common
 {
@@ -1107,7 +1108,7 @@ namespace Util.Common
                  }
                  catch (Exception ex)
                  {
-                     Console.WriteLine(ex.Message);
+                     Debug.WriteLine(ex.Message);
                      result = false;
                  }
                  finally

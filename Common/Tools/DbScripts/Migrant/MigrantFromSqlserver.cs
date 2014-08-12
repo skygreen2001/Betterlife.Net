@@ -190,7 +190,7 @@ SET FOREIGN_KEY_CHECKS=0;
                         }
                         else
                         {
-                            if (columnInfo["Null"].Equals("YES") || columnInfo["Null"].Equals("是")) column_default = "DEFAULT NULL";
+                            if (columnInfo["Null"].Equals("YES") || columnInfo["Null"].Equals("是")) column_default = "DEFAULT NULL"; else column_default = "NOT NULL";
                             if (UtilString.Contains(column_name.ToUpper(), "TIME", "DATE"))
                             {
                                 if (UtilString.Contains(column_name.ToUpper(), "TIMES"))

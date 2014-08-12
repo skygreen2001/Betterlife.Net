@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tools.Util.Db;
 using Util.Common;
+using System.Text.RegularExpressions;
 
 namespace Tools.AutoCode
 {
@@ -62,6 +64,12 @@ namespace Tools.AutoCode
         /// 一对多表关系定义数据
         /// </summary>
         public static Dictionary<string, List<string>> OneHasManyDefine;
+        /// <summary>
+        /// 获取不同表里列名相同的列名 
+        /// 不包括列名为ID,CommitTime,UpdateTime
+        /// 不包含列名为_ID
+        /// </summary>
+        public string[] Same_Column_Names;
 
         /// <summary>
         /// 初始化工作
@@ -121,6 +129,8 @@ namespace Tools.AutoCode
                     }
                 }
             }
+            Same_Column_Names = UtilSqlserver.Same_Column_Name_In_TableName();
+            //UtilObjectDump.WriteLine(Same_Column_Names);
         }
 
         /// <summary>
@@ -239,5 +249,98 @@ namespace Tools.AutoCode
             if (Column_Name.Contains("EMAIL")||(UtilString.Contains(Column_Comment,"邮件","邮箱")&&(!Column_Name.Contains("IS"))))return true;
 		    return false;
         }
+
+        /// <summary>
+        /// 根据类名获取表代表列显示名称
+        /// </summary>
+        /// <param name="ClassName">数据对象类名</param>
+        /// <param name="IsReturnNull">是否没有就返回Null</param>
+        /// <returns></returns>
+        protected string GetShowFieldNameByClassname(string ClassName, bool IsReturnNull=true)
+        {
+            string TableName = ClassName;
+            Dictionary<string, Dictionary<string, string>> FieldInfo = FieldInfos[TableName];
+            List<string> FieldNames = FieldInfo.Keys.ToList();
+            foreach (string FieldName in FieldNames)
+            {
+                string FieldName_Filter = FieldName.ToLower();
+                if (!FieldName.ToLower().Contains("id"))
+                {
+                    if (UtilString.Contains(FieldName.ToLower(), "name", "title"))
+                    {
+                        return FieldName;
+                    }
+                    string ClassName_Filter = ClassName.ToLower();
+                    if (FieldName.ToLower().Contains(ClassName_Filter)) return FieldName;
+                }
+            }
+            if (IsReturnNull) return ""; else return "Name";
+        }
+
+        /// <summary>
+        /// 根据类名判断是不是多对多关系，存在中间表表名
+        /// </summary>
+        /// <param name="Classname">数据对象类名</param>
+        /// <returns></returns>
+	    protected bool IsMany2ManyByClassname(string Classname)
+	    {
+		    string Tablename=Classname;
+            if (TableInfoList.Keys.Contains(Tablename))
+            {
+                string Comment = TableInfoList[Tablename]["Comment"];
+                Dictionary<string, Dictionary<string, string>> Fields = FieldInfos[Tablename];
+                if (Tablename.Length >= 8)
+                {
+                    if (Comment.Contains("关系表"))
+                    {
+                        int Count = 0;
+                        foreach (KeyValuePair<string, Dictionary<string, string>> Entry in Fields)
+                        {
+                            string Field_Name = Entry.Key;
+                            if (Field_Name.Contains("_ID")) Count += 1;
+
+                        }
+                        if (Count >= 2) return true;
+                    }
+                    else
+                    {
+                        string[] MultiTablesMaybe = Regex.Split(Tablename, "Re", RegexOptions.IgnoreCase);
+                        if (MultiTablesMaybe.Count() > 1)
+                        {
+                            int countTables = 0;
+                            foreach (string TableNameMaybe in MultiTablesMaybe)
+                            {
+                                if (TableList.Contains(TableNameMaybe))
+                                {
+                                    countTables += 1;
+                                }
+                            }
+                            if (countTables >= 2) return true;
+                        }
+
+                    }
+                }
+            }
+		    return false;
+	    }
+
+        /// <summary>
+        /// 根据类名判断是不是多对多关系，如果存在其他显示字段则需要在显示Tab中显示
+        /// </summary>
+        /// <param name="Classname">数据对象类名</param>
+        /// <returns></returns>
+        protected bool IsMany2ManyShowHasMany(string Classname)
+        {
+            bool isMany2ManyByClassname = IsMany2ManyByClassname(Classname);
+
+            string Tablename = Classname;
+            if (isMany2ManyByClassname)
+            {
+                Dictionary<string, Dictionary<string, string>> Fields = FieldInfos[Tablename];
+                if (Fields.Count() == 5) return false;
+            }
+            return true;
+        }
+
     }
 }

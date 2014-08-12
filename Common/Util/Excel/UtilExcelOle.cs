@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace Util.Common
 {
@@ -324,7 +325,7 @@ namespace Util.Common
             catch (Exception ee)
             {
                 //throw new Exception(ee.Message);
-                Console.WriteLine(ee.Message);
+                Debug.WriteLine(ee.Message);
                 return null;
             }
         }
@@ -343,7 +344,7 @@ namespace Util.Common
             catch (Exception ee)
             {
                 //throw new Exception(ee.Message);
-                Console.WriteLine(ee.Message);
+                Debug.WriteLine(ee.Message);
                 return null;
             }
         }
@@ -400,7 +401,7 @@ namespace Util.Common
             catch (Exception ee)
             {
                 //throw new Exception(ee.Message);
-                Console.WriteLine(ee.Message);
+                Debug.WriteLine(ee.Message);
                 return null;
             }
         }

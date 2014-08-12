@@ -75,8 +75,10 @@
     <Compile Include="Util\EmailUtil\TestUtilEmail.cs" />
     <Compile Include="Util\Excel\TestUtilExcelOle.cs" />
     <Compile Include="Util\TestUtilEncrypt.cs" />
+    <Compile Include="Util\TestUtilFtp.cs" />
     <Compile Include="Util\TestUtilPinyin.cs" />
     <Compile Include="Util\Excel\TestUtilExcelNpoi.cs" />
+    <Compile Include="Util\Xml\TestUtilXmlAutocode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">
@@ -85,6 +87,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Tools\Tools.csproj">
+      <Project>{a1bf3352-301d-4a59-867a-00c5accfe568}</Project>
+      <Name>Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Util\Util.csproj">
       <Project>{a52e0ee4-d761-4a0b-9ae7-7c4751aaa416}</Project>
       <Name>Util</Name>

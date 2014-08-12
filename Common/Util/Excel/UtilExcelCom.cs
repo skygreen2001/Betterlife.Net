@@ -12,6 +12,7 @@ using System.Web;
 #if IS_USE_EXCEL_COM
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
+using System.Diagnostics;
 #endif
 namespace Util.Common
 {
@@ -62,7 +63,7 @@ namespace Util.Common
             }
             catch (Exception e)
             {
-                Console.Write("Error:" + e.Message);
+                Debug.Write("Error:" + e.Message);
             }
             finally
             {

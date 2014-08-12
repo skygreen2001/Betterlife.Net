@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Configuration;
@@ -43,7 +44,7 @@ namespace Util.EmailUtil
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
         }
@@ -85,7 +86,7 @@ namespace Util.EmailUtil
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -119,7 +120,7 @@ namespace Util.EmailUtil
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
                 return false;
             }
         }

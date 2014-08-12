@@ -22,6 +22,10 @@ namespace Tools.AutoCode
         /// </summary>
         private static string JsNamespace_Alias = "Bn";
         /// <summary>
+        /// 查询过滤条件字段
+        /// </summary>
+	    public static Dictionary<string,object> Filter_Fieldnames=new Dictionary<string,object>();
+        /// <summary>
         /// 运行主程序
         /// 1.后台extjs文件生成
         /// </summary>
@@ -29,9 +33,19 @@ namespace Tools.AutoCode
         {
             base.Init();
 
+            //读取配置文件里查询条件和关系列显示的配置
+            Filter_Fieldnames_Load();
+
             Save_Dir = App_Dir + "Admin" + Path.DirectorySeparatorChar + "Scripts" + Path.DirectorySeparatorChar + "core" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
             CreateExtjsView();
+        }
+
+        /// <summary>
+        /// 读取配置文件里查询条件和关系列显示的配置
+        /// </summary>
+        private void Filter_Fieldnames_Load()
+        {
         }
 
         /// <summary>
@@ -568,6 +582,7 @@ namespace Tools.AutoCode
                                 }
                             }
                             Unit_Template = @"
+                            {xtype: 'hidden',name : '{$Column_Name}',ref:'../{$Column_Name}'},
                             {
                                 fieldLabel: '{$Relation_Column_Comment}', xtype: 'combo', name: '{$Relation_Column_Name}', ref: '../{$Relation_Column_Name}',
                                 store: $ns_alias.{$ClassName}.Store.{$Relation_InstanceName}StoreForCombo, emptyText: '请选择{$Relation_Column_Comment}', itemSelector: 'div.search-item',
@@ -935,6 +950,150 @@ namespace Tools.AutoCode
             }
             Result = Result.Substring(2, Result.Length - 3);
             return Result;
+        }
+
+        /// <summary>
+        /// 获取Ext "Grid" 中"tbar"包含的items中的items
+        /// 获取重置语句
+        /// 获取查询中的语句
+        /// </summary>
+        /// <param name="ClassName">数据对象类名</param>
+        /// <param name="Blank_Pre">空格字符串</param>
+        /// <returns></returns>
+        public Dictionary<string, string> Model_Filters(string ClassName, string Blank_Pre = "")
+        {
+            Dictionary<string, string> Result=new Dictionary<string,string>();
+		    string filterFields             ="";//Ext "Grid" 中"tbar"包含的items中的items
+		    string filterReset              ="";//重置语句
+		    string filterdoSelect           ="";//查询中的语句
+        //$filterwordNames          =array();
+        //string filterfilter			  ="";
+        //if (array_key_exists($classname, self::$filter_fieldnames))
+        //{
+        //    $filterwords=self::$filter_fieldnames[$classname];
+        //    $instancename_pre=$instancename{0};
+        //    $filterfilter=$blank_pre."                this.filter       ={";
+        //    foreach ($fieldInfo as $fieldname=>$field)
+        //    {
+        //        $field_comment=$field["Comment"];
+        //        $field_comment=self::columnCommentKey($field_comment,$fieldname);
+        //        if (in_array($fieldname, $filterwords))
+        //        {
+        //            $fname=$instancename_pre.$fieldname;
+        //            $datatype=self::comment_type($field["Type"]);
+        //            $filterFields.=$blank_pre."                                '{$field_comment}','&nbsp;&nbsp;',";
+        //            if (($datatype=='date')||contains($field_comment,array("日期","时间")))
+        //            {
+        //                $filterFields.=$blank_pre."{xtype : 'datefield',ref: '../$fname',format : \"Y-m-d\"";
+        //            }else{
+        //                $filterFields.="{ref: '../$fname'";
+        //            }
+        //            $filterwordNames[]=$fname;
+        //            $column_type=self::column_type($field["Type"]);
+        //            if ($column_type=='bit')
+        //            {
+        //                $filterFields.=",xtype:'combo',mode : 'local',\r\n".
+        //                        $blank_pre."                                    triggerAction : 'all',lazyRender : true,editable: false,\r\n".
+        //                        $blank_pre."                                    store : new Ext.data.SimpleStore({\r\n".
+        //                        $blank_pre."                                        fields : ['value', 'text'],\r\n".
+        //                        $blank_pre."                                        data : [['false', '否'], ['true', '是']]\r\n".
+        //                        $blank_pre."                                    }),\r\n".
+        //                        $blank_pre."                                    valueField : 'value',displayField : 'text'\r\n".
+        //                        $blank_pre."                                ";
+        //            }
+        //            if ($column_type=='enum')
+        //            {
+        //                $enum_columnDefine=self::enumDefines($field["Comment"]);
+        //                $filterFields.=",xtype:'combo',mode : 'local',\r\n".
+        //                        $blank_pre."                                    triggerAction : 'all',lazyRender : true,editable: false,\r\n".
+        //                        $blank_pre."                                    store : new Ext.data.SimpleStore({\r\n".
+        //                        $blank_pre."                                        fields : ['value', 'text'],\r\n".
+        //                        $blank_pre."                                        data : [";
+        //                $enumArr=array();
+        //                foreach ($enum_columnDefine as $enum_column)
+        //                {
+        //                    $enumArr[]="['".$enum_column["value"]."', '".$enum_column["comment"]."']";
+        //                }
+        //                $filterFields.=implode(",",$enumArr);
+        //                $filterFields.="]\r\n".
+        //                        $blank_pre."                                    }),\r\n".
+        //                        $blank_pre."                                    valueField : 'value',displayField : 'text'\r\n".
+        //                        $blank_pre."                                ";
+        //            }
+
+        //            if ($filterwords["relation_show"]){
+        //                if (array_key_exists($fieldname, $filterwords["relation_show"])){
+        //                    $con_relation_class=$filterwords["relation_show"][$fieldname]["relation_class"];
+        //                    $show_name         =$filterwords["relation_show"][$fieldname]["show_name"];
+        //                    $store_con_relation_class=$con_relation_class;
+        //                    $store_con_relation_class[0]=strtolower($store_con_relation_class[0]);
+        //                    $storeName="$appName_alias.$classname.Store.".$store_con_relation_class."StoreForCombo";
+        //                    $fieldInfo_relationshow=self::$fieldInfos[self::getTablename($con_relation_class)];
+        //                    if (array_key_exists("Parent_ID",$fieldInfo_relationshow)){
+        //                        $fieldname=self::getShowFieldNameByClassname($con_relation_class);
+        //                        $fsname=$instancename_pre.$fieldname;
+        //                        $con_relation_class{0}=strtolower($con_relation_class{0});
+        //                        if (Config_AutoCode::IS_CSHARP_NET_SERVER)
+        //                        {
+        //                            $url_httpdatatree="../HttpData/Core/Tree/{$con_relation_class}Tree.ashx";
+        //                        }else{
+        //                            $url_httpdatatree="home/admin/src/httpdata/{$con_relation_class}Tree.php";
+        //                        }
+        //                        $filterFields.=", xtype:'hidden'},{\r\n".
+        //                                       $blank_pre."                                      xtype:'combotree',ref:'../{$fsname}',grid:this,\r\n".
+        //                                       $blank_pre."                                      emptyText: '请选择{$field_comment}',canFolderSelect:true,flex:1,editable:false,\r\n".
+        //                                       $blank_pre."                                      tree: new Ext.tree.TreePanel({\r\n".
+        //                                       $blank_pre."                                          dataUrl: '{$url_httpdatatree}',\r\n".
+        //                                       $blank_pre."                                          root: {nodeType: 'async'},border: false,rootVisible: false,\r\n".
+        //                                       $blank_pre."                                          listeners: {\r\n".
+        //                                       $blank_pre."                                              beforeload: function(n) {if (n) {this.getLoader().baseParams.id = n.attributes.id;}}\r\n".
+        //                                       $blank_pre."                                          }\r\n".
+        //                                       $blank_pre."                                      }),\r\n".
+        //                                       $blank_pre."                                      onSelect: function(cmb, node) {\r\n".
+        //                                       $blank_pre."                                          this.grid.topToolbar.{$fname}.setValue(node.attributes.id);\r\n".
+        //                                       $blank_pre."                                          this.setValue(node.attributes.text);\r\n".
+        //                                       $blank_pre."                                      }\r\n".
+        //                                       $blank_pre."                                ";
+        //                    }else{
+        //                        $filterFields.=",xtype: 'combo',\r\n".
+        //                                      $blank_pre."                                     store:{$storeName},hiddenName : '{$fieldname}',\r\n".
+        //                                      $blank_pre."                                     emptyText: '请选择{$field_comment}',itemSelector: 'div.search-item',\r\n".
+        //                                      $blank_pre."                                     loadingText: '查询中...',width:280,pageSize:$appName_alias.$classname.Config.PageSize,\r\n".
+        //                                      $blank_pre."                                     displayField:'{$show_name}',valueField:'{$fieldname}',\r\n".
+        //                                      $blank_pre."                                     mode: 'remote',editable:true,minChars: 1,autoSelect :true,typeAhead: false,\r\n".
+        //                                      $blank_pre."                                     forceSelection: true,triggerAction: 'all',resizable:true,selectOnFocus:true,\r\n".
+        //                                      $blank_pre."                                     tpl:new Ext.XTemplate(\r\n".
+        //                                      $blank_pre."                                         '<tpl for=\".\"><div class=\"search-item\">',\r\n".
+        //                                      $blank_pre."                                         '<h3>{{$show_name}}</h3>',\r\n".
+        //                                      $blank_pre."                                         '</div></tpl>'\r\n".
+        //                                      $blank_pre."                                     )\r\n".
+        //                                      $blank_pre."                                ";
+
+        //                    }
+        //                }
+        //            }
+
+        //            $filterFields.="},'&nbsp;&nbsp;',\r\n";
+        //            $filterReset.=$blank_pre."                                        this.topToolbar.$fname.setValue(\"\");\r\n";
+        //            $filterdoSelect.=$blank_pre."                var $fname = this.topToolbar.$fname.getValue();\r\n";
+        //            $filterfilter.="'$fieldname':$fname,";
+        //        }
+        //    }
+        //    if (strlen($filterFields)>0)
+        //    {
+        //        $filterFields=substr($filterFields,0,strlen($filterFields)-2);
+        //        $filterReset=substr($filterReset,0,strlen($filterReset)-2);
+        //        $filterdoSelect=substr($filterdoSelect,0,strlen($filterdoSelect)-2);
+        //        $filterfilter=substr($filterfilter,0,strlen($filterfilter)-1);
+        //        $filterfilter=$filterfilter."};";
+        //    }
+        //}
+        //Result["filterwordNames"]=$filterwordNames;
+        //Result["filterFields"]   =$filterFields;
+        //Result["filterReset"]    =$filterReset;
+        //if (endWith($filterfilter,"{"))$filterfilter="";
+        //Result["filterdoSelect"] =$filterdoSelect."\r\n".$filterfilter;
+		    return Result;
         }
     }
 }

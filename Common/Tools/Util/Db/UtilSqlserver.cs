@@ -67,6 +67,10 @@ namespace Tools.Util.Db
         /// </summary>
         private static string Sql_PK_DK_FK = @"exec sp_helpconstraint '{0}'";
         /// <summary>
+        /// 获取不同表里列名相同的列
+        /// </summary>
+        private static string Sql_Same_Column_Name = @"select Count(TABLE_CATALOG) counts,Column_Name from information_schema.columns where {0} TABLE_NAME in (select TABLE_NAME from sysobjects where xtype='u') GROUP BY COLUMN_NAME HAVING(COUNT(*)>1);";
+        /// <summary>
         /// 查看数据库表的个数
         /// </summary>
         //private static string Sql_Table_Count="select COUNT(id) from sysobjects where xtype='u'";
@@ -346,7 +350,37 @@ namespace Tools.Util.Db
                 result[table_name] = fkpkdkInfo;
             }
             return result;
+        }
 
+        /// <summary>
+        /// 获取不同表里列名相同的列名 
+        /// 不包括列名为ID,CommitTime,UpdateTime
+        /// 不包含列名为_ID
+        /// </summary>
+        /// <returns></returns>
+        public static string[] Same_Column_Name_In_TableName(string type = "tinyint")
+        {
+            string typeSql = "";
+            if (!string.IsNullOrEmpty(type)) typeSql = " DATA_TYPE='" + type + "' AND ";
+            string SQLStr = string.Format(Sql_Same_Column_Name, typeSql);
+            DataTable tables = UtilSqlserver.SqlExecute(SQLStr);
+
+            string[] Result = new string[tables.Rows.Count];
+            string Column_Name;
+            int i_index = 0;
+            foreach (DataRow item in tables.Rows)
+            {
+                Column_Name = (string)item.ItemArray[1];
+                if (Column_Name.ToUpper().Contains("_ID") || Column_Name.ToUpper().Equals("ID") || Column_Name.ToUpper().Equals("COMMITTIME") || Column_Name.ToUpper().Equals("UPDATETIME"))
+                {
+                }
+                else
+                {
+                    Result.SetValue(Column_Name, i_index);
+                    i_index += 1;
+                }
+            }
+            return Result;
         }
         #endregion
 

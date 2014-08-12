@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Util.Common;
 
@@ -275,7 +276,7 @@ namespace Util.Reflection
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Debug.WriteLine(ex.Message);
                     }
                 }
                 else
@@ -312,15 +313,15 @@ namespace Util.Reflection
             MethodInfo[] mif = t.GetMethods(BindingFlags.Public | BindingFlags.Instance);
             for (int i = 0; i < mif.Length; i++)
             {
-                Console.WriteLine("方法名字：" + mif[i].Name);
-                Console.WriteLine("方法名字：" + mif[i].Module.Name);
+                Debug.WriteLine("方法名字：" + mif[i].Name);
+                Debug.WriteLine("方法名字：" + mif[i].Module.Name);
                 ParameterInfo[] p = mif[i].GetParameters();
                 for (int j = 0; j < p.Length; j++)
                 {
-                    Console.WriteLine("参数名:  " + p[j].Name);
-                    Console.WriteLine("参数类型:  " + p[j].ParameterType.ToString());
+                    Debug.WriteLine("参数名:  " + p[j].Name);
+                    Debug.WriteLine("参数类型:  " + p[j].ParameterType.ToString());
                 }
-                Console.WriteLine("******************************************");
+                Debug.WriteLine("******************************************");
             }
         }
 
@@ -338,7 +339,7 @@ namespace Util.Reflection
                 {
                     throw new ArgumentNullException("target");
                 }
-                Console.WriteLine("目标对象不能为空");
+                Debug.WriteLine("目标对象不能为空");
             }
             if (string.IsNullOrWhiteSpace(propertyName))
             {
@@ -346,7 +347,7 @@ namespace Util.Reflection
                 {
                     throw new ArgumentException("propertyName can not be null or whitespace", "propertyName");
                 }
-                Console.WriteLine("属性不能为空不能为空");
+                Debug.WriteLine("属性不能为空不能为空");
             }
             var propertyInfo = target.GetType().GetProperty(propertyName, BindingFlags);
             if (propertyInfo == null)
@@ -355,7 +356,7 @@ namespace Util.Reflection
                 {
                     throw new ArgumentException(string.Format("Can not find property '{0}' on '{1}'", propertyName, target.GetType()));
                 }
-                Console.WriteLine(String.Format("在类：{0}里不能找到指定属性：{1}", target.GetType(), propertyName));                
+                Debug.WriteLine(String.Format("在类：{0}里不能找到指定属性：{1}", target.GetType(), propertyName));                
             }
             return propertyInfo.GetValue(target, null);
         }
@@ -392,7 +393,7 @@ namespace Util.Reflection
                 {
                     throw new ArgumentNullException("target");
                 }
-                Console.WriteLine("目标对象不能为空");
+                Debug.WriteLine("目标对象不能为空");
             }
             if (string.IsNullOrWhiteSpace(methodName))
             {
@@ -400,7 +401,7 @@ namespace Util.Reflection
                 {
                     throw new ArgumentException("methodName can not be null or whitespace", "methodName");
                 }
-                Console.WriteLine("方法名不能为空");
+                Debug.WriteLine("方法名不能为空");
             }
 
             var methodInfo = target.GetType().GetMethod(methodName, BindingFlags, null, argTypes, null);
@@ -411,7 +412,7 @@ namespace Util.Reflection
                     throw new ArgumentException(string.Format("Can not find method '{0}' on '{1}'", methodName, target.GetType()));
                 }
 
-                Console.WriteLine(String.Format("在类：{0}里不能找到指定方法：{1}", target.GetType(), methodName));    
+                Debug.WriteLine(String.Format("在类：{0}里不能找到指定方法：{1}", target.GetType(), methodName));    
             }
             return methodInfo.Invoke(target, parameters);
         }
@@ -433,7 +434,7 @@ namespace Util.Reflection
                     result += property.Name + ":" + property.GetValue(obj) + "\r\n";
                 }
             }
-            Console.WriteLine(result);
+            Debug.WriteLine(result);
             return result;
         }
     }

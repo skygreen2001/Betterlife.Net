@@ -126,7 +126,7 @@ namespace Tools.AutoCode
             string Service_NameSpace = "AdminManage";
             string Template_Name, UnitTemplate, Content, Content_New;
             string ColumnNameComment, ColumnCommentName, EnumColumnName;
-            string Column_Name, Column_Comment, Column_Type, Column_Length;
+            string Column_Name,Column_Table_Name,Column_Comment, Column_Type, Column_Length;
             string ImportConvertDataToShow, ExportConvertShowToData;
             string SpecialResult = "";
             string Relation_ClassName, Relation_InstanceName;
@@ -192,9 +192,15 @@ namespace Tools.AutoCode
                             if (c_c.Length > 1)
                             {
                                 UnitTemplate = @"
-                    {$InstanceName}.{$Column_Name}Show = Enum{$Column_Name}.{$Column_Name}Show(Convert.ToChar({$InstanceName}.{$Column_Name}));";
+                    {$InstanceName}.{$Column_Name}Show = Enum{$Column_Table_Name}.{$Column_Name}Show(Convert.ToChar({$InstanceName}.{$Column_Name}));";
                                 UnitTemplate = UnitTemplate.Replace("{$InstanceName}", InstanceName);
                                 UnitTemplate = UnitTemplate.Replace("{$Column_Name}", Column_Name);
+                                Column_Table_Name = Column_Name;
+                                if (Array.IndexOf(Same_Column_Names, Column_Name) > -1)
+                                {
+                                    Column_Table_Name = ClassName + "_" + Column_Name;
+                                }
+                                UnitTemplate = UnitTemplate.Replace("{$Column_Table_Name}", Column_Table_Name);
                                 SpecialResult += UnitTemplate;
                                 Column_Comment = c_c[0].Trim();
                                 EnumColumnName += "\""+Column_Name+"\",";

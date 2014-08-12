@@ -3,6 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Diagnostics;
 
 namespace Util.Common
 {
@@ -32,7 +33,7 @@ namespace Util.Common
             }
             catch (WebException we)//异常
             {
-                Console.WriteLine(we.Message);
+                Debug.WriteLine(we.Message);
                 return false;
             }
             finally
@@ -103,7 +104,7 @@ namespace Util.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
             return result;

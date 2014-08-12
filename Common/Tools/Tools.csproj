@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCode\AutoCodeViewExt.cs" />
+    <Compile Include="AutoCode\Prepare\AutoCodeConfig.cs" />
     <Compile Include="ToolAutoCodeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +165,7 @@
     <Content Include="AutoCode\Model\action\uploadcontroller.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AutoCode\Model\autocode.config.xml" />
     <Content Include="AutoCode\Model\domain\context.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

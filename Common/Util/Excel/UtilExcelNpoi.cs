@@ -4,6 +4,7 @@ using System.IO;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System;
+using System.Diagnostics;
 
 namespace Util.Common
 {
@@ -75,7 +76,7 @@ namespace Util.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
             else dt = null;
@@ -140,7 +141,7 @@ namespace Util.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
             else dt = null;
@@ -166,7 +167,7 @@ namespace Util.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
             return 0;
@@ -193,7 +194,7 @@ namespace Util.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
             return "";
@@ -228,7 +229,7 @@ namespace Util.Common
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.Message);
                 }
             }
             return Result;

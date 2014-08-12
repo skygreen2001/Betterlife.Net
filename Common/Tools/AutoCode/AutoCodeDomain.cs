@@ -515,7 +515,7 @@ namespace Tools.AutoCode
             
             string Unit_Template;
             string EnumDefineBlock, EnumD2VBlock, EnumV2DBlock;
-            string Column_Name, Column_Type, Column_Comment, MainContent;
+            string Column_Name, Column_Table_Name, Column_Type, Column_Comment, MainContent;
             List<Dictionary<string, string>> Enum_ColumnDefine;
             List<string> enumL=new List<string>();//如果重名只放一个
             MainContent = "";
@@ -567,10 +567,9 @@ namespace Tools.AutoCode
     /// <summary>
     /// {$Column_Comment}
     /// </summary>
-    public class Enum{$Column_Name}
+    public class Enum{$Column_Table_Name}
     {
 {$EnumDefineBlock}
-
         /// <summary>
         /// 显示{$Column_Comment}
         /// </summary>
@@ -600,8 +599,14 @@ namespace Tools.AutoCode
                                         Unit_Template = Unit_Template.Replace("{$EnumDefineBlock}", EnumDefineBlock);
                                         Unit_Template = Unit_Template.Replace("{$EnumD2VBlock}", EnumD2VBlock);
                                         Unit_Template = Unit_Template.Replace("{$EnumV2DBlock}", EnumV2DBlock);
-
                                         Unit_Template = Unit_Template.Replace("{$Column_Name}", Column_Name);
+                                        Column_Table_Name = Column_Name;
+                                        if (Array.IndexOf(Same_Column_Names, Column_Name)>-1)
+                                        {
+                                            Column_Table_Name = ClassName + "_" + Column_Name;
+                                        }
+                                        Unit_Template = Unit_Template.Replace("{$Column_Table_Name}", Column_Table_Name);
+                                        
                                         Column_Comment = c_c[0];
                                         Unit_Template = Unit_Template.Replace("{$Column_Comment}", Column_Comment);
                                         MainContent += Unit_Template;
