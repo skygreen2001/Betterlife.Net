@@ -79,7 +79,9 @@ namespace Util.View.OnlineEditor
         var ue_{0};
         function pageInit_ue_{0}()
         {{
-	        ue_{0}=UE.getEditor('{0}');
+	        ue_{0}=UE.getEditor('{0}',{{
+	            allowDivTransToP: false
+	        }});
         }}
         </script>
                 ";
@@ -96,7 +98,8 @@ namespace Util.View.OnlineEditor
         function pageInit_ue_{0}()
         {{
 	        ue_{0}=UE.getEditor('{0}',{{
-		        toolbars:{1}
+		        toolbars:{1},
+	            allowDivTransToP: false
 	        }});
         }}
         </script>
