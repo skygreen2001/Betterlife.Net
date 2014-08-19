@@ -25,6 +25,10 @@ namespace Tools.Util.Db
                                         "Trusted_Connection=yes;" +
                                         "connection timeout=30";//默认超时时间是30秒
         public static string Database_Name = "BetterlifeNet";
+        /// <summary>
+        /// 是否直接导入Mysql表定义一致【包括大小写】
+        /// </summary>
+        public static bool IsSqlserverDefault = false;
 
         #region T-SQL定义
         /// <summary>
@@ -284,8 +288,24 @@ namespace Tools.Util.Db
                     columnInfo["Length"] = "";
                 }
                 var fkPk = "";
-                if (column_name.Equals("ID")) fkPk = "PK";
-                if (column_name.Contains("_ID")) fkPk = "FK";
+                if (IsSqlserverDefault)
+                {
+                    if (column_name.Equals("ID")) fkPk = "PK";
+                    if (column_name.Contains("_ID")) fkPk = "FK";
+                }
+                else
+                {
+                    string[] tbl = table_name.Split('_');
+                    if (column_name.ToUpper().Contains("_ID") && (column_name.ToUpper().Contains(tbl[tbl.Length - 1].ToUpper())))
+                    {
+                        fkPk = "PK";
+                    }
+
+                    if (column_name.ToUpper().Contains("_ID") && (!column_name.ToUpper().Contains(tbl[tbl.Length - 1].ToUpper())))
+                    {
+                        fkPk = "FK";
+                    }
+                }
                 columnInfo["Fkpk"] = fkPk;
                 sql = string.Format(Sql_Table_Columns_Comment,  table_name, column_name);
                 DataTable column_comment = UtilSqlserver.SqlExecute(sql);
