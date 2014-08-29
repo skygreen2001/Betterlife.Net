@@ -206,20 +206,84 @@ namespace Tools.Util.Db
 
             string sql = string.Format(Sql_Table_Columns, table_name);
             DataTable columns = UtilMysql.SqlExecute(sql);
-            string column_name;
+            string column_name, column_type_length;
             foreach (DataRow item in columns.Rows)
             {
                 Dictionary<string, string> columnInfo = new Dictionary<string, string>();
                 column_name = (string)item.ItemArray[0];
                 columnInfo["Field"] = column_name;
-                columnInfo["Type"] = (string)item.ItemArray[1];
+                column_type_length = (string)item.ItemArray[1];
+                columnInfo["Type"] = column_type_length;
+                columnInfo["Type_Only"] = Column_Type_Only(column_type_length);
+                columnInfo["Length"] = Column_Length(column_type_length);
                 columnInfo["Null"] = (string)item.ItemArray[3];
 
-                columnInfo["Default"] =(string.IsNullOrEmpty(item.ItemArray[5].ToString()))? null : (string)item.ItemArray[5];
-                columnInfo["Comment"] = (string)item.ItemArray[item.ItemArray.Count()-1];
+                string fkPk = "";
+                string[] tbl = table_name.Split('_');
+                if (column_name.ToUpper().Contains("_ID") && (column_name.ToUpper().Contains(tbl[tbl.Length - 1].ToUpper())))
+                {
+                    fkPk = "PK";
+                }
+
+                if (column_name.ToUpper().Contains("_ID") && (!column_name.ToUpper().Contains(tbl[tbl.Length - 1].ToUpper())))
+                {
+                    fkPk = "FK";
+                }
+                columnInfo["Fkpk"] = fkPk;
+
+                columnInfo["Default"] = (string.IsNullOrEmpty(item.ItemArray[5].ToString())) ? null : (string)item.ItemArray[5];
+                columnInfo["Comment"] = (string)item.ItemArray[item.ItemArray.Count() - 1];
                 result[column_name] = columnInfo;
             }
             return result;
+        }
+
+        /// <summary>
+        /// 表中列的类型定义
+        /// </summary>
+        /// <param name="ColumnTypeLength">列类型，包括列长度</param>
+        /// <returns></returns>
+        private static string Column_Type_Only(string ColumnTypeLength)
+        {
+            if (ColumnTypeLength.Contains("enum"))
+            {
+                return ColumnTypeLength;
+            }
+            else if (ColumnTypeLength.Contains("("))
+            {
+                string[] typeLength = ColumnTypeLength.Split(new char[] { '[', ']', '(', ')' });
+                return typeLength[0];
+            }
+            else
+            {
+                return ColumnTypeLength;
+            }
+        }
+
+        /// <summary>
+        /// 表中列的长度定义
+        /// </summary>
+        /// <param name="ColumnTypeLength">列类型，包括列长度</param>
+        /// <returns></returns>
+        private static string Column_Length(string ColumnTypeLength)
+        {
+            if (ColumnTypeLength.Contains("enum"))
+            {
+                return "1";
+            }
+            else if (ColumnTypeLength.Contains("timestamp"))
+            {
+                return "10";
+            }
+            else if (ColumnTypeLength.Contains("("))
+            {
+                string[] typeLength = ColumnTypeLength.Split(new char[] { '[', ']', '(', ')' });
+                return typeLength[1];
+            }
+            else
+            {
+                return "1";
+            }
         }
         #endregion
     }

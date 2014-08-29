@@ -479,7 +479,9 @@ namespace Tools
                     }
                     be = new ExcelBE(tablerowno, 1, columnInfo["Field"], "A" + tablerowno, "A" + tablerowno, null, false, 10, 18, rowHeight, 2, null, "Century Gothic", 10, false, null);
                     UtilExcelCom.Current().InsertData(be);
-                    be = new ExcelBE(tablerowno, 2, columnInfo["Type"], "B" + tablerowno, "B" + tablerowno, null, false, 10, 15, rowHeight, 1, null, "Century Gothic", 10, false, null);
+                    string Type_Only = "";
+                    if (cbDbType.SelectedIndex == 0) Type_Only = columnInfo["Type"]; else Type_Only = columnInfo["Type_Only"];
+                    be = new ExcelBE(tablerowno, 2, Type_Only, "B" + tablerowno, "B" + tablerowno, null, false, 10, 15, rowHeight, 1, null, "Century Gothic", 10, false, null);
                     UtilExcelCom.Current().InsertData(be);
                     be = new ExcelBE(tablerowno, 3, columnInfo["Length"], "C" + tablerowno, "C" + tablerowno, null, false, 10, 9, rowHeight, 1, null, "Century Gothic", 10, false, null);
                     UtilExcelCom.Current().InsertData(be);
