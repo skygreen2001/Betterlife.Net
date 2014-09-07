@@ -93,7 +93,7 @@ namespace Business.Core.Service
             string Condition="";
             if ((ID_Arr!=null)&&(ID_Arr.Length>0))
             {
-                Condition=" ID="+ID_Arr[0]+" ";
+                Condition=" ID='"+ID_Arr[0]+"' ";
                 for (int i = 1; i < ID_Arr.Length; i++)
 			    {
 			        Condition+=" OR ID='"+ID_Arr[i]+"' ";

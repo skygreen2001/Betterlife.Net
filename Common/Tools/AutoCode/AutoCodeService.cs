@@ -15,14 +15,6 @@ namespace Tools.AutoCode
     public class AutoCodeService:AutoCodeBase
     {
         /// <summary>
-        /// 特殊字段:CommitTime
-        /// </summary>
-        private static string CommitTime_Str = "CommitTime";
-        /// <summary>
-        /// 特殊字段:Updatetime
-        /// </summary>
-        private static string UpdateTime_Str = "UpdateTime";
-        /// <summary>
         /// 服务类生成定义的方式
         /// 1.Core/Service服务层所有的服务业务类|接口
         /// 2.Business/Admin后台所有ExtService服务类
@@ -35,6 +27,7 @@ namespace Tools.AutoCode
         public void Run()
         {
             base.Init();
+
             //1.Core/Service服务层所有的服务业务类
             Save_Dir = App_Dir + "Core" + Path.DirectorySeparatorChar + "Business" + Path.DirectorySeparatorChar + "Service" + Path.DirectorySeparatorChar;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);            

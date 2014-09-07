@@ -385,9 +385,7 @@ $columns
 						        }
 						    },
 						    items: [
-                                '用户名', '&nbsp;&nbsp;', { ref: '../aUsername' }, '&nbsp;&nbsp;',
-                                '真实姓名', '&nbsp;&nbsp;', { ref: '../aRealname' }, '&nbsp;&nbsp;',
-								$filterFields
+$filterFields
 								{
 								    xtype: 'button', text: '查询', scope: this,
 								    handler: function () {
@@ -397,8 +395,7 @@ $columns
 								{
 								    xtype: 'button', text: '重置', scope: this,
 								    handler: function () {
-								        this.topToolbar.aUsername.setValue("");
-								        this.topToolbar.aRealname.setValue("");
+$filterReset
 								        this.filter = {};
 								        this.doSelect$classname();
 								    }
@@ -604,9 +601,7 @@ $columns
 		 */
         doSelect$classname: function () {
             if (this.topToolbar) {
-                var aUsername = this.topToolbar.aUsername.getValue();
-                var aRealname = this.topToolbar.aRealname.getValue();
-                this.filter = { 'Username': aUsername, 'Realname': aRealname };
+$filterdoSelect
             }
             var condition = { 'start': 0, 'limit': $ns_alias.$classname.Config.PageSize };
             Ext.apply(condition, this.filter);

@@ -13,6 +13,33 @@ namespace Tools.AutoCode
 {
     public class AutoCodeBase
     {
+        #region 解决方案个性化设置
+        /// <summary>
+        /// 数据库名称
+        /// </summary>
+        public static string Database_Name = "BetterlifeNet";
+        /// <summary>
+        /// 生成的Entities配置文件的名称:在项目Database下*.edmx文件的名称
+        /// </summary>
+        public static string EntitiesName = "BetterlifeNetEntities";
+        /// <summary>
+        /// JS命名空间
+        /// </summary>
+        public static string JsNamespace = "BetterlifeNet";
+        /// <summary>
+        /// JS命名空间别名
+        /// </summary>
+        public static string JsNamespace_Alias = "Bn";
+        /// <summary>
+        /// 特殊字段:CommitTime
+        /// </summary>
+        public static string CommitTime_Str = "CommitTime";
+        /// <summary>
+        /// 特殊字段:Updatetime
+        /// </summary>
+        public static string UpdateTime_Str = "UpdateTime";
+        #endregion
+
         /// <summary>
         /// 生成文件保存的路径
         /// </summary>
@@ -76,6 +103,7 @@ namespace Tools.AutoCode
         /// </summary>
         protected void Init()
         {
+            UtilSqlserver.Database_Name = Database_Name;
             if (string.IsNullOrEmpty(App_Dir))
             {
                 App_Dir = Directory.GetCurrentDirectory();
@@ -131,6 +159,35 @@ namespace Tools.AutoCode
             }
             Same_Column_Names = UtilSqlserver.Same_Column_Name_In_TableName();
             //UtilObjectDump.WriteLine(Same_Column_Names);
+        }
+
+        /// <summary>
+        /// 获取列注释第一行关键词说明
+        /// </summary>
+        /// <param name="field_comment">列注释</param>
+        /// <param name="Default">默认返回值</param>
+        /// <returns></returns>
+        protected string ColumnCommentKey(string Column_Comment, string Default = "")
+        {
+            if (string.IsNullOrEmpty(Column_Comment))
+            {
+                Column_Comment = Default;
+            }
+            else
+            {
+                string[] c_c = Column_Comment.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                if (c_c.Length > 1)
+                {
+                    Column_Comment = c_c[0];
+                }
+                if(UtilString.Contains(Column_Comment,"标识","编号","主键"))
+                {
+                    Column_Comment = Column_Comment.Replace("标识","");
+                    Column_Comment = Column_Comment.Replace("编号", "");
+                    Column_Comment = Column_Comment.Replace("主键", "");
+                }
+            }
+            return Column_Comment;
         }
 
         /// <summary>

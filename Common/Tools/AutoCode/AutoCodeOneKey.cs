@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tools.AutoCode.Prepare;
 
 namespace Tools.AutoCode
 {
@@ -31,6 +32,10 @@ namespace Tools.AutoCode
         /// 生成表示层类:后台Extjs类
         /// </summary>
         public AutoCodeViewExt viewExtjs = new AutoCodeViewExt();
+        /// <summary>
+        /// 生成生成代码配置文件
+        /// </summary>
+        public AutoCodeConfig autoconfig = new AutoCodeConfig();
 
 
         /// <summary>
@@ -38,7 +43,13 @@ namespace Tools.AutoCode
         /// </summary>
         public void Run()
         {
+            autoconfig.Run();
+
+            //读取配置文件里查询条件和关系列显示的配置
+            AutoCodeViewExt.Filter_Fieldnames=autoconfig.ToDictionary();
+
             base.Init();
+
             domain.Run();
             
             service.ServiceType = 1;

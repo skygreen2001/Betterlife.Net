@@ -466,7 +466,7 @@ namespace Tools.AutoCode
         /// </summary>
         private void CreateContext()
         {
-            string EntitiesName = "BetterlifeNetEntities";
+            string EntitiesName = AutoCodeBase.EntitiesName;
             string ClassName = "Admin";
             string Table_Comment = "系统管理员";
             string Template_Name, Unit_Template, Content, MainContent;

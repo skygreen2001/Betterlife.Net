@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -30,6 +28,7 @@ namespace Tools.AutoCode.Prepare
             //1.生成配置文件:autocode.config.xml
             App_Dir = App_Dir + Path.DirectorySeparatorChar + "AutoCode" + Path.DirectorySeparatorChar + "Model" + Path.DirectorySeparatorChar;
             string Save_Dir = App_Dir + "autocode.config.xml";
+            if (File.Exists(Save_Dir)) return;
             if (!Directory.Exists(Save_Dir)) UtilFile.CreateDir(Save_Dir);
 
             XElement xElement = new XElement(new XElement("classes"));
@@ -75,6 +74,46 @@ namespace Tools.AutoCode.Prepare
             }
             xmlDoc.Save(Save_Dir);
             Debug.WriteLine(xElement.ToString());
+        }
+
+        /// <summary>
+        /// 转换Xml为Dictionary，以便程序处理
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, object> ToDictionary()
+        {
+            base.Init();
+            //1.从配置文件:autocode.config.xml获取配置信息
+            string Save_Dir = App_Dir + "autocode.config.xml";
+            if (!File.Exists(Save_Dir)) return null;
+            XDocument xmlDoc = XDocument.Load(Save_Dir);
+
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            List<XElement> lists = xmlDoc.XPathSelectElements("classes/class").ToList();
+            string className = "";
+            foreach (XElement ClassElement in lists)
+            {
+                className=ClassElement.Attribute("name").Value;
+                
+                List<XElement> listConditions = ClassElement.XPathSelectElements("conditions/condition").ToList();
+                List<Dictionary<string,string>> conditions=new List<Dictionary<string,string>>();
+                Dictionary<string, object> ClassDict = new Dictionary<string, object>();
+                foreach (XElement ConditionElement in listConditions)
+                {
+                    Dictionary<string, string> dictCondition = new Dictionary<string, string>();
+                    dictCondition.Add("ConditionName", ConditionElement.Value);
+                    if (ConditionElement.HasAttributes){
+                        dictCondition.Add("RelationClass", ConditionElement.Attribute("relation_class").Value);
+                        dictCondition.Add("ShowName", ConditionElement.Attribute("show_name").Value);
+                    }
+                    conditions.Add(dictCondition);
+                }
+                ClassDict.Add("Conditions", conditions);
+
+                dict.Add(className, ClassDict);
+            }
+
+            return dict;
         }
 
         /// <summary>
@@ -325,27 +364,32 @@ namespace Tools.AutoCode.Prepare
                     ownerClassname = UtilString.UcFirst(ownerClassname);
                     belongClassname = UtilString.UcFirst(belongClassname);
                     XElement ClassOwnerElement = XmlDoc.XPathSelectElement("classes/class[@name='" + ownerClassname + "']");
-                    if (ClassOwnerElement.Element("many_many") == null)
+                    if (ClassOwnerElement != null)
                     {
-                        Many_ManyElement.Add(new XElement("relationclass", belongInstancename, new XAttribute("name", belongClassname)));
-                        ClassOwnerElement.Add(Many_ManyElement);
-                    }
-                    else
-                    {
-                        ClassOwnerElement.Element("many_many").Add(new XElement("relationclass", belongInstancename, new XAttribute("name", belongClassname)));
+                        if (ClassOwnerElement.Element("many_many") == null)
+                        {
+                            Many_ManyElement.Add(new XElement("relationclass", belongInstancename, new XAttribute("name", belongClassname)));
+                            ClassOwnerElement.Add(Many_ManyElement);
+                        }
+                        else
+                        {
+                            ClassOwnerElement.Element("many_many").Add(new XElement("relationclass", belongInstancename, new XAttribute("name", belongClassname)));
+                        }
                     }
 
                     XElement ClassBelongElement = XmlDoc.XPathSelectElement("classes/class[@name='" + belongClassname + "']");
-                    if (ClassOwnerElement.Element("belongs_many_many") == null)
+                    if (ClassOwnerElement != null)
                     {
-                        Belongs_Many_ManyElement.Add(new XElement("relationclass", belongInstancename, new XAttribute("name", belongClassname)));
-                        ClassBelongElement.Add(Belongs_Many_ManyElement);
+                        if (ClassOwnerElement.Element("belongs_many_many") == null)
+                        {
+                            Belongs_Many_ManyElement.Add(new XElement("relationclass", belongInstancename, new XAttribute("name", belongClassname)));
+                            ClassBelongElement.Add(Belongs_Many_ManyElement);
+                        }
+                        else
+                        {
+                            ClassBelongElement.Element("belongs_many_many").Add(new XElement("relationclass", ownerInstancename, new XAttribute("name", ownerClassname)));
+                        }
                     }
-                    else
-                    {
-                        ClassBelongElement.Element("belongs_many_many").Add(new XElement("relationclass", ownerInstancename, new XAttribute("name", ownerClassname)));
-                    }
-
                 }
             }
         }
