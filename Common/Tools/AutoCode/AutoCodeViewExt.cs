@@ -1007,7 +1007,7 @@ namespace Tools.AutoCode
                                     Blank_Pre + "                                ";
                         }
 
-                        if (column_type.Equals("enum"))
+                        if (column_type.Equals("tinyint"))
                         {
                             List<Dictionary<string,string>> enum_columnDefine=EnumDefines(field["Comment"]);
                             filterFields+=",xtype:'combo',mode : 'local',\r\n"+
@@ -1018,7 +1018,7 @@ namespace Tools.AutoCode
                             List<string> enumArr=new List<string>();
                             foreach (Dictionary<string,string> enum_column in enum_columnDefine)
                             {
-                                enumArr.Add("['"+enum_column["value"]+"', '"+enum_column["comment"]+"']");
+                                enumArr.Add("['"+enum_column["Value"]+"', '"+enum_column["Comment"]+"']");
                             }
                             
                             filterFields+=string.Join(",",enumArr);
